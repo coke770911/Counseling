@@ -21,16 +21,11 @@ class SysManage extends BaseController {
             'ua_id' => $request->getPost('ua_id'),
             'ua_account' => $request->getPost('ua_account'),
             'ua_name' => $request->getPost('ua_name'),
-            'ua_auth_sys' => $request->getPost('ua_auth_sys'),
-            'ua_case_manage' => $request->getPost('ua_case_manage'),
-            'ua_counseling_counselor' => $request->getPost('ua_counseling_counselor'),
+            'ua_auth_sys' => $request->getPost('ua_auth_sys') == '' ? 0 : 1,
+            'ua_case_manage' => $request->getPost('ua_case_manage') == '' ? 0 : 1,
+            'ua_counseling_counselor' => $request->getPost('ua_counseling_counselor') == '' ? 0 : 1,
         );
-        echo $request->getPost('ua_id');
-        echo $request->getPost('ua_account');
-        echo $request->getPost('ua_name');
-        echo $request->getPost('ua_auth_sys');
-        echo $request->getPost('ua_case_manage');
-        $request->getPost('ua_counseling_counselor');             
+        print_r($data);         
     }
 
     public function addView() {
