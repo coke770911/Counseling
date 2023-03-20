@@ -1,0 +1,58 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title 諮商系統
+    link(rel='shortcut icon' href='/images/favicon.ico')
+    link(rel='stylesheet' href='/stylesheets/bootstrap/bootstrap.min.css')
+    link(rel='stylesheet' href='/stylesheets/tabulator-tables/tabulator_bootstrap5.min.css')
+    link(rel='stylesheet' href='/stylesheets/sweetalert2/sweetalert2.all.min.js')
+    link(rel='stylesheet' href='/stylesheets/style.css')
+  body
+    nav(class="navbar navbar-expand-lg bg-body-tertiary")
+      .container-xl
+        a(class="navbar-brand" href="#") 諮商系統
+        button(class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        div(class="collapse navbar-collapse" id="navbarScroll")
+          ul(class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll col-lg-6 justify-content-lg-center")
+            li(class="nav-item")
+              a(class="nav-link" href="/calendar/view") 行事曆
+            li(class="nav-item dropdown")
+              a(class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false") 個案管理
+              ul(class="dropdown-menu")
+                li
+                  a(class="dropdown-item" href="#") 轉介名單
+                li
+                  a(class="dropdown-item" href="#") 個案基本資料管理
+            li(class="nav-item dropdown")
+              a(class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false") 統計報表
+              ul(class="dropdown-menu")
+                li
+                  a(class="dropdown-item" href="#") 報表1
+                li
+                  a(class="dropdown-item" href="#") 報表2
+            li(class="nav-item dropdown")
+              a(class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false") 系統管理
+              ul(class="dropdown-menu")
+                li
+                  a(class="dropdown-item" href="#") 系統設定
+                li
+                  a(class="dropdown-item" href="/userauth/view") 權限設定
+                li
+                  a(class="dropdown-item" href="#") 空間設定
+          div(class="d-lg-flex col-lg-3 justify-content-lg-end")
+            ul(class="navbar-nav my-2 my-lg-0 navbar-nav-scroll")
+              li(class="nav-item")
+                label(class="nav-link") #{user.username}&nbsp;#{user.titlename}
+            a(class="btn btn-outline-success" href="/logout") 登出
+    block content
+    block scripts 
+      script(src="/javascripts/popper.min.js")
+      script(src="/javascripts/bootstrap/bootstrap.min.js")
+      script(src="/javascripts/tabulator-tables/tabulator.min.js")
+      script(src="/javascripts/axios/axios.min.js")
+      script(src="/javascripts/sweetalert2/sweetalert2.all.min.js")
+      script(src="/javascripts/vanilla.js")
+    

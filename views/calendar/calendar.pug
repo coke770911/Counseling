@@ -1,0 +1,128 @@
+extends ../layout
+
+block content
+  #mainContent.container
+    nav(aria-label="breadcrumb")
+      ol.breadcrumb
+        li.breadcrumb-item 
+          a(href="/") 首頁
+        li.breadcrumb-item 行事曆
+    #calendar
+  script.
+    document.addEventListener('DOMContentLoaded', () => {
+      const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
+        },
+        firstDay: 1,
+        locale:'zh-tw',
+        fixedWeekCount:false,
+        navLinks: true,
+        selectable: true,
+        selectMirror: true,
+        select: function(arg) {
+          axios.get('/calendar/add').then((res) => {
+            //modal call
+            let tempContent = document.createElement("div")
+            tempContent.innerHTML = res.data
+            document.getElementById("mainContent").prepend(tempContent)
+            let ModalElement = document.getElementById('DetailedModal');
+            let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});  
+            ModalElement.addEventListener('hidden.bs.modal', event => { tempContent.parentElement.removeChild(tempContent); })
+            modalMethod.show();
+            //setData
+            document.getElementById('stdatetime').innerText = arg.start.toLocaleString() 
+            document.getElementById('todatetime').innerText = arg.end.toLocaleString()
+            document.getElementById('start').value = arg.start.toISOString()
+            document.getElementById('end').value = arg.end.toISOString()
+            document.getElementById('allDay').value = arg.allDay
+            //新增區塊
+            document.getElementById('btn_process').addEventListener('click', (e) => {
+              mask.show()
+              document.getElementById('setstaffName').value = document.getElementById('setstaff')[document.getElementById('setstaff').selectedIndex].text
+              document.getElementById('setspaceName').value = document.getElementById('setspace')[document.getElementById('setspace').selectedIndex].text
+              let data = new FormData(document.getElementById('formData'));
+              axios.post('/calendar',data).then((res) => {
+                modalMethod.hide()
+                mask.hide()
+                calendar.addEvent(res.data.Calendardata)
+              })
+              .catch((error) => { 
+                console.error(error) 
+                Swal.fire('發生錯誤')
+              })
+            })
+          }).catch((error) => { 
+            Swal.fire('發生錯誤')
+          }).finally(() =>{
+            calendar.unselect()
+          })
+          
+        },
+        eventClick: function(arg) {
+          mask.show()
+          axios.get('/calendar/detailed/'+arg.event.id).then((res) => {
+            let tempContent = document.createElement("div")
+            tempContent.innerHTML = res.data
+            document.getElementById("mainContent").prepend(tempContent)
+            let ModalElement = document.getElementById('DetailedModal');
+            let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});  
+            ModalElement.addEventListener('hidden.bs.modal', event => { tempContent.parentElement.removeChild(tempContent); })
+            modalMethod.show();
+          }).catch((error) => { 
+            Swal.fire('發生錯誤')
+          }).finally(() =>{
+            mask.hide()
+          })
+          //arg.event.remove()
+        },
+        eventAdd: function( addInfo ) {
+          console.log('eventAdd');
+          console.dir(addInfo);
+        },
+        eventRemove: function( removeInfo ) {
+          console.log('eventRemove');
+          console.dir(removeInfo);
+        },
+        eventChange: function(arg) {
+          mask.show()
+          let data = new FormData();
+          data.append('id', arg.event.id)
+          data.append('start', arg.event.start.toISOString())
+          data.append('end', arg.event.end.toISOString())
+          axios.put('/calendar',data).then((res) => {
+            mask.hide()
+            console.dir(res.data)
+          })
+          .catch((error) => { 
+            console.error(error) 
+            Swal.fire('發生錯誤')
+          })
+          .finally(() =>{})
+        },
+        eventsSet: function( events ) {
+          /*
+          console.log('eventsSet');
+          console.dir(events);
+          */
+        },
+        slotMinTime: "08:00:00", //最小開始時間
+        slotMaxTime: "22:00:00", //最大開始時間
+        slotDuration: "00:10", //時間間隔
+        editable: true,       //允許移動
+        dayMaxEvents: true, // allow "more" link when too many events
+      });
+      
+      //init calendar event
+      mask.show()
+      axios.get('/calendar').then((res)=>{
+        calendar.addEventSource(res.data.Calendardata)
+        calendar.render();
+        mask.hide()
+      })  
+    })
+  script(src="/javascripts/fullcalendar-6.1.4/dist/index.global.js")
+  script(src="/javascripts/fullcalendar-6.1.4/packages/bootstrap5/index.global.js")
+  script(src="/javascripts/fullcalendar-6.1.4/packages/core/locales-all.global.min.js")

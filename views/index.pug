@@ -1,0 +1,153 @@
+extends layout
+
+block content
+  .container
+    nav(aria-label="breadcrumb")
+      ol.breadcrumb
+        li.breadcrumb-item 
+          a(href="/") 首頁
+        li.breadcrumb-item title
+    #calendar
+    button(type="button" onclick="cc()") 取得資料
+  script(src="/javascripts/fullcalendar-6.1.4/dist/index.global.js")
+  script(src="/javascripts/fullcalendar-6.1.4/packages/bootstrap5/index.global.js")
+  script(src="/javascripts/fullcalendar-6.1.4/packages/core/locales-all.global.min.js")
+  script.
+      var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
+        },
+        firstDay: 1,
+        locale:'zh-tw',
+        fixedWeekCount:false,
+        navLinks: true, // can click day/week names to navigate views
+        selectable: true,
+        selectMirror: true,
+        select: function(arg) {
+          var title = prompt('Event Title:');
+          if (title) {
+            calendar.addEvent({
+              id:'fz083'+Date.now(),
+              title: title,
+              start: arg.start,
+              end: arg.end,
+              allDay: arg.allDay
+            })
+          }
+          calendar.unselect()
+        },
+        eventClick: function(arg) {
+          if (confirm('是否刪除此行程？')) {
+            arg.event.remove()
+          }
+        },
+        eventAdd: function( addInfo ) {
+          console.log('eventAdd');
+          console.dir(addInfo);
+          console.dir(addInfo.event.title);
+          addInfo.event.id = '123';
+          addInfo.event.title = '456';
+        },
+        eventChange: function( changeInfo ) {
+          console.log('eventChange');
+          console.dir(changeInfo);
+        },
+        eventRemove: function( removeInfo ) {
+          console.log('eventRemove');
+          console.dir(removeInfo);
+        },
+        eventsSet: function( events ) {
+          console.log('eventsSet');
+          console.dir(events);
+        },
+        editable: true,
+        dayMaxEvents: true, // allow "more" link when too many events
+      });
+      
+      /*
+      calendar.addEventSource([
+          {
+            title: 'Long Event',
+            start: '2023-02-20',
+            end: '2023-02-22'
+          },
+          {
+            title: 'Long Event',
+            start: '2023-02-20',
+            end: '2023-02-20'
+          },
+          {
+            title: 'Long Event',
+            start: '2023-01-07',
+            end: '2023-01-08'
+          },
+          {
+            title: 'Long Event',
+            start: '2023-02-07',
+            end: '2023-02-10'
+          },
+          {
+            groupId: 999,
+            title: 'Repeating Event',
+            start: '2023-02-09T16:00:00'
+          },
+          {
+            groupId: 999,
+            title: 'Repeating Event',
+            start: '2023-02-16T16:00:00'
+          },
+          {
+            title: 'Conference',
+            start: '2023-02-11',
+            end: '2023-02-13'
+          },
+          {
+            title: 'Meeting',
+            start: '2023-02-12T10:30:00',
+            end: '2023-02-12T12:30:00'
+          },
+          {
+            title: 'Lunch',
+            start: '2023-02-12T12:00:00'
+          },
+          {
+            title: 'All Day Event',
+            start: '2023-02-01'
+          },
+          {
+            title: 'Meeting',
+            start: '2023-02-12T14:30:00'
+          },
+          {
+            id:2,
+            title: 'Happy Hour',
+            start: '2023-02-12T17:30:00'
+          },
+          {
+            title: 'Dinner sdasdasdasdasdasdasdasdasdasdasdasdasdasdasda',
+            start: '2023-02-12T20:00:00'
+          },
+          {
+            title: 'Birthday Party',
+            start: '2023-02-13T07:00:00'
+          },
+          {
+            title: 'Click for Google',
+            url: 'http://google.com/',
+            start: '2023-02-28'
+          }
+        ]);
+      */
+
+      calendar.render();
+      let cc = function() {
+        /*
+        console.log('test')
+        let data = calendar.getEvents()
+        console.dir(data[0].id)
+        console.dir(data[0].start)
+        */
+        console.dir(calendar.getDate())
+      }

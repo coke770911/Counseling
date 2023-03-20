@@ -1,0 +1,39 @@
+#DetailedModal.modal.fade
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h1.modal-title.fs-5#dialogTitle 行事曆
+        button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+      .modal-body
+        form(action="#" id="formData")
+          input(type="hidden" name="start" id="start" value="")
+          input(type="hidden" name="end" id="end" value="")
+          input(type="hidden" name="allDay" id="allDay" value="")
+          .mb-3
+            label.form-label 時間：
+              span(id="stdatetime")
+              span 至 
+              span(id="todatetime")
+          .mb-3
+            label.form-label 工作項目
+            input.form-control(type="text" name="workitem" id="workitem" maxlength="255")
+          .mb-3
+            label.form-label 備註內容
+            textarea.form-control(name="content" id="content" rows="4" maxlength="255")
+          .mb-3
+            label.form-label 指派人員
+            input(type="hidden" name="setstaffName" id="setstaffName" value="")
+            select.form-select(name="setstaff" id="setstaff")
+              option(value="0") 無
+              each value in setstaff
+                option(value=value.account) #{value.username} #{value.UserAuth.titleName}
+          .mb-3
+            label.form-label 使用空間
+            input(type="hidden" name="setspaceName" id="setspaceName" value="")
+            select.form-select(name="setspace" id="setspace")
+              option(value="0") 無
+              each value in setspace
+                option(value=value.id) #{value.spaceName}
+      .modal-footer
+        buttin.btn.btn-primary(type="button" id="btn_process") 新增
+        buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消

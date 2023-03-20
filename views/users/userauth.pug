@@ -1,0 +1,137 @@
+extends ../layout
+
+block content
+  .container
+    #editmodal.modal.fade
+      .modal-dialog.modal-dialog-centered
+        .modal-content
+          .modal-header
+            h1.modal-title.fs-5#dialogTitle 新增使用者
+            button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+          .modal-body
+            form(action="#" id="formData")
+              input(type="hidden" name="uid" id="uid" value="0")
+              .mb-3
+                label.form-label 使用者帳號
+                input.form-control(type="text" name="account" id="account")
+              .mb-3
+                label.form-label 使用者密碼
+                input.form-control(type="password" name="password" id="password")
+              .mb-3
+                label.form-label 使用者姓名
+                input.form-control(type="text" name="username" id="username")
+              .mb-3
+                label.form-label 使用者權限
+                select.form-select(name="userauthId" id="userauthId")
+                  each value in UserAuthList
+                    option(value=value.id) #{value.titleName}
+              .form-check
+                input.form-check-input(type="checkbox" name="isDisabled" id="isDisabled" value="1")
+                label.form-check-label 是否停用
+          .modal-footer
+            buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
+            buttin.btn.btn-primary(type="button" id="btn_process") 新增
+    nav(aria-label="breadcrumb")
+      ol.breadcrumb
+        li.breadcrumb-item 
+          a(href="/") 首頁
+        li.breadcrumb-item 權限設定
+    .row 
+      .col.text-end.mb-2
+        button#btn_add.btn.btn-primary(data-bs-toggle="modal" data-bs-target="#editmodal" data-bs-config='{"id":0}' data-bs-uid="0") 新增使用者
+    table.table#maintable
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      let table = new Tabulator("#maintable", {
+        layout : "fitColumns" ,
+        height : "100%" ,
+        minHeight : 300 ,
+        placeholder:"Awaiting Data, Please Load File",
+        columns:[
+          {title:"#", formatter:"rownum", hozAlign:"center", width:40,headerSort:false},
+          {title:"帳號", field:"account",headerSort:false},
+          {title:"姓名", field:"username",headerSort:false},
+          {title:"系統身份", field:"UserAuth.titleName",headerSort:false},
+          {title:"狀態", field:"isDisabled"},
+          {title:"最後變更日期", field:"updatedAt" ,hozAlign:"center"},
+          {title:"功能",field:"id",headerSort:false,
+            formatter:function(cell, formatterParams){
+              let value = cell.getValue();
+              return '<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editmodal" data-bs-uid="'+value+'">修改</button>';
+            }
+          },
+        ],
+        ajaxURL : "/userauth" ,
+        ajaxConfig : "get" ,
+        ajaxContentType: "json",
+      });
+
+      const ModalElement = document.getElementById('editmodal');
+      const modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});
+
+      ModalElement.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const uid = button.getAttribute('data-bs-uid')
+        document.getElementById('uid').value = uid
+        if(uid == "0") {
+          document.getElementById('dialogTitle').innerText = '新增使用者'
+          document.getElementById('btn_process').innerText = '新增'
+        } else {
+          mask.show();
+          document.getElementById('dialogTitle').innerText = '修改使用者'
+          document.getElementById('btn_process').innerText = '修改'
+          document.getElementById('account').disabled = true
+          axios.get('/userauth/'+uid)
+          .then((res) => { 
+            document.getElementById('account').value = res.data.account
+            document.getElementById('username').value = res.data.username
+            document.getElementById('userauthId').value = res.data.UserAuth.id
+          })
+          .catch((error) => { console.error(error) })
+          .finally(() => { mask.hide(); })
+        } 
+      })
+
+      document.getElementById('btn_process').addEventListener('click', (e) => {
+        Swal.fire({
+          text: '確定' + document.getElementById('dialogTitle').innerText +'？',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            mask.show()
+            let data = new FormData(document.getElementById('formData'));
+            axios.post('/userauth',data).then((res) => {
+              modalMethod.hide()
+              mask.hide()
+              Swal.fire(res.data.msg).then((result) => {
+                if(result.isConfirmed) {
+                  document.location.reload()
+                }
+              })
+            })
+            .catch((error) => { console.error(error) })
+            .finally(() => {})
+          }
+        })
+      });
+
+      ModalElement.addEventListener('hidden.bs.modal', event => {
+        document.getElementById('uid').value = 0
+        document.getElementById('account').value = ''
+        document.getElementById('account').disabled = false
+        document.getElementById('password').value = ''
+        document.getElementById('password').disabled = false
+        document.getElementById('username').value = ''
+        document.getElementById('userauthId').selectedIndex = 0
+        document.getElementById('isDisabled').checked = false
+      })
+    });
+
+
+
+
