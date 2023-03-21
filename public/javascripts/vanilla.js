@@ -1,5 +1,5 @@
 // loading mask bootstrap 5
-const mask = (function (context = document) {
+const mask = function (context = document) {
   const elements = Array.from(context.getElementsByTagName('body'))
   const maskElement = '<div class="spinner-border" role="status" style="width: 3rem; height: 3rem;color:#ffffff;"><span class="visually-hidden">Loading...</span></div><strong style="color:#ffffff;">Loading...</strong>'
   const maskDiv = document.createElement('div')
@@ -23,4 +23,4 @@ const mask = (function (context = document) {
       return this
     }
   }
-}(this))
+}()

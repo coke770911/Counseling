@@ -1,0 +1,38 @@
+{
+  "development": {
+    "username": "",
+    "password": "",
+    "database": "Counseling",
+    "host": "",
+    "port": 1433,
+    "dialect": "mssql",
+    "timezone": "+08:00",
+    "dialectOptions": {
+      "options": {
+        "encrypt": false
+      }
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "",
+    "password": "",
+    "database": "Counseling",
+    "host": "",
+    "port": 1433,
+    "dialect": "mssql",
+    "timezone": "+08:00",
+    "logging": false,
+    "dialectOptions": {
+      "options": {
+        "encrypt": false
+      }
+    }
+  }
+}

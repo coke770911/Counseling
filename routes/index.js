@@ -33,7 +33,7 @@ router.post('/login', async function (req, res, next) {
     req.session.authUrl = { a: 0, b: 1 }
 
     console.dir(req.session)
-    res.redirect('/calendar')
+    res.redirect('/calendar/view')
   } else {
     MessageTxt = '帳號密碼有錯誤！'
     res.render('login', { title: '諮商系統登入', Message: MessageTxt, account: req.body.account })

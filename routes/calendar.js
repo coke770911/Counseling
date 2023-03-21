@@ -66,7 +66,7 @@ router.get('/detailed/:id', async (req, res, next) => {
 // 撈取行事曆
 router.get('/', async (req, res, next) => {
   const Calendardata = await db.CalendarData.findAll({})
-  res.status(200).send(JSON.stringify({ msg: '搜尋成功', Calendardata }))
+  res.status(200).send(JSON.stringify({ msg: '搜尋成功', Calendardata: Calendardata }))
 })
 
 // 新增行事曆

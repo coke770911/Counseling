@@ -8,6 +8,9 @@ block content
           a(href="/") 首頁
         li.breadcrumb-item 行事曆
     #calendar
+  script(src="/javascripts/fullcalendar/index.global.min.js")
+  script(src="/javascripts/fullcalendar-ext/packages/bootstrap5/index.global.js")
+  script(src="/javascripts/fullcalendar-ext/packages/core/locales-all.global.min.js")
   script.
     document.addEventListener('DOMContentLoaded', () => {
       const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
@@ -95,12 +98,10 @@ block content
           axios.put('/calendar',data).then((res) => {
             mask.hide()
             console.dir(res.data)
-          })
-          .catch((error) => { 
+          }).catch((error) => { 
             console.error(error) 
             Swal.fire('發生錯誤')
-          })
-          .finally(() =>{})
+          }).finally(() =>{})
         },
         eventsSet: function( events ) {
           /*
@@ -109,7 +110,7 @@ block content
           */
         },
         slotMinTime: "08:00:00", //最小開始時間
-        slotMaxTime: "22:00:00", //最大開始時間
+        slotMaxTime: "22:30:00", //最大開始時間
         slotDuration: "00:10", //時間間隔
         editable: true,       //允許移動
         dayMaxEvents: true, // allow "more" link when too many events
@@ -117,12 +118,12 @@ block content
       
       //init calendar event
       mask.show()
-      axios.get('/calendar').then((res)=>{
+      axios.get('/calendar').then((res) => {
         calendar.addEventSource(res.data.Calendardata)
         calendar.render();
-        mask.hide()
-      })  
+        console.dir(res.data)
+      }).catch((error) => {
+        console.error(error) 
+        Swal.fire('發生伺服器錯誤。')
+      }).finally(() =>{mask.hide()})
     })
-  script(src="/javascripts/fullcalendar-6.1.4/dist/index.global.js")
-  script(src="/javascripts/fullcalendar-6.1.4/packages/bootstrap5/index.global.js")
-  script(src="/javascripts/fullcalendar-6.1.4/packages/core/locales-all.global.min.js")
