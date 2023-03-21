@@ -46,7 +46,7 @@ router.get('/add', async (req, res, next) => {
 })
 
 router.get('/detailed/:id', async (req, res, next) => {
-  let sql = "SELECT cd.[id],cd.[title],cd.[setstaff],ISNULL(staff.username,'無') AS staffName,ISNULL(ua.titleName,'無') AS titleName,cd.[venuespaceId],ISNULL(vs.spaceName,'無') AS spaceName,cd.[start],cd.[end],cd.[allDay],cd.[creatorPople],ca.username AS creatorPopleName,cd.[modifyPople],md.username AS modifyPopleName "
+  let sql = "SELECT cd.content,cd.[id],cd.[title],cd.[setstaff],ISNULL(staff.username,'無') AS staffName,ISNULL(ua.titleName,'無') AS titleName,cd.[venuespaceId],ISNULL(vs.spaceName,'無') AS spaceName,cd.[start],cd.[end],cd.[allDay],cd.[creatorPople],ca.username AS creatorPopleName,cd.[modifyPople],md.username AS modifyPopleName "
   sql += ' FROM [Counseling].[dbo].[CalendarData] AS cd '
   sql += ' LEFT JOIN [Counseling].[dbo].[VenueSpaces] AS vs ON vs.id = cd.[venuespaceId] '
   sql += ' LEFT JOIN [Counseling].[dbo].[UserData] AS staff ON staff.account = cd.[setstaff] '
@@ -71,15 +71,8 @@ router.get('/', async (req, res, next) => {
 
 // 新增行事曆
 router.post('/', upload.none(), async (req, res, next) => {
-  console.dir(req.body)
-  let title = ''
-
-  title += req.body.setspace !== '0' ? '[' + req.body.setspaceName + ']&' : ''
-  title += req.body.setstaff !== '0' ? '[' + req.body.setstaffName + ']&' : ''
-  title += req.body.workitem
-
   const Calendardata = await db.CalendarData.create({
-    title,
+    title: req.body.title,
     content: req.body.content || '',
     setstaff: req.body.setstaff,
     venuespaceId: req.body.setspace,
@@ -92,15 +85,15 @@ router.post('/', upload.none(), async (req, res, next) => {
   res.status(200).send(JSON.stringify({ msg: '新增成功', Calendardata }))
 })
 
-// 移動行事曆時間
+// 移動行事曆行程時間
 router.put('/', upload.none(), async (req, res, next) => {
-  console.dir(req.body)
-  const Calendardata = await db.CalendarData.update({ start: req.body.start, end: req.body.end, modifyPople: req.session.account }, { where: { id: req.body.id } })
-  res.status(200).send(JSON.stringify({ msg: '修改成功', Calendardata }))
+  const Calendardata = await db.CalendarData.update({ start: req.body.start, end: req.body.end === 'null' ? null : req.body.end, modifyPople: req.session.account,allDay: req.body.allDay }, { where: { id: req.body.id } })
+  res.status(200).send(JSON.stringify({ msg: '修改成功'}))
 })
-
-router.delete('/', (req, res, next) => {
-  res.render('calendar', { title: '諮商系統 行事曆' })
+//刪除行事曆行程
+router.delete('/:id', async (req, res, next) => {
+  const Calendardata = await db.CalendarData.destroy({where: {id: req.params.id }})
+  res.status(200).send(JSON.stringify({ msg: '已刪除行程！', Calendardata: Calendardata }))
 })
 
 module.exports = router

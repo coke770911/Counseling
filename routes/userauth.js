@@ -11,6 +11,48 @@ router.use((req, res, next) => {
   next()
 })
 
+
+
+
+
+router.get('/view', async (req, res, next) => {
+  const UserAuthList = await db.UserAuth.findAll({
+    attributes: ['id', 'titleName'],
+    where: {
+      id: {
+        [db.Sequelize.Op.ne]: 1
+      }
+    },
+    order: [['id', 'DESC']]
+  })
+  // console.log(JSON.stringify(UserAuthData, null, 4));
+  res.render('users/userauth', { title: '諮商系統 權限設定', UserAuthList })
+})
+
+router.get('/detailed/:id', async (req, res, next) => {
+
+  /*
+  const Calendardata = await db.sequelize.query(sql, {
+    replacements: { id: req.params.id },
+    type: db.sequelize.QueryTypes.SELECT,
+    nest: true
+  })
+  */
+  const UserAuthList = await db.UserAuth.findAll({
+    attributes: ['id', 'titleName'],
+    where: {
+      id: {
+        [db.Sequelize.Op.ne]: 1
+      }
+    },
+    order: [['id', 'DESC']]
+  })
+  res.render('users/detailed', { title: '諮商系統 權限設定', UserAuthList })
+})
+
+
+
+
 router.post('/', upload.none(), async (req, res, next) => {
   if (req.body.uid === '0') {
     const [createdata, created] = await db.UserData.findOrCreate({
@@ -44,19 +86,7 @@ router.post('/', upload.none(), async (req, res, next) => {
   }
 })
 
-router.get('/view', async (req, res, next) => {
-  const UserAuthList = await db.UserAuth.findAll({
-    attributes: ['id', 'titleName'],
-    where: {
-      id: {
-        [db.Sequelize.Op.ne]: 1
-      }
-    },
-    order: [['id', 'DESC']]
-  })
-  // console.log(JSON.stringify(UserAuthData, null, 4));
-  res.render('users/userauth', { title: '諮商系統 權限設定', UserAuthList })
-})
+
 
 // 取得全部 id:1為系統帳號不允許編輯
 router.get('/', async (req, res, next) => {

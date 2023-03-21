@@ -1,0 +1,29 @@
+#DetailedModal.modal.fade
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h1.modal-title.fs-5#dialogTitle 新增使用者
+        button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+      .modal-body
+        form(action="#" id="formData")
+          input(type="hidden" name="uid" id="uid" value="0")
+          .mb-3
+            label.form-label 使用者帳號
+            input.form-control(type="text" name="account" id="account")
+          .mb-3
+            label.form-label 使用者密碼
+            input.form-control(type="password" name="password" id="password")
+          .mb-3
+            label.form-label 使用者姓名
+            input.form-control(type="text" name="username" id="username")
+          .mb-3
+            label.form-label 使用者權限
+            select.form-select(name="userauthId" id="userauthId")
+              each value in UserAuthList
+                option(value=value.id) #{value.titleName}
+          .form-check
+            input.form-check-input(type="checkbox" name="isDisabled" id="isDisabled" value="1")
+            label.form-check-label 是否停用
+      .modal-footer
+        buttin.btn.btn-primary(type="button" id="btn_process") 新增
+        buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消

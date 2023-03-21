@@ -7,18 +7,19 @@
       .modal-body
         form(action="#" id="formData")
           .mb-3
-          label.form-label #{Calendardata.title}
-            span(id="stdatetime")
-            span 至 
-            span(id="todatetime")
+            label.form-label 行程建立： #{Calendardata.creatorPopleName}
           .mb-3
-            label.form-label 工作項目
+            label.form-label 標題： 
+            textarea.form-control(rows="4" maxlength="255" readonly) #{Calendardata.title}
           .mb-3
-            label.form-label 備註內容
+            label.form-label 備註內容： 
+            textarea.form-control(rows="4" maxlength="255" readonly) #{Calendardata.content}
           .mb-3
-            label.form-label 指派人員 
+            label.form-label 辦理人員： #{Calendardata.staffName} &nbsp;
+            if Calendardata.setstaff != '0'
+              span #{Calendardata.titleName} 
           .mb-3
-            label.form-label 使用空間
+            label.form-label 使用空間： #{Calendardata.spaceName}
       .modal-footer
-        buttin.btn.btn-primary(type="button" id="btn_delete") 新增
+        buttin.btn.btn-primary(type="button" id="btn_delete") 刪除
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
