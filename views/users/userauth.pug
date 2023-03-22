@@ -13,18 +13,21 @@ block content
     table.table#maintable
   script.
     document.addEventListener('DOMContentLoaded', function() {
-      let table = new Tabulator("#maintable", {
+      const table = new Tabulator("#maintable", {
         layout : "fitColumns" ,
         height : "100%" ,
         minHeight : 300 ,
         placeholder:"Awaiting Data, Please Load File",
+        ajaxURL : "/userauth" ,
+        ajaxConfig : "get" ,
+        ajaxContentType: "json",
         columns:[
           {title:"#", formatter:"rownum", hozAlign:"center", width:40,headerSort:false},
           {title:"帳號", field:"account",headerSort:false},
           {title:"姓名", field:"username",headerSort:false},
           {title:"系統身份", field:"UserAuth.titleName",headerSort:false},
-          {title:"狀態", field:"isDisabled"},
-          {title:"最後變更日期", field:"updatedAt" ,hozAlign:"center"},
+          {title:"狀態", field:"isDisabledName"},
+          {title:"最後變更日期", field:"updatedLocal" ,hozAlign:"center"},
           {title:"功能",field:"id",headerSort:false,
             formatter:function(cell, formatterParams){
               let value = cell.getValue();
@@ -32,90 +35,24 @@ block content
             }
           },
         ],
-        ajaxURL : "/userauth" ,
-        ajaxConfig : "get" ,
-        ajaxContentType: "json",
       });
-
-      /*
-      ModalElement.addEventListener('show.bs.modal', event => {
-        const button = event.relatedTarget
-        const uid = button.getAttribute('data-bs-uid')
-        document.getElementById('uid').value = uid
-        if(uid == "0") {
-          document.getElementById('dialogTitle').innerText = '新增使用者'
-          document.getElementById('btn_process').innerText = '新增'
-        } else {
-          mask.show();
-          document.getElementById('dialogTitle').innerText = '修改使用者'
-          document.getElementById('btn_process').innerText = '修改'
-          document.getElementById('account').disabled = true
-          axios.get('/userauth/'+uid)
-          .then((res) => { 
-            document.getElementById('account').value = res.data.account
-            document.getElementById('username').value = res.data.username
-            document.getElementById('userauthId').value = res.data.UserAuth.id
-          })
-          .catch((error) => { console.error(error) })
-          .finally(() => { mask.hide(); })
-        } 
-      })
-      */
-      
-      //const ModalElement = document.getElementById('DetailedModal');
-      //const modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});
-
-
-      document.getElementById('btn_process').addEventListener('click', (e) => {
-        Swal.fire({
-          text: '確定',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: '確定',
-          cancelButtonText: '取消',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            mask.show()
-            let data = new FormData(document.getElementById('formData'));
-            axios.post('/userauth',data).then((res) => {
-              modalMethod.hide()
-              mask.hide()
-              Swal.fire(res.data.msg).then((result) => {
-                if(result.isConfirmed) {
-                  document.location.reload()
-                }
-              })
-            })
-            .catch((error) => { console.error(error) })
-            .finally(() => {})
-          }
-        })
-      });
-
-      //新增或修改
+      //新增與修改彈窗
       document.getElementById("mainContent").addEventListener('click', function (event) {
         let target = event.target
         if(target.getAttribute("class").indexOf("btn-Detailed") !== -1) {
           mask.show()
           axios.get('/userauth/detailed/'+target.getAttribute("data-id")).then((res) => {
-            let tempContent = document.createElement("div")
-            tempContent.innerHTML = res.data
-            document.getElementById("mainContent").prepend(tempContent)
-            let ModalElement = document.getElementById('DetailedModal');
-            let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});  
-            ModalElement.addEventListener('hidden.bs.modal', event => { tempContent.parentElement.removeChild(tempContent); })
-            modalMethod.show();
-
+            let LoadHTML = document.createElement("div")
+            LoadHTML.innerHTML = res.data
+            Array.from(LoadHTML.getElementsByTagName('script')).forEach(element => {
+              let $script = document.createElement('script');
+              $script.text = element.text
+              LoadHTML.appendChild($script)
+            })
+            document.getElementsByTagName("body")[0].prepend(LoadHTML)
           }).catch((error) => { 
             Swal.fire('樣板發生錯誤。')
           }).finally(() =>{ mask.hide() })
         }
       })
     });
-
-
-    
-
-    

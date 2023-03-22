@@ -70,7 +70,6 @@ block content
         eventClick: function(arg) {
           mask.show()
           axios.get('/calendar/detailed/'+arg.event.id).then((res) => {
-            
             document.getElementById('btn_delete').addEventListener('click', (e) => {
               modalMethod.hide()
               arg.event.remove()
@@ -78,9 +77,7 @@ block content
           }).catch((error) => { Swal.fire('發生錯誤')
           }).finally(() =>{ mask.hide() })
         },
-        eventAdd: function( addInfo ) {
-          console.log('eventAdd');
-        },
+        eventAdd: function( addInfo ) {},
         eventRemove: function( removeInfo ) {
           mask.show()
           axios.delete('/calendar/'+removeInfo.event.id).then((res) => {
@@ -89,7 +86,6 @@ block content
             Swal.fire('發生錯誤')
             calendar.addEvent(removeInfo.event)
           }).finally(() =>{ mask.hide() })
-          console.log('eventRemove');
         },
         eventChange: function(arg) {
           mask.show()

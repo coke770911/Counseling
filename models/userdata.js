@@ -18,19 +18,17 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     username: DataTypes.STRING,
     userauthId: DataTypes.INTEGER,
-    isDisabled: {
-      type: DataTypes.BOOLEAN,
+    isDisabled: DataTypes.BOOLEAN,
+    isDisabledName: {
+      type: DataTypes.VIRTUAL,
       get () {
         return this.getDataValue('isDisabled') ? '停用' : '啟用'
       }
     },
-    updatedAt: {
-      type: DataTypes.DATE,
+    updatedLocal: {
+      type: DataTypes.VIRTUAL,
       get () {
         return this.getDataValue('updatedAt').toLocaleString()
-      },
-      set (value) {
-        return this.setDataValue('updatedAt', value)
       }
     }
   }, {
