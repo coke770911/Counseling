@@ -1,0 +1,24 @@
+.modal.fade
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h1.modal-title.fs-5 空間資料
+        button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+      .modal-body
+        form(action="#" id="formData")
+          .mb-3
+            label.form-label 行程建立： 
+          .mb-3
+            label.form-label 標題： 
+            textarea.form-control(rows="4" maxlength="255" readonly) 
+          .mb-3
+            label.form-label 備註內容： 
+            textarea.form-control(rows="4" maxlength="255" readonly) 
+          .mb-3
+            label.form-label 辦理人員： 
+          .mb-3
+            label.form-label 使用空間：
+      .modal-footer
+        buttin.btn.btn-primary(type="button" id="btn_delete") 刪除
+        buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
+  script.

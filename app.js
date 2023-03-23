@@ -10,7 +10,7 @@ const SQLiteStore = require('connect-sqlite3')(session)
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const calendarRouter = require('./routes/calendar')
-const userauthRouter = require('./routes/userauth')
+const venuespaceRouter = require('./routes/venuespace')
 
 const app = express()
 
@@ -51,7 +51,8 @@ app.use(session({
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/calendar', calendarRouter)
-app.use('/userauth', userauthRouter)
+app.use('/venuespace', venuespaceRouter)
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

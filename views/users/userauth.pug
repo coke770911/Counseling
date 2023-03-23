@@ -1,16 +1,18 @@
 extends ../layout
 
 block content
-  #mainContent.container
+  .container
     nav(aria-label="breadcrumb")
       ol.breadcrumb
         li.breadcrumb-item 
           a(href="/") 首頁
-        li.breadcrumb-item 權限設定
+        li.breadcrumb-item 權限管理
     .row 
       .col.text-end.mb-2
         button.btn.btn-primary.btn-Detailed(type="button" data-id="0") 新增使用者
-    table.table#maintable
+    .row 
+      .col
+        table.table#maintable
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
@@ -18,18 +20,18 @@ block content
         height : "100%" ,
         minHeight : 300 ,
         placeholder:"Awaiting Data, Please Load File",
-        ajaxURL : "/userauth" ,
+        ajaxURL : "/users" ,
         ajaxConfig : "get" ,
         ajaxContentType: "json",
-        columns:[
-          {title:"#", formatter:"rownum", hozAlign:"center", width:40,headerSort:false},
-          {title:"帳號", field:"account",headerSort:false},
-          {title:"姓名", field:"username",headerSort:false},
-          {title:"系統身份", field:"UserAuth.titleName",headerSort:false},
-          {title:"狀態", field:"isDisabledName"},
-          {title:"最後變更日期", field:"updatedLocal" ,hozAlign:"center"},
-          {title:"功能",field:"id",headerSort:false,
-            formatter:function(cell, formatterParams){
+        columns: [
+          {title: "#", formatter: "rownum", hozAlign: "center", width: 40,headerSort: false},
+          {title: "帳號", field: "account",headerSort: false},
+          {title: "姓名", field: "username",headerSort: false},
+          {title: "系統身份", field: "UserAuth.titleName",headerSort: false},
+          {title: "狀態", field: "isDisabledName"},
+          {title: "最後變更日期", field: "updatedLocal" ,hozAlign: "center"},
+          {title: "功能",field: "id",headerSort: false,
+            formatter:function(cell ,  formatterParams ){
               let value = cell.getValue();
               return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>';
             }
@@ -37,11 +39,11 @@ block content
         ],
       });
       //新增與修改彈窗
-      document.getElementById("mainContent").addEventListener('click', function (event) {
+      document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
         let target = event.target
         if(target.getAttribute("class").indexOf("btn-Detailed") !== -1) {
           mask.show()
-          axios.get('/userauth/detailed/'+target.getAttribute("data-id")).then((res) => {
+          axios.get('/users/detailed/'+target.getAttribute("data-id")).then((res) => {
             let LoadHTML = document.createElement("div")
             LoadHTML.innerHTML = res.data
             Array.from(LoadHTML.getElementsByTagName('script')).forEach(element => {

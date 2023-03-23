@@ -15,12 +15,20 @@ module.exports = (sequelize, DataTypes) => {
       models.CalendarData.belongsTo(VenueSpace)
     }
   }
+
   VenueSpace.init({
     spaceName: DataTypes.STRING,
-    isDisabled: {
-      type: DataTypes.BOOLEAN,
+    isDisabled: DataTypes.BOOLEAN,
+    isDisabledName: {
+      type: DataTypes.VIRTUAL,
       get () {
         return this.getDataValue('isDisabled') ? '停用' : '啟用'
+      }
+    },
+    updatedLocal: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        return this.getDataValue('updatedAt').toLocaleString()
       }
     }
   }, {
