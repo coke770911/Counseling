@@ -17,17 +17,22 @@ block content
         ajaxURL: "/venuespace" ,
         ajaxConfig: "get" ,
         ajaxContentType: "json",
-        layout: "fitColumns" ,
-        height: "100%" ,
-        minHeight: 768 ,
-        placeholder:"Awaiting Data, Please Load File",
+        layout: "fitDataTable" ,
+        height: "100%",
+        placeholder:"資料載入中",
         resizableColumnFit : true , 
+        columnDefaults: {
+          width: 300, //set the width on all columns to 200px
+          headerHozAlign: "center",
+          hozAlign: "center",
+          headerSort: false ,
+        },
         columns: [
-          {title: "#", formatter: "rownum", headerHozAlign: "center",hozAlign: "center", width: 40,headerSort: false},
-          {title: "空間名稱", field: "spaceName",headerHozAlign: "center",hozAlign: "center",},
-          {title: "狀態", field: "isDisabledName",headerHozAlign: "center",hozAlign: "center"},
-          {title: "最後變更日期", field: "updatedLocal" , headerHozAlign: "center",hozAlign: "center"},
-          {title: "功能",field: "id",headerSort: false,headerHozAlign: "center",hozAlign: "center",
+          {title: "#", formatter: "rownum", width: 40,headerSort: false},
+          {title: "空間名稱", field: "spaceName"},
+          {title: "狀態", field: "isDisabledName"},
+          {title: "最後變更日期", field: "updatedLocal"},
+          {title: "功能",field: "id",headerSort: false,
             formatter:function(cell ,  formatterParams ){
               let value = cell.getValue();
               return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>';
@@ -35,6 +40,23 @@ block content
           },
         ],
       });
-
-
+      //新增與修改彈窗
+      document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
+        let target = event.target
+        if(target.getAttribute("class").indexOf("btn-Detailed") !== -1) {
+          mask.show()
+          axios.get('/venuespace/detailed/'+target.getAttribute("data-id")).then((res) => {
+            let LoadHTML = document.createElement("div")
+            LoadHTML.innerHTML = res.data
+            Array.from(LoadHTML.getElementsByTagName('script')).forEach(element => {
+              let $script = document.createElement('script');
+              $script.text = element.text
+              LoadHTML.appendChild($script)
+            })
+            document.getElementsByTagName("body")[0].prepend(LoadHTML)
+          }).catch((error) => { 
+            Swal.fire('樣板發生錯誤。')
+          }).finally(() =>{ mask.hide() })
+        }
+      })
     })

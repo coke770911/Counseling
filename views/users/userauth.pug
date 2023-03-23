@@ -19,18 +19,24 @@ block content
         layout : "fitColumns" ,
         height : "100%" ,
         minHeight : 300 ,
-        placeholder:"Awaiting Data, Please Load File",
+        placeholder:"資料載入中",
         ajaxURL : "/users" ,
         ajaxConfig : "get" ,
         ajaxContentType: "json",
+        columnDefaults: {
+          width: 200, //set the width on all columns to 200px
+          headerHozAlign: "center",
+          hozAlign: "center",
+          headerSort: false ,
+        },
         columns: [
-          {title: "#", formatter: "rownum", hozAlign: "center", width: 40,headerSort: false},
-          {title: "帳號", field: "account",headerSort: false},
-          {title: "姓名", field: "username",headerSort: false},
-          {title: "系統身份", field: "UserAuth.titleName",headerSort: false},
+          {title: "#", formatter: "rownum",width: 40},
+          {title: "帳號", field: "account"},
+          {title: "姓名", field: "username"},
+          {title: "系統身份", field: "UserAuth.titleName"},
           {title: "狀態", field: "isDisabledName"},
-          {title: "最後變更日期", field: "updatedLocal" ,hozAlign: "center"},
-          {title: "功能",field: "id",headerSort: false,
+          {title: "最後變更日期", field: "updatedLocal"},
+          {title: "功能",field: "id",
             formatter:function(cell ,  formatterParams ){
               let value = cell.getValue();
               return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>';

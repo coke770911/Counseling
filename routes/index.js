@@ -31,13 +31,13 @@ router.post('/login', async function (req, res, next) {
     include: db.UserAuth,
     where: whereObj
   })
-
+  console.dir(logData);
   if (logData) {
-    req.session.login = 1
-    req.session.account = logData.dataValues.account
-    req.session.username = logData.dataValues.username
-    req.session.titlename = logData.dataValues.UserAuth.dataValues.titleName
-    console.dir(req.session)
+    req.session.login = true
+    req.session.account = logData.account
+    req.session.username = logData.username
+    req.session.titlename = logData.UserAuth.dataValues.titleName
+    req.session.auth = logData.UserAuthId
     res.redirect('/calendar/view')
   } else {
     MessageTxt = '帳號密碼錯誤或者尚未開通帳號。'

@@ -11,17 +11,7 @@ router.use((req, res, next) => {
 })
 
 router.get('/view', async (req, res, next) => {
-  const UserAuthList = await db.UserAuth.findAll({
-    attributes: ['id', 'titleName'],
-    where: {
-      id: {
-        [db.Sequelize.Op.ne]: 1
-      }
-    },
-    order: [['id', 'DESC']]
-  })
-  // console.log(JSON.stringify(UserAuthData, null, 4));
-  res.render('users/userauth', { title: '諮商系統 權限設定', UserAuthList })
+  res.render('users/userauth', { title: '諮商系統 權限設定'})
 })
 
 router.get('/detailed/:id', async (req, res, next) => {
@@ -79,7 +69,7 @@ router.post('/', upload.none(), async (req, res, next) => {
 })
 
 router.put('/', upload.none(), async (req, res, next) => {
-  const Datafield = {}
+  let Datafield = {}
   if (req.body.password !== '') {
     Datafield.password = md5(req.body.password)
   }

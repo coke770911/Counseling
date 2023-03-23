@@ -2,7 +2,10 @@
   .modal-dialog.modal-dialog-centered
     .modal-content
       .modal-header
-        h1.modal-title.fs-5#dialogTitle 新增使用者
+        if UserData.id === 0
+          h1.modal-title.fs-5 新增使用者
+        else
+          h1.modal-title.fs-5 修改使用者
         button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
       .modal-body
         form(action="#" id="formData")
@@ -44,13 +47,14 @@
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
   script.
     (function(){
+      //bs遠端模板載入
       let ModalElement = document.getElementsByClassName("modal")[0]
       let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})
       ModalElement.addEventListener('hidden.bs.modal', event => {  
         ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
       })
       modalMethod.show()
-      //bs遠端模板載入
+      //新增與修改
       document.getElementById('btn_process').addEventListener('click', (e) => {
         let data = new FormData(document.getElementById('formData'));
         let methodType = ''

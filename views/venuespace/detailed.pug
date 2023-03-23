@@ -7,18 +7,71 @@
       .modal-body
         form(action="#" id="formData")
           .mb-3
-            label.form-label 行程建立： 
-          .mb-3
-            label.form-label 標題： 
-            textarea.form-control(rows="4" maxlength="255" readonly) 
-          .mb-3
-            label.form-label 備註內容： 
-            textarea.form-control(rows="4" maxlength="255" readonly) 
-          .mb-3
-            label.form-label 辦理人員： 
-          .mb-3
-            label.form-label 使用空間：
+            input(type="hidden" name="vid" value=VenueSpaceData.id)
+            label.form-label 空間名稱
+            input.form-control(type="text" name="spaceName" id="spaceName" maxlength="20" value=VenueSpaceData.spaceName ) 
+          .form-check
+            if VenueSpaceData.isDisabled
+              input.form-check-input(type="checkbox" name="isDisabled" value="1" checked)
+            else 
+              input.form-check-input(type="checkbox" name="isDisabled" value="1")
+            label.form-check-label 是否停用
       .modal-footer
-        buttin.btn.btn-primary(type="button" id="btn_delete") 刪除
+        if VenueSpaceData.id === 0
+          buttin.btn.btn-primary(type="button" id="btn_process" data-btn-type="add") 新增
+        else
+          buttin.btn.btn-success(type="button" id="btn_process" data-btn-type="edit") 修改
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
   script.
+    (function(){
+      //bs遠端模板載入
+      let ModalElement = document.getElementsByClassName("modal")[0]
+      let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})
+      ModalElement.addEventListener('hidden.bs.modal', event => {  
+        ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
+      })
+      modalMethod.show()
+      //axios
+      document.getElementById('btn_process').addEventListener('click', (e) => {
+        let data = new FormData(document.getElementById('formData'));
+        let methodType = ''
+        let msgtxt = ''
+        if(event.target.getAttribute("data-btn-type") === 'add') {
+          msgtxt = "新增" + document.getElementById('spaceName').value + "空間資料"
+          methodType = 'post'
+        } else {
+          msgtxt = "確認修改" + document.getElementById('spaceName').value + "資料"
+          methodType = 'put'
+        }
+        Swal.fire({
+          text: msgtxt,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            mask.show()
+            axios({
+              method: methodType ,
+              url: '/venuespace',
+              data: data,
+            })
+            .then((res) => {
+              Swal.fire(res.data.msg).then((result) => {
+                if(result.isConfirmed) {
+                  location.reload()
+                }
+              })
+            })
+            .catch(error => { 
+              Swal.fire(error.response.data.msg) 
+              })
+            .finally(() => {mask.hide()})
+          }
+        })     
+      });
+
+    })()
