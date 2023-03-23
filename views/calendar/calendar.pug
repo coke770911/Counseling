@@ -13,11 +13,7 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', () => {
       const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        },
+        headerToolbar: { left: 'prev,next today',center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
         slotMinTime: "08:00:00", //最小開始時間
         slotMaxTime: "22:30:00", //最大開始時間
         slotDuration: "00:10", //時間間隔
@@ -70,6 +66,13 @@ block content
         eventClick: function(arg) {
           mask.show()
           axios.get('/calendar/detailed/'+arg.event.id).then((res) => {
+            let tempContent = document.createElement("div")
+            tempContent.innerHTML = res.data
+            document.getElementById("mainContent").prepend(tempContent)
+            let ModalElement = document.getElementById('DetailedModal');
+            let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});  
+            ModalElement.addEventListener('hidden.bs.modal', event => { tempContent.parentElement.removeChild(tempContent); })
+            modalMethod.show();
             document.getElementById('btn_delete').addEventListener('click', (e) => {
               modalMethod.hide()
               arg.event.remove()
@@ -77,7 +80,6 @@ block content
           }).catch((error) => { Swal.fire('發生錯誤')
           }).finally(() =>{ mask.hide() })
         },
-        eventAdd: function( addInfo ) {},
         eventRemove: function( removeInfo ) {
           mask.show()
           axios.delete('/calendar/'+removeInfo.event.id).then((res) => {
@@ -97,15 +99,14 @@ block content
           axios.put('/calendar',data).then((res) => {
             mask.hide()
           }).catch((error) => { Swal.fire('處理行事曆時間發生錯誤。')
-          }).finally(() =>{mask.hide()})
+          }).finally(() =>{ mask.hide() })
         },
-      });
-      
+      });  
       //init calendar event
       mask.show()
       axios.get('/calendar').then((res) => {
         calendar.addEventSource(res.data.Calendardata)
         calendar.render();
-      }).catch((error) => { Swal.fire('行事曆載入發生錯誤。')
-      }).finally(() =>{ mask.hide() })
+      }).catch((error) => { Swal.fire('發生伺服器錯誤。')
+      }).finally(() =>{mask.hide()})
     })

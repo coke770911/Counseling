@@ -18,19 +18,18 @@ router.get('/', function (req, res, next) {
 
 // 登入控制
 router.post('/login', async function (req, res, next) {
-  let account = req.body.account.split('/')
   let args = {
-    Account: account.length >= 2 ? account[1] : account[0] ,
+    Account: req.body.account ,
     Password: req.body.password
   }
   
   let client = await soap.createClientAsync(process.env.SOAP_ADURL)
   let result = await client.GetAeustAuthenticationConnectAsync(args);
-  let whereObj = result[0].GetAeustAuthenticationConnectResult === 'True 登入成功' ? { isDisabled: false, account: account[0] } : {isDisabled: false, account: account[0], password: md5(req.body.password)}
+  let whereObj = result[0].GetAeustAuthenticationConnectResult === 'True 登入成功' ? { isDisabled: false, account: req.body.account } : {isDisabled: false, account: req.body.account, password: md5(req.body.password)}
   
   const logData = await db.UserData.findOne({
     include: db.UserAuth,
-    where:  whereObj
+    where: whereObj
   })
 
   if (logData) {
