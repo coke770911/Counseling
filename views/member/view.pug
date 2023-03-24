@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  .container
+    nav(aria-label="breadcrumb")
+      ol.breadcrumb
+        li.breadcrumb-item 
+          a(href="/") 首頁
+        li.breadcrumb-item 基本資料建檔
+    form(action="")
+    .row 
+      .col-12.col-md-4
+        label.form-label 學生學號
+        .input-group.mb-3
+          input.form-control(class="form-control" type="text")
+          button(class="btn btn-outline-secondary" tpye="button" ) 由教務處代入基本資料
+      .col-12.col-md-4
+        label.form-label 學生姓名
+        input.form-control(class="form-control" type="text")
+      .col-12.col-md-4
+        label.form-label 學生姓名
+        input.form-control(class="form-control" type="text")
