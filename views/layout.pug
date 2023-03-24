@@ -39,15 +39,16 @@ html(lang="en")
                   a(class="dropdown-item" href="#") 報表2
                 li
                   a(class="dropdown-item" href="#") 報表3
-            li(class="nav-item dropdown")
-              a(class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false") 系統管理
-              ul(class="dropdown-menu")
-                li
-                  a(class="dropdown-item" href="#") 系統設定
-                li
-                  a(class="dropdown-item" href="/users/view") 權限設定
-                li
-                  a(class="dropdown-item" href="/venuespace/view") 空間設定
+            if [1,2].indexOf(user.auth) !== -1
+              li(class="nav-item dropdown")
+                a(class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false") 系統管理
+                ul(class="dropdown-menu")
+                  li
+                    a(class="dropdown-item" href="#") 系統設定
+                  li
+                    a(class="dropdown-item" href="/users/view") 權限設定
+                  li
+                    a(class="dropdown-item" href="/venuespace/view") 空間設定
           div(class="d-lg-flex col-lg-3 justify-content-lg-end")
             ul(class="navbar-nav my-2 my-lg-0 navbar-nav-scroll")
               li(class="nav-item")
