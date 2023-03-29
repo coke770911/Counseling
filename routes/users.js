@@ -14,7 +14,6 @@ router.get('/view', async (req, res, next) => {
   res.render('users/userauth', { title: '諮商系統 權限設定'})
 })
 
-
 router.get('/detailed/:id', async (req, res, next) => {
   const UserAuthList = await db.UserAuth.findAll({
     attributes: ['id', 'titleName'],

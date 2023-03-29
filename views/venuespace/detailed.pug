@@ -58,18 +58,15 @@
               method: methodType ,
               url: '/venuespace',
               data: data,
-            })
-            .then((res) => {
+            }).then((res) => {
               Swal.fire(res.data.msg).then((result) => {
                 if(result.isConfirmed) {
                   location.reload()
                 }
               })
-            })
-            .catch(error => { 
-              Swal.fire(error.response.data.msg) 
-              })
-            .finally(() => {mask.hide()})
+            }).catch(error => { 
+              Swal.fire(error.response.data.msg)
+            }).finally(() => {mask.hide()})
           }
         })     
       });

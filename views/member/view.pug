@@ -97,3 +97,58 @@ block content
       .col-6.col-md-3
         label.form-label 緊急連絡人手機
         input.form-control(class="form-control" type="text") 
+    hr
+    .row.mb-1
+      .col-auto
+        label.col-form-label 晤談原因
+      .col.col-md-3
+        select.form-select(name="userauthId" id="userauthId")
+          each value in ReasonList
+            option(value=value.id ) #{value.content}
+    hr
+    .row
+      .col.mb-1
+        label 想晤談的主題
+    .row.mb-1
+      .col-6.col-md-3
+        .row.mb-1 
+          .col 
+            label 【生活適應】
+        each value in ThemeGroup1
+          .row
+            .col-12 
+              .form-check
+                input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                label.form-check-label #{value.content}
+      .col-6.col-md-3
+        .row.mb-1 
+          .col 
+            label 【人際關係】
+        each value in ThemeGroup2
+          .row
+            .col-12 
+              .form-check
+                input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                label.form-check-label #{value.content}
+      .col-6.col-md-3
+        .row.mb-1 
+          .col 
+            label 【學校適應】
+        each value in ThemeGroup3
+          .row
+            .col-12 
+              .form-check
+                input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                label.form-check-label #{value.content}
+      .col-6.col-md-3
+        .row.mb-1 
+          .col 
+            label 【前程規劃】
+        each value in ThemeGroup4
+          .row
+            .col-12
+              .form-check
+                input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                label.form-check-label #{value.content}
+    .row.mb-1
+
