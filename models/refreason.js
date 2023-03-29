@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   RefReason.init({
-    reasonName: DataTypes.STRING,
-    isDel: DataTypes.BOOLEAN
+    content: DataTypes.STRING,
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'RefReason'
   })
   return RefReason

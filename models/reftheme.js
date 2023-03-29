@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   RefTheme.init({
-    themeName: DataTypes.STRING,
+    content: DataTypes.STRING,
     parentId: DataTypes.INTEGER,
-    isDel: DataTypes.BOOLEAN
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'RefTheme'
   })
   return RefTheme

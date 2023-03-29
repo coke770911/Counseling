@@ -9,15 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      themeName: {
+      content: {
         type: Sequelize.STRING
       },
       parentId: {
         type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      isDel: {
-        type: Sequelize.BOOLEAN,
         defaultValue: 0
       },
       createdAt: {
@@ -35,147 +31,147 @@ module.exports = {
 
     await queryInterface.bulkInsert('RefThemes', [
       {
-        themeName: '生活適應',
+        content: '生活適應',
         parentId: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '人際關係',
+        content: '人際關係',
         parentId: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '學校適應',
+        content: '學校適應',
         parentId: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '生涯規劃',
+        content: '生涯規劃',
         parentId: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '自我探索',
+        content: '自我探索',
         parentId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '情緒困擾',
+        content: '情緒困擾',
         parentId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '經濟壓力',
+        content: '經濟壓力',
         parentId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '健康狀況',
+        content: '健康狀況',
         parentId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '時間管理',
+        content: '時間管理',
         parentId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '行為困擾',
+        content: '行為困擾',
         parentId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '性別認同',
+        content: '性別認同',
         parentId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '情感問題',
+        content: '情感問題',
         parentId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '同儕關係',
+        content: '同儕關係',
         parentId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '師生關係',
+        content: '師生關係',
         parentId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '親子關係',
+        content: '親子關係',
         parentId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '家庭氣氛',
+        content: '家庭氣氛',
         parentId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '學業困擾',
+        content: '學業困擾',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '讀書技巧',
+        content: '讀書技巧',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '社團經營',
+        content: '社團經營',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '休學',
+        content: '休學',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '轉(校、科)',
+        content: '轉(校、科)',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '重考',
+        content: '重考',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '曠課',
+        content: '曠課',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '違反校規',
+        content: '違反校規',
         parentId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '升學',
+        content: '升學',
         parentId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '打工',
+        content: '打工',
         parentId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '求職技巧',
+        content: '求職技巧',
         parentId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '技職養成',
+        content: '技職養成',
         parentId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        themeName: '抉擇策略',
+        content: '抉擇策略',
         parentId: 4,
         createdAt: new Date(),
         updatedAt: new Date()

@@ -15,19 +15,17 @@ router.use((req, res, next) => {
 })
 
 router.get('/view', async (req, res, next) => {
-  res.render('member/view', { title: '基本資料建檔' })
+  let ReasonList = await db.RefReason.findAll({})
+  let ThemeList = await db.RefTheme.findAll({})
+  console.dir(ReasonList);
+  console.dir(ThemeList);
+  res.render('member/view', { title: '基本資料建檔',ReasonList: ReasonList,ThemeList: ThemeList })
 })
 
 
 router.get('/', async (req, res, next) => {})
-
-router.post('/', upload.none(), async (req, res, next) => {
-
-})
-
-router.put('/', upload.none(), async (req, res, next) => {
-
-})
+router.post('/', upload.none(), async (req, res, next) => {})
+router.put('/', upload.none(), async (req, res, next) => {})
 router.delete('/', async (req, res, next) => {})
 
 module.exports = router
