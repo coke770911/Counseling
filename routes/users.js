@@ -10,6 +10,21 @@ router.use((req, res, next) => {
   next()
 })
 
+//修改密碼介面
+router.get('/pwd', (req, res, next) => {
+  res.render('users/pwd', { title: '諮商系統 密碼修改'})
+})
+
+//修改密碼
+router.put('/pwd', upload.none(), async (req, res, next) => {
+  if(req.body.repassword !== req.body.password) {
+    res.status(400).send(JSON.stringify({ msg: '新密碼驗證失敗，請確認密碼輸入正確。' }))
+    return 
+  }
+  const updated = await db.UserData.update({ password: md5(req.body.repassword) }, { where: { account:req.session.account } })
+  res.status(200).send(JSON.stringify({ msg: updated ? '修改成功' : '修改成功' }))
+})
+
 router.get('/view', async (req, res, next) => {
   res.render('users/userauth', { title: '諮商系統 權限設定'})
 })
@@ -54,7 +69,7 @@ router.get('/detailed/:id', async (req, res, next) => {
   res.render('users/detailed', { title: '諮商系統 權限設定', UserAuthList, UserData: UserData})
 })
 
-
+//新增使用者
 router.post('/', upload.none(), async (req, res, next) => {
   const [createdata, created] = await db.UserData.findOrCreate({
     where: { account: req.body.account },
@@ -68,12 +83,7 @@ router.post('/', upload.none(), async (req, res, next) => {
   res.status(200).send(JSON.stringify({ msg: created ? '新增成功' : '新增失敗' }))
 })
 
-//修改密碼
-router.put('/pwd', upload.none(), async (req, res, next) => {
-  const updated = await db.UserData.update({ password: md5(req.body.password) }, { where: { account:req.session.account } })
-  res.status(200).send(JSON.stringify({ msg: updated ? '修改成功' : '修改成功' }))
-})
-
+//修改使用者
 router.put('/', upload.none(), async (req, res, next) => {
   let Datafield = {}
   if (req.body.password !== '') {
@@ -89,7 +99,6 @@ router.put('/', upload.none(), async (req, res, next) => {
   })
   res.status(200).send(JSON.stringify({ msg: updated ? '修改成功' : '修改成功' }))
 })
-
 
 //取得全部 id:1為系統帳號不允許編輯
 router.get('/', async (req, res, next) => {
@@ -107,6 +116,5 @@ router.get('/', async (req, res, next) => {
   })
   res.send(JSON.stringify(UserAuthData, null, 4))
 })
-
 
 module.exports = router

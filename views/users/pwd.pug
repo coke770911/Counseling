@@ -6,10 +6,12 @@
         button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
       .modal-body
         form(action="#" id="formData")
-          input(type="hidden" name="uid" id="uid" value=UserData.id)
           .mb-3
-            label.form-label 使用者密碼
+            label.form-label 新密碼
             input.form-control(type="password" name="password" id="password" maxlength="20" autocomplete="off")
+          .mb-3
+            label.form-label 再次輸入新密碼
+            input.form-control(type="password" name="repassword" id="repassword" maxlength="20" autocomplete="off")
       .modal-footer
         buttin.btn.btn-success(type="button" id="btn_process" data-btn-type="edit") 修改
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
