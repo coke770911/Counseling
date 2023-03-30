@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class RefTheme extends Model {
     /**
-     * Helper method for defining associations.
+     * 會談主題
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */

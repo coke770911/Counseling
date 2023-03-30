@@ -2,9 +2,9 @@
 
 ## 諮商管理系統
 - Nodejs v18
-- Express 
+- Express v4
 - Sequelize v6
-- SQL Server
+- SQL Server 2014
 - Bootstrap v5
 
 ## 更新日誌

@@ -1,15 +1,18 @@
-'use strict'
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('UserAuths', {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('RefIdentities', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      titleName: {
+      content: {
+        type: Sequelize.STRING
+      },
+      memo: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -23,33 +26,33 @@ module.exports = {
       deletedAt: {
         type: Sequelize.DATE
       }
-    })
+    });
 
-    await queryInterface.bulkInsert('UserAuths', [
+    await queryInterface.bulkInsert('RefIdentities', [
       {
-        titleName: '系統管理者',
+        content: '一般個案',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        titleName: '總個管員',
+        content: '特教生',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        titleName: '專任心理師',
+        content: '普測高關懷生',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        titleName: '兼任心理師',
+        content: '危機個案',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
-      }, {
-        titleName: '實習心理師',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
+      },
     ])
   },
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('UserAuths')
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('RefIdentities');
   }
-}
+};

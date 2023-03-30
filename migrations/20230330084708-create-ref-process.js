@@ -1,15 +1,18 @@
-'use strict'
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('UserAuths', {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('RefProcesses', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      titleName: {
+      content: {
+        type: Sequelize.STRING
+      },
+      memo: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -23,33 +26,44 @@ module.exports = {
       deletedAt: {
         type: Sequelize.DATE
       }
-    })
+    });
 
-    await queryInterface.bulkInsert('UserAuths', [
+    await queryInterface.bulkInsert('RefProcesses', [
       {
-        titleName: '系統管理者',
+        content: '個案追蹤',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        titleName: '總個管員',
+        content: '初談',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        titleName: '專任心理師',
+        content: '續談',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        titleName: '兼任心理師',
+        content: '強制諮商輔導',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        titleName: '實習心理師',
+        content: '心理測驗施測',
+        memo: '',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }, {
+        content: '心理測驗解測',
+        memo: '',
         createdAt: new Date(),
         updatedAt: new Date()
       }
     ])
+
   },
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('UserAuths')
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('RefProcesses');
   }
-}
+};
