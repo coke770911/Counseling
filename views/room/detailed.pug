@@ -2,45 +2,53 @@
   .modal-dialog.modal-dialog-centered
     .modal-content
       .modal-header
-        h1.modal-title.fs-5 空間資料
+        h1.modal-title.fs-5 空間設定
         button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
       .modal-body
         form(action="#" id="formData")
           .mb-3
-            input(type="hidden" name="vid" value=VenueSpaceData.id)
+            input(type="hidden" name="vid" value=RoomData.id)
             label.form-label 空間名稱
-            input.form-control(type="text" name="spaceName" id="spaceName" maxlength="20" value=VenueSpaceData.spaceName ) 
+            input.form-control(type="text" name="title" id="title" maxlength="20" value=RoomData.title ) 
+          .mb-3
+            label.form-label 標籤顏色
+            input.form-control(type="text" name="eventColor" id="eventColor" data-jscolor="{}" value=RoomData.eventColor )
           .form-check
-            if VenueSpaceData.isDisabled
+            if RoomData.isDisabled
               input.form-check-input(type="checkbox" name="isDisabled" value="1" checked)
             else 
               input.form-check-input(type="checkbox" name="isDisabled" value="1")
             label.form-check-label 是否停用
       .modal-footer
-        if VenueSpaceData.id === 0
+        if RoomData.id === 0
           buttin.btn.btn-primary(type="button" id="btn_process" data-btn-type="add") 新增
         else
           buttin.btn.btn-success(type="button" id="btn_process" data-btn-type="edit") 修改
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
   script.
-    (function(){
+    (function() {
+      //選色器
+      jscolor.install()
       //bs遠端模板載入
-      let ModalElement = document.getElementsByClassName("modal")[0]
+      let ModalElement = document.querySelectorAll(".modal")[0]
       let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})
       ModalElement.addEventListener('hidden.bs.modal', event => {  
         ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
       })
       modalMethod.show()
       //axios
-      document.getElementById('btn_process').addEventListener('click', (e) => {
-        let data = new FormData(document.getElementById('formData'));
+      document.querySelector('#btn_process').addEventListener('click', (e) => {
+        let data = new FormData(document.querySelector('#formData'));
+        //data.append('eventColor', value)
+
+        return;
         let methodType = ''
         let msgtxt = ''
         if(event.target.getAttribute("data-btn-type") === 'add') {
-          msgtxt = "新增" + document.getElementById('spaceName').value + "空間資料"
+          msgtxt = "新增" + document.querySelector('#title').value + "空間資料"
           methodType = 'post'
         } else {
-          msgtxt = "確認修改" + document.getElementById('spaceName').value + "資料"
+          msgtxt = "確認修改" + document.querySelector('#title').value + "資料"
           methodType = 'put'
         }
         Swal.fire({
@@ -56,7 +64,7 @@
             mask.show()
             axios({
               method: methodType ,
-              url: '/venuespace',
+              url: '/room',
               data: data,
             }).then((res) => {
               Swal.fire(res.data.msg).then((result) => {

@@ -1,112 +1,65 @@
 extends ../layout
 
 block content
-  #mainContent.container
+  .container
     nav(aria-label="breadcrumb")
       ol.breadcrumb
         li.breadcrumb-item 
           a(href="/") 首頁
         li.breadcrumb-item 行事曆
     #calendar
-  script(src="/javascripts/fullcalendar/index.global.min.js")
+  script(src="/javascripts/fullcalendar-scheduler-6.1.5/dist/index.global.min.js")
   script(src="/javascripts/fullcalendar-ext/packages/core/locales-all.global.min.js")
   script.
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', function() {
       const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-        headerToolbar: { left: 'prev,next today',center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
+        headerToolbar: {
+          left: 'today prev,next' ,
+          center: 'title' ,
+          right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth,listWeek',
+        },
         slotMinTime: "08:00:00", //最小開始時間
         slotMaxTime: "22:30:00", //最大開始時間
         slotDuration: "00:10", //時間間隔
         editable: true,       //允許移動
-        dayMaxEvents: true, // allow "more" link when too many events
-        firstDay: 1,
-        locale:'zh-tw',
-        fixedWeekCount:false,
-        navLinks: true,
-        selectable: true,
-        selectMirror: true,
-        select: function(arg) {
-          mask.show()
-          axios.get('/calendar/add').then((res) => {
-            //modal call
-            let tempContent = document.createElement("div")
-            tempContent.innerHTML = res.data
-            document.getElementById("mainContent").prepend(tempContent)
-            let ModalElement = document.getElementById('DetailedModal');
-            let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});  
-            ModalElement.addEventListener('hidden.bs.modal', event => { tempContent.parentElement.removeChild(tempContent); })
-            modalMethod.show();
-            //setData
-            document.getElementById('stdatetime').innerText = arg.start.toLocaleString() 
-            document.getElementById('todatetime').innerText = arg.end.toLocaleString()
-            document.getElementById('start').value = arg.start.toISOString()
-            document.getElementById('end').value = arg.end.toISOString()
-            document.getElementById('allDay').value = arg.allDay
-            //行事曆新增
-            document.getElementById('btn_process').addEventListener('click', (e) => {
-              document.getElementById('setstaffName').value = document.getElementById('setstaff')[document.getElementById('setstaff').selectedIndex].text
-              document.getElementById('setspaceName').value = document.getElementById('setspace')[document.getElementById('setspace').selectedIndex].text
-              let data = new FormData(document.getElementById('formData'));
-              axios.post('/calendar',data).then((res) => {
-                modalMethod.hide()
-                mask.hide()
-                calendar.addEvent(res.data.Calendardata)
-              })
-              .catch((error) => { 
-                Swal.fire('發生錯誤')
-              })
-            })
-          }).catch((error) => { 
-            Swal.fire('發生錯誤')
-          }).finally(() =>{
-            mask.hide()
-            calendar.unselect()
-          })
+        selectable: true,     //允許選擇
+        locale:'zh-tw',       //本地化
+        aspectRatio: 1.8,     //長寬比
+        initialView: 'resourceTimelineDay', //預設模式
+        firstDay: 1, //周的開始
+        fixedWeekCount:false,//最多顯示五周
+        views: {
+          resourceTimelineThreeDays: {
+            type: 'resourceTimeline',
+            duration: { days: 3 },
+            buttonText: '近三天'
+          }
         },
-        eventClick: function(arg) {
-          mask.show()
-          axios.get('/calendar/detailed/'+arg.event.id).then((res) => {
-            let tempContent = document.createElement("div")
-            tempContent.innerHTML = res.data
-            document.getElementById("mainContent").prepend(tempContent)
-            let ModalElement = document.getElementById('DetailedModal');
-            let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'});  
-            ModalElement.addEventListener('hidden.bs.modal', event => { tempContent.parentElement.removeChild(tempContent); })
-            modalMethod.show();
-            document.getElementById('btn_delete').addEventListener('click', (e) => {
-              modalMethod.hide()
-              arg.event.remove()
-            })
-          }).catch((error) => { Swal.fire('發生錯誤')
-          }).finally(() =>{ mask.hide() })
+        select: arg => {
+          console.dir(arg)
         },
-        eventRemove: function( removeInfo ) {
-          mask.show()
-          axios.delete('/calendar/'+removeInfo.event.id).then((res) => {
-            Swal.fire(res.data.msg)
-          }).catch((error) => { 
-            Swal.fire('發生錯誤')
-            calendar.addEvent(removeInfo.event)
-          }).finally(() =>{ mask.hide() })
+        eventClick: arg => {
+          console.dir(arg)
         },
-        eventChange: function(arg) {
-          mask.show()
-          let data = new FormData();
-          data.append('id', arg.event.id)
-          data.append('start', arg.event.start)
-          data.append('end', arg.event.end)
-          data.append('allDay', arg.event.allDay)
-          axios.put('/calendar',data).then((res) => {
-            mask.hide()
-          }).catch((error) => { Swal.fire('處理行事曆時間發生錯誤。')
-          }).finally(() =>{ mask.hide() })
+        eventChange: arg => {
+          console.dir(arg)
         },
-      });  
-      //init calendar event
-      mask.show()
-      axios.get('/calendar').then((res) => {
-        calendar.addEventSource(res.data.Calendardata)
-        calendar.render();
-      }).catch((error) => { Swal.fire('發生伺服器錯誤。')
-      }).finally(() =>{mask.hide()})
-    })
+        eventRemove: arg => {
+          console.dir(arg)
+        },
+        resourceAreaHeaderContent: '空間名稱',
+        resources: '/room'
+      });
+      
+      //calendar.addResource(res.data.Calendardata)
+
+      calendar.addEventSource([
+          { id: '1', resourceId: '1', start: '2023-03-31T08:09:00', end: '2023-03-31T15:09:30', title: 'event 1' },
+          { id: '2', resourceId: '2', start: '2023-03-31T11:10:00', end: '2023-03-31T06:10:40', title: 'event 2' },
+          { id: '3', resourceId: '3', start: '2023-03-30', end: '2023-03-30', title: 'event 3' },
+          { id: '4', resourceId: '2', start: '2023-03-31T09:15:00', end: '2023-03-31T14:15:20', title: 'event 4' },
+          { id: '5', resourceId: '3', start: '2023-03-31T12:30:00', end: '2023-03-31T12:30:00', title: 'event 5' }
+        ])
+      calendar.render();
+      
+    });

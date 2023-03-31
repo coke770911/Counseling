@@ -12,6 +12,10 @@ router.use((req, res, next) => {
   next()
 })
 
+router.get('/test', function (req, res, next) {
+  res.render('index', { title: '諮商系統' })
+})
+
 router.get('/', function (req, res, next) {
   res.render('login', { title: '諮商系統' })
 })

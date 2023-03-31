@@ -23,9 +23,10 @@ router.get('/view', async (req, res, next) => {
       }
     }
   })
-  const setspace = await db.VenueSpace.findAll({ where: { isDisabled: false } })
-  res.render('calendar/calendar', { title: '諮商系統 行事曆', setstaff, setspace })
+  
+  res.render('calendar/calendar', { title: '諮商系統 行事曆', setstaff })
 })
+
 
 router.get('/add', async (req, res, next) => {
   const setstaff = await db.UserData.findAll({

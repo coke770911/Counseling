@@ -1,15 +1,18 @@
-'use strict'
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('VenueSpaces', {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('Rooms', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      spaceName: {
+      title: {
+        type: Sequelize.STRING
+      },
+      eventColor: {
         type: Sequelize.STRING
       },
       isDisabled: {
@@ -27,29 +30,31 @@ module.exports = {
       deletedAt: {
         type: Sequelize.DATE
       }
-    })
+    });
 
-    await queryInterface.bulkInsert('VenueSpaces', [
+    await queryInterface.bulkInsert('Rooms', [
       {
-        spaceName: '諮商室A',
+        title: '諮商室A',
+        eventColor: '#3399FF',
         createdAt: new Date(),
         updatedAt: new Date()
-      }, {
-        spaceName: '諮商室B',
+      },
+      {
+        title: '諮商室B',
+        eventColor: '#3399FF',
         createdAt: new Date(),
         updatedAt: new Date()
-      }, {
-        spaceName: '諮商室C',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }, {
-        spaceName: '研討室',
+      },
+      {
+        title: '諮商室C',
+        eventColor: '#3399FF',
         createdAt: new Date(),
         updatedAt: new Date()
       }
     ])
+
   },
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('VenueSpaces')
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('Rooms');
   }
-}
+};

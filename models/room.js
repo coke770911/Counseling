@@ -1,23 +1,25 @@
-'use strict'
+'use strict';
 const {
   Model
-} = require('sequelize')
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class VenueSpace extends Model {
+  class Room extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate (models) {
+    static associate(models) {
       // define association here
-      VenueSpace.hasOne(models.CalendarData)
-      models.CalendarData.belongsTo(VenueSpace)
+      /*
+      Room.hasOne(models.CalendarData)
+      models.CalendarData.belongsTo(Room)
+      */
     }
   }
-
-  VenueSpace.init({
-    spaceName: DataTypes.STRING,
+  Room.init({
+    title: DataTypes.STRING,
+    eventColor: DataTypes.STRING,
     isDisabled: DataTypes.BOOLEAN,
     isDisabledName: {
       type: DataTypes.VIRTUAL,
@@ -34,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     paranoid: true,
-    modelName: 'VenueSpace'
-  })
-  return VenueSpace
-}
+    modelName: 'Room',
+  });
+  return Room;
+};

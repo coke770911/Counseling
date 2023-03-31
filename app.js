@@ -10,7 +10,7 @@ const SQLiteStore = require('connect-sqlite3')(session)
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const calendarRouter = require('./routes/calendar')
-const venuespaceRouter = require('./routes/venuespace')
+const roomRouter = require('./routes/room')
 const memberRouter = require('./routes/member')
 
 const app = express()
@@ -52,7 +52,7 @@ app.use(session({
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/calendar', calendarRouter)
-app.use('/venuespace', venuespaceRouter)
+app.use('/room', roomRouter)
 app.use('/member',memberRouter)
 
 

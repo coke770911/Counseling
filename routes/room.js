@@ -10,34 +10,38 @@ router.use((req, res, next) => {
     res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
     return;
   }
-  console.dir([1,2].indexOf(req.session.auth))
+  //console.dir([1,2].indexOf(req.session.auth))
   //res.status(400).send(JSON.stringify({ msg: '尚未登入' }))
   next()
 })
 
 router.get('/view', async (req, res, next) => {
-  res.render('venuespace/view', { title: '諮商系統 空間設定' })
+  res.render('room/view', { title: '諮商系統 空間設定' })
 })
 
+//載入新增or修改樣版
 router.get('/detailed/:id', async (req, res, next) => {
-  let VenueSpaceData = {
+  let RoomData = {
     id: 0,
-    spaceName: '',
+    title: '',
+    eventColor: '#3399FF',
     isDisabled: false,
   }
-  const VenueSpace = await db.VenueSpace.findAll({ where: {id: req.params.id }})
-  if(VenueSpace.length > 0 ) 
-    VenueSpaceData = VenueSpace[0]
-
-  console.dir(VenueSpace);
-  res.render('venuespace/detailed', { title: '諮商系統 權限設定',VenueSpaceData: VenueSpaceData})
+  const Room = await db.Room.findAll({ where: {id: req.params.id }})
+  if(Room.length > 0 ) {
+    RoomData = Room[0]
+  }
+  res.render('room/detailed', { title: '空間設定',RoomData: RoomData})
 })
 
+//取得目前可以使用的空間
 router.get('/', async (req, res, next) => {
-  const VenueSpaceData = await db.VenueSpace.findAll({})
-  res.status(200).send(JSON.stringify(VenueSpaceData));
+  const roomData = await db.Room.findAll({
+    where: {isDisabled: 0}
+  })
+  res.status(200).send(JSON.stringify(roomData));
 })
-
+//新增空間
 router.post('/', upload.none(), async (req, res, next) => {
   const [createdata, created] = await db.VenueSpace.findOrCreate({
     where: { spaceName: req.body.spaceName },
@@ -61,6 +65,7 @@ router.put('/', upload.none(), async (req, res, next) => {
   })
   res.status(200).send(JSON.stringify({ msg: updated ? '修改成功' : '修改成功' }))
 })
+
 router.delete('/', async (req, res, next) => {})
 
 module.exports = router
