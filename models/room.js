@@ -10,11 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      /*
-      Room.hasOne(models.CalendarData)
-      models.CalendarData.belongsTo(Room)
-      */
+      //define association here
+      Room.hasOne(models.Calendar)
+      models.Calendar.belongsTo(Room)
     }
   }
   Room.init({

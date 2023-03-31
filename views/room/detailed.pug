@@ -7,7 +7,7 @@
       .modal-body
         form(action="#" id="formData")
           .mb-3
-            input(type="hidden" name="vid" value=RoomData.id)
+            input(type="hidden" name="rid" value=RoomData.id)
             label.form-label 空間名稱
             input.form-control(type="text" name="title" id="title" maxlength="20" value=RoomData.title ) 
           .mb-3
@@ -39,9 +39,6 @@
       //axios
       document.querySelector('#btn_process').addEventListener('click', (e) => {
         let data = new FormData(document.querySelector('#formData'));
-        //data.append('eventColor', value)
-
-        return;
         let methodType = ''
         let msgtxt = ''
         if(event.target.getAttribute("data-btn-type") === 'add') {
@@ -78,5 +75,5 @@
           }
         })     
       });
-
+            
     })()

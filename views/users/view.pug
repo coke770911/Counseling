@@ -47,6 +47,7 @@ block content
       //新增與修改彈窗
       document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
         let target = event.target
+        if(!target.getAttribute("class")) { return }
         if(target.getAttribute("class").indexOf("btn-Detailed") !== -1) {
           mask.show()
           axios.get('/users/detailed/'+target.getAttribute("data-id")).then((res) => {

@@ -1,25 +1,66 @@
-#DetailedModal.modal.fade
+.modal.fade
   .modal-dialog.modal-dialog-centered
     .modal-content
       .modal-header
-        h1.modal-title.fs-5#dialogTitle 詳細行事曆
+        h1.modal-title.fs-5 行事曆
         button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
       .modal-body
         form(action="#" id="formData")
+          input(type="hidden" name="start" id="start" value=CalendarData.start)
+          input(type="hidden" name="end" id="end" value=CalendarData.end)
+          input(type="hidden" name="allDay" id="allDay" value=CalendarData.allDay)
           .mb-3
-            label.form-label 行程建立： #{Calendardata.creatorPopleName}
+            label.form-label 時間：
+              span(id="stdatetime") #{new Date(CalendarData.start).toLocaleString()}
+              span 至 
+              span(id="todatetime") #{new Date(CalendarData.end).toLocaleString()}
           .mb-3
-            label.form-label 標題： 
-            textarea.form-control(rows="4" maxlength="255" readonly) #{Calendardata.title}
+            label.form-label 標題
+            input.form-control(type="text" name="title" id="title" maxlength="255")
           .mb-3
-            label.form-label 備註內容： 
-            textarea.form-control(rows="4" maxlength="255" readonly) #{Calendardata.content}
+            label.form-label 備註內容
+            textarea.form-control(name="content" id="content" rows="4" maxlength="255")
           .mb-3
-            label.form-label 辦理人員： #{Calendardata.staffName} &nbsp;
-            if Calendardata.setstaff != '0'
-              span #{Calendardata.titleName} 
+            label.form-label 個案學號
+            input.form-control(type="text" name="memberId" id="memberId" maxlength="10")
           .mb-3
-            label.form-label 使用空間： #{Calendardata.spaceName}
+            label.form-label 指派心理師
+            select.form-select(name="major" id="major")
+              option(value="0") 無
+              each value in UserData
+                option(value=value.account) #{value.username} #{value.UserAuth.titleName}
+          .mb-3
+            label.form-label 使用空間
+            select.form-select(name="roomId" id="roomId")
+              option(value="0") 無
+              each value in RoomData
+                if CalendarData.resourceId === value.id 
+                  option(value=value.id selected) #{value.title}
+                else 
+                  option(value=value.id) #{value.title}
       .modal-footer
-        buttin.btn.btn-primary(type="button" id="btn_delete") 刪除
+        buttin.btn.btn-primary(type="button" id="btn_process") 新增
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
+  script.
+    (function() {
+      let ModalElement = document.querySelectorAll(".modal")[0]
+      let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})
+      ModalElement.addEventListener('hidden.bs.modal', event => {  
+        ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
+      })
+      modalMethod.show()
+      document.querySelector('#btn_process').addEventListener('click', (e) => {
+        let data = new FormData(document.querySelector('#formData'));
+        data.append('majorName',document.querySelector('#major')[document.querySelector('#major').selectedIndex].text)
+        axios.post('/calendar',data).then((res) => {
+          Swal.fire(res.data.msg).then((result) => {
+            if(result.isConfirmed) {
+              calendar.addEvent(res.data.Calendardata)
+              modalMethod.hide()
+            }
+          })
+        }).catch(error => { 
+          Swal.fire(error.response.data.msg)
+        }).finally(() => { mask.hide() })
+      })
+    })()

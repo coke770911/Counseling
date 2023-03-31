@@ -47,13 +47,6 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        account: 'fz108',
-        password: '25d55ad283aa400af464c76d713c07ad',
-        username: '楊茜燁',
-        userauthId: 2,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }, {
         account: 'fx048',
         password: '25d55ad283aa400af464c76d713c07ad',
         username: '張韶砡',
@@ -61,9 +54,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
+        account: 'fz108',
+        password: '25d55ad283aa400af464c76d713c07ad',
+        username: '楊茜燁',
+        userauthId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }, {
         account: 'fz118',
         password: '25d55ad283aa400af464c76d713c07ad',
-        username: '揚智雅',
+        username: '楊智雅',
         userauthId: 2,
         createdAt: new Date(),
         updatedAt: new Date()

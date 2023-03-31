@@ -36,17 +36,21 @@ block content
           {title: "最後變更日期", field: "updatedLocal"},
           {title: "功能",field: "id",headerSort: false,
             formatter:function(cell ,  formatterParams ){
-              let value = cell.getValue();
-              return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>';
+              let value = cell.getValue()
+              return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>'
             }
           },
         ],
       })
       
       //新增與修改彈窗
-      document.querySelector('body').addEventListener('click', function (event) {
+      document.querySelector('body').addEventListener('click', event => {
         let target = event.target
+        if(!target.getAttribute("class")) {
+          return
+        }
         if(target.getAttribute("class").indexOf("btn-Detailed") !== -1) {
+          
           mask.show()
           axios.get('/room/detailed/'+target.getAttribute("data-id")).then((res) => {
             let LoadHTML = document.createElement("div")

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class CalendarData extends Model {
+  class Calendar extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,20 +13,28 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  CalendarData.init({
+  Calendar.init({
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    setstaff: DataTypes.STRING,
-    venuespaceId: DataTypes.INTEGER,
+    memberId: DataTypes.STRING,
+    major: DataTypes.STRING,
+    roomId: DataTypes.INTEGER,
+    resourceId: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        return this.getDataValue('roomId')
+      }
+    },
     start: DataTypes.DATE,
     end: DataTypes.DATE,
     allDay: DataTypes.BOOLEAN,
-    creatorPople: DataTypes.STRING,
-    modifyPople: DataTypes.STRING
+    isInterview: DataTypes.BOOLEAN,
+    creator: DataTypes.STRING,
+    editor: DataTypes.STRING
   }, {
     sequelize,
     paranoid: true,
-    modelName: 'CalendarData'
+    modelName: 'Calendar'
   })
-  return CalendarData
+  return Calendar
 }

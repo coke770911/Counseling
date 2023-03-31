@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('CalendarData', {
+    await queryInterface.createTable('Calendars', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,10 +15,13 @@ module.exports = {
       content: {
         type: Sequelize.STRING
       },
-      setstaff: {
+      memberId: {
         type: Sequelize.STRING
       },
-      venuespaceId: {
+      major: {
+        type: Sequelize.STRING
+      },
+      roomId: {
         type: Sequelize.INTEGER
       },
       start: {
@@ -31,10 +34,14 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: 0
       },
-      creatorPople: {
+      isInterview: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: 0
+      },
+      creator: {
         type: Sequelize.STRING
       },
-      modifyPople: {
+      editor: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -51,6 +58,6 @@ module.exports = {
     })
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('CalendarData')
+    await queryInterface.dropTable('Calendars')
   }
 }

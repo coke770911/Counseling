@@ -43,10 +43,11 @@ router.get('/', async (req, res, next) => {
 })
 //新增空間
 router.post('/', upload.none(), async (req, res, next) => {
-  const [createdata, created] = await db.VenueSpace.findOrCreate({
-    where: { spaceName: req.body.spaceName },
+  const [createdata, created] = await db.Room.findOrCreate({
+    where: { title: req.body.title },
     defaults: {
-      spaceName: req.body.spaceName,
+      title: req.body.title,
+      eventColor: req.body.eventColor,
       isDisabled: req.body.isDisabled || 0
     }
   })
@@ -56,11 +57,12 @@ router.post('/', upload.none(), async (req, res, next) => {
 
 router.put('/', upload.none(), async (req, res, next) => {
   let Datafield = {}
-  Datafield.spaceName = req.body.spaceName
+  Datafield.title = req.body.title
+  Datafield.eventColor = req.body.eventColor
   Datafield.isDisabled = req.body.isDisabled || 0
-  const updated = await db.VenueSpace.update(Datafield, {
+  const updated = await db.Room.update(Datafield, {
     where: {
-      id: req.body.vid
+      id: req.body.rid
     }
   })
   res.status(200).send(JSON.stringify({ msg: updated ? '修改成功' : '修改成功' }))
