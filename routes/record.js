@@ -15,26 +15,16 @@ router.use((req, res, next) => {
 })
 
 router.get('/view', async (req, res, next) => {
-  res.render('member/view', { title: '基本資料建檔'})
-})
-
-//取得由其他資料庫來的基本資料
-router.get('/data/:id', async (req, res, next) => {
-  let sql = '[dbo].[getMemberData] :uid';
-  const memberdata = await db.sequelize.query(sql, {
-    replacements: { uid: req.params.id },
-    type: db.sequelize.QueryTypes.SELECT,
-    nest: true
-  })
-  res.status(200).send(JSON.stringify(memberdata[0]))
+  let ReasonList = await db.RefReason.findAll({})
+  let ThemeGroup1 = await db.RefTheme.findAll({where:{parentId:1}})
+  let ThemeGroup2 = await db.RefTheme.findAll({where:{parentId:2}})
+  let ThemeGroup3 = await db.RefTheme.findAll({where:{parentId:3}})
+  let ThemeGroup4 = await db.RefTheme.findAll({where:{parentId:4}})
+  res.render('member/view', { title: '基本資料建檔',ReasonList: ReasonList,ThemeGroup1: ThemeGroup1,ThemeGroup2: ThemeGroup2,ThemeGroup3: ThemeGroup3,ThemeGroup4: ThemeGroup4 })
 })
 
 router.get('/', async (req, res, next) => {})
-
-router.post('/', upload.none(), async (req, res, next) => {
-  console.dir(req.body)
-  res.status(200).send(JSON.stringify({msg: '建立基本檔案完成。' , BaseData: req.body}))
-})
+router.post('/', upload.none(), async (req, res, next) => {})
 router.put('/', upload.none(), async (req, res, next) => {})
 router.delete('/', async (req, res, next) => {})
 

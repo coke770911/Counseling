@@ -29,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
     end: DataTypes.DATE,
     allDay: DataTypes.BOOLEAN,
     isInterview: DataTypes.BOOLEAN,
+    isInterviewName: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        return this.getDataValue('roomId') ? '尚未面談' : '已面談'
+      }
+    },
     creator: DataTypes.STRING,
     editor: DataTypes.STRING
   }, {

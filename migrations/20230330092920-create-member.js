@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       marry: {
-        type: Sequelize.STRING
+        type: Sequelize.BOOLEAN
       },
       dept: {
         type: Sequelize.STRING

@@ -11,7 +11,6 @@ block content
   script(src="/javascripts/fullcalendar-scheduler-6.1.5/dist/index.global.min.js")
   script(src="/javascripts/fullcalendar-ext/packages/core/locales-all.global.min.js")
   script.
-
     const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
       headerToolbar: {
         left: 'today prev,next' ,
@@ -26,7 +25,7 @@ block content
       locale:'zh-tw',       //本地化
       aspectRatio: 1.8,     //長寬比
       navLinks: true,       //日期可以直接跳當天預設模式
-      initialView: 'resourceTimelineDay', //預設模式
+      initialView: 'resourceTimeGridFourDay', //預設模式
       firstDay: 1, //周的開始
       fixedWeekCount:false,//最多顯示五周
       views: {
@@ -48,13 +47,67 @@ block content
         },
       },
       select: arg => {
-        eventView(arg);
+        mask.show()
+        let data = new FormData()
+        data.append('id', "0")
+        data.append('start', arg.start)
+        data.append('end', arg.end)
+        data.append('allDay', arg.allDay)
+        data.append('resourceId', arg.resource ? arg.resource.id : 0 )
+        axios.post('/calendar/detailed',data).then(res => {
+          let LoadHTML = document.createElement("div")
+          LoadHTML.innerHTML = res.data
+          Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
+            let $script = document.createElement('script');
+            $script.text = element.text
+            LoadHTML.appendChild($script)
+          })
+          document.querySelector('body').prepend(LoadHTML)
+        }).catch((error) => { 
+          console.dir(error)
+          Swal.fire('發生錯誤')
+        }).finally(() =>{
+          mask.hide()
+          calendar.unselect()
+        })
       },
       eventClick: arg => {
-        console.dir(arg)
+        mask.show()
+        let data = new FormData()
+        data.append('id', arg.event.id)
+        axios.post('/calendar/detailed',data).then(res => {
+          let LoadHTML = document.createElement("div")
+          LoadHTML.innerHTML = res.data
+          Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
+            let $script = document.createElement('script');
+            $script.text = element.text
+            LoadHTML.appendChild($script)
+          })
+          document.querySelector('body').prepend(LoadHTML)
+        }).catch((error) => { 
+          console.dir(error)
+          Swal.fire('發生錯誤')
+        }).finally(() =>{
+          mask.hide()
+          calendar.unselect()
+        })
       },
       eventChange: arg => {
-        console.dir(arg)
+        mask.show()
+        let data = new FormData()
+        data.append('id', arg.event.id)
+        data.append('start', arg.event.start)
+        data.append('end', arg.event.end)
+        data.append('allDay', arg.event.allDay)
+        data.append('resourceId', arg.event._def.resourceIds[0])
+        axios.put('/calendar',data).then(res => {
+        }).catch((error) => { 
+          console.dir(error)
+          Swal.fire('發生錯誤')
+        }).finally(() =>{
+          mask.hide()
+          calendar.unselect()
+        })
       },
       eventRemove: arg => {
         console.dir(arg)
@@ -64,29 +117,3 @@ block content
       events: '/calendar',
     });
     calendar.render();
-
-    const eventView = function(arg) {
-      mask.show()
-      let data = new FormData()
-      data.append('id', "0")
-      data.append('start', arg.start)
-      data.append('end', arg.end)
-      data.append('allDay', arg.allDay)
-      data.append('resourceId', arg.resource.id)
-      axios.post('/calendar/detailed',data).then(res => {
-        let LoadHTML = document.createElement("div")
-        LoadHTML.innerHTML = res.data
-        Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
-          let $script = document.createElement('script');
-          $script.text = element.text
-          LoadHTML.appendChild($script)
-        })
-        document.querySelector('body').prepend(LoadHTML)
-      }).catch((error) => { 
-        console.dir(error)
-        Swal.fire('發生錯誤')
-      }).finally(() =>{
-        mask.hide()
-        calendar.unselect()
-      })
-    }

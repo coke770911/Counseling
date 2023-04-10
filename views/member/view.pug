@@ -9,146 +9,143 @@ block content
           li.breadcrumb-item 
             a(href="/") 首頁
           li.breadcrumb-item 基本資料建檔
-    form(action="")
-    .row 
-      .col-12.col-md-4
-        label.form-label 學生學號
-        .input-group.mb-3
-          input.form-control(class="form-control" type="text")
-          button(class="btn btn-outline-secondary" tpye="button" ) 由教務處代入基本資料
-      .col-12.col-md-4
-        label.form-label 學生姓名
-        input.form-control(class="form-control" type="text")
-      .col-12.col-md-4
-        label.form-label 出生年月日
-        input.form-control(class="form-control" type="date")
-    .row.mb-1
-      .col-12.col-md-4
-        br
-        label.form-label 性別 &nbsp;
-        .form-check.form-check-inline
-          input(class="form-check-input" type="radio" name="radio1" value="option1")
-          label.form-check-label 男
-        .form-check.form-check-inline
-          input(class="form-check-input" type="radio" name="radio1" value="option1")
-          label.form-check-label 女
-      .col-12.col-md-4
-        label.form-label 年齡
-        input.form-control(class="form-control" type="text") 
-      .col-12.col-md-4
-        br
-        label.form-label 婚姻狀況 &nbsp;
-        .form-check.form-check-inline
-          input(class="form-check-input" type="radio" name="radio2" value="option1")
-          label.form-check-label 未婚
-        .form-check.form-check-inline
-          input(class="form-check-input" type="radio" name="radio2" value="option1")
-          label.form-check-label 已婚
-    .row.mb-1
-      .col-12.col-md-4
-        label.form-label 身分證字號
-        input.form-control(class="form-control" type="text") 
-      .col-6.col-md-4
-        label.form-label 系所
-        input.form-control(class="form-control" type="text") 
-      .col-3.col-md-2
-        label.form-label 年班
-        input.form-control(class="form-control" type="text") 
-      .col-3.col-md-2
-        label.form-label 年班
-        input.form-control(class="form-control" type="text") 
-    .row.mb-1
-      .col-12.col-md-6
-        label.form-label 行動電話
-        input.form-control(class="form-control" type="text") 
-      .col-12.col-md-6
-        label.form-label 市內電話
-        input.form-control(class="form-control" type="text") 
-    .row.mb-1
-      .col-12.col-md-6
-        label.form-label E-Mail
-        input.form-control(class="form-control" type="text") 
-      .col-12.col-md-6
-        br
-        label.form-label 聯絡時是否可以表明輔導中心 &nbsp;
-        .form-check.form-check-inline
-          input(class="form-check-input" type="radio" name="radio2" value="option1")
-          label.form-check-label 是
-        .form-check.form-check-inline
-          input(class="form-check-input" type="radio" name="radio2" value="option1")
-          label.form-check-label 否
-    .row.mb-1
-      .col-12.col-md-6
-        label.form-label 住宿地址
-        input.form-control(class="form-control" type="text") 
-      .col-12.col-md-6
-        label.form-label 戶籍地址
-        input.form-control(class="form-control" type="text") 
-    .row.mb-1
-      .col-6.col-md-3
-        label.form-label 緊急聯絡人
-        input.form-control(class="form-control" type="text") 
-      .col-6.col-md-3
-        label.form-label 關係
-        input.form-control(class="form-control" type="text") 
-      .col-6.col-md-3
-        label.form-label 緊急連絡人電話
-        input.form-control(class="form-control" type="text") 
-      .col-6.col-md-3
-        label.form-label 緊急連絡人手機
-        input.form-control(class="form-control" type="text") 
-    hr
-    .row.mb-1
-      .col-auto
-        label.col-form-label 晤談原因
-      .col.col-md-3
-        select.form-select(name="userauthId" id="userauthId")
-          each value in ReasonList
-            option(value=value.id ) #{value.content}
-    hr
-    .row
-      .col.mb-1
-        label 想晤談的主題
-    .row.mb-1
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【生活適應】
-        each value in ThemeGroup1
-          .row
-            .col-12 
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【人際關係】
-        each value in ThemeGroup2
-          .row
-            .col-12 
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【學校適應】
-        each value in ThemeGroup3
-          .row
-            .col-12 
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【前程規劃】
-        each value in ThemeGroup4
-          .row
-            .col-12
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
-    .row.mb-1
+      form#BaseData(action="#" name="BaseData")
+        .row 
+          .col-12.col-md-4
+            label.form-label 學生學號
+            .input-group.mb-3
+              input.form-control(class="form-control" type="text" name="uid")
+              button(class="btn btn-outline-secondary" tpye="button" id="import" ) 由教務處代入基本資料
+          .col-12.col-md-4
+            label.form-label 學生姓名
+            input.form-control(class="form-control" type="text" name="name")
+          .col-12.col-md-4
+            label.form-label 出生年月日
+            input.form-control(class="form-control" type="date" name="birthday")
+        .row.mb-1
+          .col-12.col-md-4
+            br
+            label.form-label 性別 &nbsp;
+            .form-check.form-check-inline
+              input.form-control(class="form-control" type="text" name="sex")
+          .col-12.col-md-4
+            label.form-label 年齡
+            input.form-control(class="form-control" type="text" name="age") 
+          .col-12.col-md-4
+            br
+            label.form-label 婚姻狀況 &nbsp;
+            .form-check.form-check-inline
+              input(class="form-check-input" type="radio" name="marry" value="0" checked)
+              label.form-check-label 未婚
+            .form-check.form-check-inline
+              input(class="form-check-input" type="radio" name="marry" value="1")
+              label.form-check-label 已婚
+        .row.mb-1
+          .col-12.col-md-4
+            label.form-label 身分證字號
+            input.form-control(class="form-control" type="text" name="cardId") 
+          .col-6.col-md-4
+            label.form-label 系所
+            input.form-control(class="form-control" type="text" name="dept" readonly) 
+          .col-3.col-md-2
+            label.form-label 年班
+            input.form-control(class="form-control" type="text" name="grade" readonly) 
+          .col-3.col-md-2
+            label.form-label 年班
+            input.form-control(class="form-control" type="text" name="class" readonly) 
+        .row.mb-1
+          .col-12.col-md-6
+            label.form-label 行動電話
+            input.form-control(class="form-control" type="text" name="mobile" ) 
+          .col-12.col-md-6
+            label.form-label 市內電話
+            input.form-control(class="form-control" type="text" name="tel" ) 
+        .row.mb-1
+          .col-12.col-md-6
+            label.form-label E-Mail
+            input.form-control(class="form-control" type="text" name="email")
+          .col-12.col-md-6
+            br
+            label.form-label 聯絡時是否可以表明輔導中心 &nbsp;
+            .form-check.form-check-inline
+              input(class="form-check-input" type="radio" name="is_contact" value="1" checked)
+              label.form-check-label 是
+            .form-check.form-check-inline
+              input(class="form-check-input" type="radio" name="is_contact" value="0")
+              label.form-check-label 否
+        .row.mb-1
+          .col-12.col-md-6
+            label.form-label 住宿地址
+            input.form-control(class="form-control" type="text" name="address") 
+          .col-12.col-md-6
+            label.form-label 戶籍地址
+            input.form-control(class="form-control" type="text" name="regaddress") 
+        .row.mb-5
+          .col-6.col-md-3
+            label.form-label 緊急聯絡人
+            input.form-control(class="form-control" type="text" name="contactName") 
+          .col-6.col-md-3
+            label.form-label 關係
+            input.form-control(class="form-control" type="text" name="contactRelation") 
+          .col-6.col-md-3
+            label.form-label 緊急連絡人電話
+            input.form-control(class="form-control" type="text" name="contactTel") 
+          .col-6.col-md-3
+            label.form-label 緊急連絡人手機
+            input.form-control(class="form-control" type="text" name="contactPhone") 
+        .row 
+          button.btn.btn-primary(type="button" id="send") 基本資料建檔
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('#BaseData').addEventListener('click', e => { e.preventDefault() })
+      
+      document.querySelector('#import').addEventListener('click', e => {
+        mask.show()
+        axios.get('/member/data/'+document.querySelector("input[name=uid]").value).then( res => {
+            let data = res.data
+            if(data === "") {
+              Swal.fire('查無資料。')
+              return 
+            }
+            document.querySelector("input[name=name]").value = data.chi_name
+            document.querySelector("input[name=birthday]").value = data.birthday
+            document.querySelector("input[name=sex]").value = data.sex
+            document.querySelector("input[name=age]").value = data.age
+            document.querySelector("input[name=cardId]").value = data.id_no
+            document.querySelector("input[name=dept]").value = data.dept_name
+            document.querySelector("input[name=grade]").value = data.degree
+            document.querySelector("input[name=class]").value = data.class
+            document.querySelector("input[name=mobile]").value = data.mobile
+            document.querySelector("input[name=tel]").value = data.tel
+            document.querySelector("input[name=email]").value = data.mail
+            document.querySelector("input[name=address]").value = data.addr
+            document.querySelector("input[name=regaddress]").value = data.nom_addr
+            document.querySelector("input[name=contactName]").value = data.spvr_name
+            document.querySelector("input[name=contactRelation]").value = data.relatn_name
+            document.querySelector("input[name=contactTel]").value = data.spvr_tel
+            //document.querySelector("input[name=contactPhone]").value = data.class
+        }).catch((error) => { 
+          Swal.fire('資料抓取發生錯誤。')
+        }).finally(() =>{ mask.hide() })
+      })
 
+      document.querySelector('#send').addEventListener('click', e => {
+        let data = new FormData(document.querySelector('#BaseData'));
+        axios.post('/member',data).then((res) => {
+          console.dir(res.data)
+          /*
+          Swal.fire(res.data.msg).then((result) => {
+            if(result.isConfirmed) {
+              res.data.Calendardata.forEach(element => {
+                calendar.addEvent(element)
+                console.dir(element)
+              });
+              modalMethod.hide()
+            }
+          })
+          */
+        }).catch(error => { 
+          Swal.fire(error.response.data.msg)
+        }).finally(() => { mask.hide() })
+      })
+    })
