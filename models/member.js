@@ -17,7 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     uid: DataTypes.STRING,
     cardId: DataTypes.STRING,
     name: DataTypes.STRING,
-    birthday: DataTypes.DATE,
+    birthday: {
+      type: DataTypes.DATE,
+      get () {
+        return new Date(this.getDataValue('birthday')).toISOString().slice(0, 10)
+      }
+    },
     age: {
       type: DataTypes.VIRTUAL,
       get () {

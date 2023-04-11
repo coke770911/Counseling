@@ -18,7 +18,6 @@ router.use((req, res, next) => {
 //基本資料建檔介面
 router.get('/view/:uid', async (req, res, next) => {
   let memberData = {
-    updatedLocal: '',
     uid: '',
     cardId: '',
     name: '',
@@ -38,12 +37,13 @@ router.get('/view/:uid', async (req, res, next) => {
     contactRelation: '',
     contactTel: '',
     contactPhone: '',
-    creator: '',
-    editor: '',
+    creator: req.session.username,
+    editor: req.session.username,
+    updatedLocal: new Date().toLocaleString(),
   }
 
   if(req.params.uid !== 'new') {
-    memberData = await db.Member.findOne({where:{uid: req.params.uid}})
+    memberData = await db.Member.findOne({where: {uid: req.params.uid}})
   }
   res.render('member/view', { title: '基本資料建檔',memberData: memberData})
 })

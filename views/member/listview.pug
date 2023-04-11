@@ -40,7 +40,7 @@ block content
           {title: "功能",field: "uid",
             formatter:function(cell ,  formatterParams ){
               let value = cell.getValue()
-              return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">查詢</button>'
+              return '<a class="btn btn-info" href="/member/view/'+value+'">查詢</a>'
             }
           },
         ],
