@@ -29,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
     dept: DataTypes.STRING,
     grade: DataTypes.STRING,
     class: DataTypes.STRING,
+    deptfull: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        return this.getDataValue('dept') + this.getDataValue('grade') + this.getDataValue('class')
+      }
+    },
     mobile: DataTypes.STRING,
     tel: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -41,6 +47,12 @@ module.exports = (sequelize, DataTypes) => {
     contactPhone: DataTypes.STRING,
     creator: DataTypes.STRING,
     editor: DataTypes.STRING,
+    updatedLocal: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        return this.getDataValue('updatedAt').toLocaleString()
+      }
+    },
   }, {
     sequelize,
     modelName: 'Member',

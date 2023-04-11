@@ -51,7 +51,6 @@ block content
           return
         }
         if(target.getAttribute("class").indexOf("btn-Detailed") !== -1) {
-          
           mask.show()
           axios.get('/room/detailed/'+target.getAttribute("data-id")).then((res) => {
             let LoadHTML = document.createElement("div")

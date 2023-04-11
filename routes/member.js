@@ -10,14 +10,42 @@ router.use((req, res, next) => {
     res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
     return;
   }
-  console.dir(req.session)
+  //console.dir(req.session)
   //res.status(400).send(JSON.stringify({ msg: '尚未登入' }))
   next()
 })
 
-//建檔介面
-router.get('/view', async (req, res, next) => {
-  res.render('member/view', { title: '基本資料建檔'})
+//基本資料建檔介面
+router.get('/view/:uid', async (req, res, next) => {
+  let memberData = {
+    updatedLocal: '',
+    uid: '',
+    cardId: '',
+    name: '',
+    birthday: '',
+    sex: '',
+    marry: '',
+    dept: '',
+    grade: '',
+    class: '',
+    mobile: '',
+    tel: '',
+    email: '',
+    is_contact: 1,
+    address: '',
+    regaddress: '',
+    contactName: '',
+    contactRelation: '',
+    contactTel: '',
+    contactPhone: '',
+    creator: '',
+    editor: '',
+  }
+
+  if(req.params.uid !== 'new') {
+    memberData = await db.Member.findOne({where:{uid: req.params.uid}})
+  }
+  res.render('member/view', { title: '基本資料建檔',memberData: memberData})
 })
 
 //個案資料列表介面
@@ -25,18 +53,25 @@ router.get('/listview', async (req, res, next) => {
   res.render('member/listview', { title: '基本資料建檔'})
 })
 
-
+//取得單筆
 router.get('/:uid', async (req, res, next) => {
-  const MemberList = await db.Member.findAll({});
+  const MemberData = await db.Member.findOne({where:{uid: req.params.uid}})
+  res.status(200).send(JSON.stringify(MemberData))
 })
 
-
+//取得多筆
 router.get('/', async (req, res, next) => {
   const MemberList = await db.Member.findAll({});
   res.status(200).send(JSON.stringify(MemberList))
 })
 
+//建立基本資料檔
 router.post('/', upload.none(), async (req, res, next) => {
+  if(req.body.uid.trim() === '') {
+    res.status(400).send(JSON.stringify({ msg: '建檔資料有錯誤。' }))
+    return
+  }
+
   const [createdata, created] = await db.Member.findOrCreate({
     where: { uid: req.body.uid.trim() },
     defaults: {
@@ -65,15 +100,17 @@ router.post('/', upload.none(), async (req, res, next) => {
   })
   res.status(200).send(JSON.stringify({ msg: created ? '建立基本檔案完成。' : '已建立過檔案。' }))
 })
+
+
 router.put('/', upload.none(), async (req, res, next) => {})
 router.delete('/', async (req, res, next) => {})
 
 
 //取得由其他資料庫來的基本資料
-router.get('/data/:id', async (req, res, next) => {
+router.get('/data/:uid', async (req, res, next) => {
   let sql = '[dbo].[getMemberData] :uid';
   const memberdata = await db.sequelize.query(sql, {
-    replacements: { uid: req.params.id },
+    replacements: { uid: req.params.uid },
     type: db.sequelize.QueryTypes.SELECT,
     nest: true
   })

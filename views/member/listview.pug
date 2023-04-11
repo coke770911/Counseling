@@ -15,26 +15,29 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
-        ajaxURL: "/room" ,
+        ajaxURL: "/member" ,
         ajaxConfig: "get" ,
         ajaxContentType: "json",
         layout: "fitDataTable" ,
         height: "100%",
         placeholder:"資料載入中",
         resizableColumnFit : true , 
+        pagination : true , //啟用分頁
+        paginationSize : 10 , //可選參數以請求每頁的特定行數      
         columnDefaults: {
-          width: 300, //set the width on all columns to 200px
+          width: 200, //set the width on all columns to 200px
           headerHozAlign: "center",
           hozAlign: "center",
           headerSort: false ,
         },
         columns: [
-          {title: "#", formatter: "rownum", width: 40,headerSort: false},
-          {title: "空間名稱", field: "title"},
-          {title: "標籤顏色", field: "eventColor",headerSort: false,formatter:"color", width:90},
-          {title: "狀態", field: "isDisabledName"},
-          {title: "最後變更日期", field: "updatedLocal"},
-          {title: "功能",field: "id",headerSort: false,
+          {title: "#", formatter: "rownum", width: 50},
+          {title: "學號", field: "uid" ,  width: 120},
+          {title: "學生姓名", field: "name" , width: 120},
+          {title: "性別", field: "sex", width: 60},
+          {title: "系所年級", field: "deptfull", hozAlign: "left" , width: 300},
+          {title: "資料更新日期", field: "updatedLocal" ,  width: 220},
+          {title: "功能",field: "uid",
             formatter:function(cell ,  formatterParams ){
               let value = cell.getValue()
               return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">查詢</button>'
@@ -42,4 +45,6 @@ block content
           },
         ],
       })
+
+      console.dir(table.getLocale())
     })
