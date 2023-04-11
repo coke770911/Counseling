@@ -67,6 +67,12 @@ module.exports = {
       contactPhone: {
         type: Sequelize.STRING
       },
+      creator: {
+        type: Sequelize.STRING
+      },
+      editor: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -10,17 +10,30 @@ router.use((req, res, next) => {
     res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
     return;
   }
+  console.dir(req.session)
   //res.status(400).send(JSON.stringify({ msg: '尚未登入' }))
   next()
 })
 
+//建檔介面
 router.get('/view', async (req, res, next) => {
   res.render('member/view', { title: '基本資料建檔'})
 })
 
+//個案資料列表介面
+router.get('/listview', async (req, res, next) => {
+  res.render('member/listview', { title: '基本資料建檔'})
+})
+
+
+router.get('/:uid', async (req, res, next) => {
+  const MemberList = await db.Member.findAll({});
+})
+
 
 router.get('/', async (req, res, next) => {
-
+  const MemberList = await db.Member.findAll({});
+  res.status(200).send(JSON.stringify(MemberList))
 })
 
 router.post('/', upload.none(), async (req, res, next) => {
@@ -45,7 +58,9 @@ router.post('/', upload.none(), async (req, res, next) => {
       contactName: req.body.contactName,
       contactRelation: req.body.contactRelation,
       contactTel: req.body.contactTel,
-      contactPhone: req.body.contactPhone
+      contactPhone: req.body.contactPhone,
+      creator: req.session.username,
+      editor: req.session.username,
     }
   })
   res.status(200).send(JSON.stringify({ msg: created ? '建立基本檔案完成。' : '已建立過檔案。' }))

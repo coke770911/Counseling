@@ -8,7 +8,9 @@ block content
         ol.breadcrumb
           li.breadcrumb-item 
             a(href="/") 首頁
-          li.breadcrumb-item 查詢個案資料
+          li.breadcrumb-item 個案資料
+          li.breadcrumb-item.active 查詢個案資料
+    .row
     table.table#maintable
   script.
     document.addEventListener('DOMContentLoaded', function() {
@@ -35,7 +37,7 @@ block content
           {title: "功能",field: "id",headerSort: false,
             formatter:function(cell ,  formatterParams ){
               let value = cell.getValue()
-              return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>'
+              return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">查詢</button>'
             }
           },
         ],

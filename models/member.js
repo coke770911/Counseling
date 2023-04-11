@@ -38,7 +38,9 @@ module.exports = (sequelize, DataTypes) => {
     contactName: DataTypes.STRING,
     contactRelation: DataTypes.STRING,
     contactTel: DataTypes.STRING,
-    contactPhone: DataTypes.STRING
+    contactPhone: DataTypes.STRING,
+    creator: DataTypes.STRING,
+    editor: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Member',
