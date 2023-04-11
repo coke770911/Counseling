@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+  .container
+    .row
+      .col
+      nav(aria-label="breadcrumb")
+        ol.breadcrumb
+          li.breadcrumb-item 
+            a(href="/") 首頁
+          li.breadcrumb-item 查詢個案資料
+    table.table#maintable
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const table = new Tabulator("#maintable", {
+        ajaxURL: "/room" ,
+        ajaxConfig: "get" ,
+        ajaxContentType: "json",
+        layout: "fitDataTable" ,
+        height: "100%",
+        placeholder:"資料載入中",
+        resizableColumnFit : true , 
+        columnDefaults: {
+          width: 300, //set the width on all columns to 200px
+          headerHozAlign: "center",
+          hozAlign: "center",
+          headerSort: false ,
+        },
+        columns: [
+          {title: "#", formatter: "rownum", width: 40,headerSort: false},
+          {title: "空間名稱", field: "title"},
+          {title: "標籤顏色", field: "eventColor",headerSort: false,formatter:"color", width:90},
+          {title: "狀態", field: "isDisabledName"},
+          {title: "最後變更日期", field: "updatedLocal"},
+          {title: "功能",field: "id",headerSort: false,
+            formatter:function(cell ,  formatterParams ){
+              let value = cell.getValue()
+              return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>'
+            }
+          },
+        ],
+      })
+    })

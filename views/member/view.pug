@@ -98,7 +98,7 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#BaseData').addEventListener('click', e => { e.preventDefault() })
-      
+
       document.querySelector('#import').addEventListener('click', e => {
         mask.show()
         axios.get('/member/data/'+document.querySelector("input[name=uid]").value).then( res => {
@@ -133,17 +133,7 @@ block content
         let data = new FormData(document.querySelector('#BaseData'));
         axios.post('/member',data).then((res) => {
           console.dir(res.data)
-          /*
-          Swal.fire(res.data.msg).then((result) => {
-            if(result.isConfirmed) {
-              res.data.Calendardata.forEach(element => {
-                calendar.addEvent(element)
-                console.dir(element)
-              });
-              modalMethod.hide()
-            }
-          })
-          */
+          Swal.fire(res.data.msg)
         }).catch(error => { 
           Swal.fire(error.response.data.msg)
         }).finally(() => { mask.hide() })
