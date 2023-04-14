@@ -20,7 +20,7 @@ router.get('/view', async (req, res, next) => {
   let ThemeGroup2 = await db.RefTheme.findAll({where:{parentId:2}})
   let ThemeGroup3 = await db.RefTheme.findAll({where:{parentId:3}})
   let ThemeGroup4 = await db.RefTheme.findAll({where:{parentId:4}})
-  res.render('member/view', { title: '基本資料建檔',ReasonList: ReasonList,ThemeGroup1: ThemeGroup1,ThemeGroup2: ThemeGroup2,ThemeGroup3: ThemeGroup3,ThemeGroup4: ThemeGroup4 })
+  res.render('record/view', { title: '基本資料建檔',ReasonList: ReasonList,ThemeGroup1: ThemeGroup1,ThemeGroup2: ThemeGroup2,ThemeGroup3: ThemeGroup3,ThemeGroup4: ThemeGroup4 })
 })
 
 router.get('/', async (req, res, next) => {})

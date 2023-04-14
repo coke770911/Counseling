@@ -23,7 +23,7 @@ router.get('/view/:uid', async (req, res, next) => {
     name: '',
     birthday: '',
     sex: '',
-    marry: '',
+    marry: 0,
     dept: '',
     grade: '',
     class: '',
@@ -61,7 +61,9 @@ router.get('/:uid', async (req, res, next) => {
 
 //取得多筆
 router.get('/', async (req, res, next) => {
-  const MemberList = await db.Member.findAll({});
+  const MemberList = await db.Member.findAll({
+    order: [['updatedAt','DESC']],
+  });
   res.status(200).send(JSON.stringify(MemberList))
 })
 
