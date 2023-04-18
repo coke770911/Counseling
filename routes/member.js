@@ -44,7 +44,9 @@ router.get('/view/:uid', async (req, res, next) => {
 
   if(req.params.uid !== 'new') {
     memberData = await db.Member.findOne({where: {uid: req.params.uid}})
+    console.dir(memberData)
   }
+  
   res.render('member/view', { title: '基本資料建檔',memberData: memberData})
 })
 
@@ -56,7 +58,7 @@ router.get('/listview', async (req, res, next) => {
 //取得單筆
 router.get('/:uid', async (req, res, next) => {
   const MemberData = await db.Member.findOne({where:{uid: req.params.uid}})
-  res.status(200).send(JSON.stringify(MemberData))
+  res.status(200).send(JSON.stringify([MemberData]))
 })
 
 //取得多筆
@@ -104,7 +106,30 @@ router.post('/', upload.none(), async (req, res, next) => {
 })
 
 
-router.put('/', upload.none(), async (req, res, next) => {})
+router.put('/', upload.none(), async (req, res, next) => {
+  const updated = await db.Member.update({
+      name: req.body.name,
+      sex: req.body.sex,
+      marry: req.body.marry,
+      dept: req.body.dept,
+      grade: req.body.grade,
+      class: req.body.class,
+      mobile: req.body.mobile,
+      tel: req.body.tel,
+      email: req.body.email,
+      is_contact: req.body.is_contact,
+      address: req.body.address,
+      regaddress: req.body.regaddress,
+      contactName: req.body.contactName,
+      contactRelation: req.body.contactRelation,
+      contactTel: req.body.contactTel,
+      contactPhone: req.body.contactPhone,
+      editor: req.session.username,
+    },{where: { uid: req.body.uid.trim() }},
+  )
+  console.dir(updated)
+  res.status(200).send(JSON.stringify({ msg: updated ? '更新檔案完成。' : '更新失敗。' }))
+})
 router.delete('/', async (req, res, next) => {})
 
 

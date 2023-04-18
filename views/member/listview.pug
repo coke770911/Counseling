@@ -11,6 +11,11 @@ block content
           li.breadcrumb-item 個案資料
           li.breadcrumb-item.active 查詢個案資料
     .row
+      .col-4
+        .input-group.mb-3
+          span.input-group-text(id="inputGroup-memberUid") 學號
+          input.form-control(type="text" placeholder="輸入學號" aria-label="輸入學號" aria-describedby="btn-search" name="txt-search" id="txt-search")
+          button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
     table.table#maintable
   script.
     document.addEventListener('DOMContentLoaded', function() {
@@ -20,7 +25,7 @@ block content
         ajaxContentType: "json",
         layout: "fitDataTable" ,
         height: "100%",
-        placeholder:"資料載入中",
+        placeholder:"尚無資料",
         resizableColumnFit : true , 
         pagination : true , //啟用分頁
         paginationSize : 10 , //可選參數以請求每頁的特定行數      
@@ -40,10 +45,24 @@ block content
           {title: "功能",field: "uid",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
-              return '<a class="btn btn-info mx-1" href="/member/view/'+value+'">查詢</a><a class="btn btn-success mx-1" href="/record/view/'+value+'">填寫晤談</a>'
+              return '<a class="btn btn-info mx-1" href="/member/view/'+value+'">查詢</a><a class="btn btn-success mx-1" href="/record/view/'+value+'">預約</a>'
             }
           },
         ],
       })
-      console.dir(table.getLocale())
+
+      document.querySelector('#btn-search').addEventListener('click',(e) => {
+        mask.show()
+        axios.get('/member/'+document.querySelector('#txt-search').value)
+        .then((res) => { 
+          table.setData(res.data);
+        }).catch((error) => { 
+          console.error(error) 
+        }).finally(() => { 
+          mask.hide()
+        })
+      })
+      
+
+
     })

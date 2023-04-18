@@ -113,9 +113,7 @@ router.put('/', upload.none(), async (req, res, next) => {
     allDay: req.body.allDay,
     roomId: req.body.resourceId === 'null' ? null : req.body.resourceId,
     editor: req.session.account
-    }, { where: { 
-        id: req.body.id 
-      } 
+    }, { where: { id: req.body.id } 
   })
   res.status(200).send(JSON.stringify({ msg: '修改成功'}))
 })

@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     birthday: {
       type: DataTypes.DATE,
       get () {
-        return new Date(this.getDataValue('birthday')).toISOString().slice(0, 10)
+        return this.getDataValue('birthday') === undefined ? '' : (new Date(this.getDataValue('birthday')).toISOString()).slice(0, 10)
       }
     },
     age: {
