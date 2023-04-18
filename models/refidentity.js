@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     memo: DataTypes.STRING
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'RefIdentity',
   });
   return RefIdentity;

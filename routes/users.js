@@ -34,7 +34,7 @@ router.get('/detailed/:id', async (req, res, next) => {
     attributes: ['id', 'titleName'],
     where: {
       id: {
-        [db.Sequelize.Op.ne]: 1
+        [db.Sequelize.Op.notIn]: [1]
       }
     },
     order: [['id', 'DESC']]
@@ -44,7 +44,7 @@ router.get('/detailed/:id', async (req, res, next) => {
     attributes: ['id', 'account', 'username', 'isDisabled', 'updatedAt'],
     include: db.UserAuth,
     where: {
-      [db.Sequelize.Op.and]: [{ id: req.params.id }, { id: { [db.Sequelize.Op.ne]: 1 } }]
+      [db.Sequelize.Op.and]: [{ id: req.params.id }, { id: { [db.Sequelize.Op.notIn]: [1] } }]
     }
   })
   //初始化樣板顯示欄位
@@ -110,7 +110,7 @@ router.get('/', async (req, res, next) => {
     }],
     where: {
       id: {
-        [db.Sequelize.Op.ne]: 1
+        [db.Sequelize.Op.notIn]: [1]
       }
     }
   })

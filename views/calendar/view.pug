@@ -20,8 +20,8 @@ block content
       slotMinTime: "08:00:00", //最小開始時間
       slotMaxTime: "22:30:00", //最大開始時間
       slotDuration: "00:10", //時間間隔
-      editable: true,       //允許移動
-      selectable: true,     //允許選擇
+      editable: #{isEdit},       //允許移動
+      selectable: #{isEdit},     //允許選擇
       locale:'zh-tw',       //本地化
       aspectRatio: 1.8,     //長寬比
       navLinks: true,       //日期可以直接跳當天預設模式
@@ -65,7 +65,7 @@ block content
           document.querySelector('body').prepend(LoadHTML)
         }).catch((error) => { 
           console.dir(error)
-          Swal.fire('發生錯誤')
+          Swal.fire(error.response.data.msg)
         }).finally(() =>{
           mask.hide()
           calendar.unselect()
@@ -86,7 +86,7 @@ block content
           document.querySelector('body').prepend(LoadHTML)
         }).catch((error) => { 
           console.dir(error)
-          Swal.fire('發生錯誤')
+          Swal.fire(error.response.data.msg)
         }).finally(() =>{
           mask.hide()
           calendar.unselect()
@@ -103,7 +103,7 @@ block content
         axios.put('/calendar',data).then(res => {
         }).catch((error) => { 
           console.dir(error)
-          Swal.fire('發生錯誤')
+          Swal.fire(error.response.data.msg)
         }).finally(() =>{
           mask.hide()
           calendar.unselect()

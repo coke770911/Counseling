@@ -11,14 +11,14 @@ router.use((req, res, next) => {
 
 //行事曆介面
 router.get('/view', async (req, res, next) => {
-  let isReadonly = [1,2].indexOf(req.session.auth) === -1 ? false : true
-  res.render('calendar/view', { title: '行事曆',isReadonly: isReadonly})
+  let isEdit = [1,2].indexOf(req.session.auth) === -1 ? false : true
+  res.render('calendar/view', { title: '行事曆',isEdit: isEdit})
 })
 
 //新增行程介面
 router.post('/detailed', upload.none(), async (req, res, next) => {
   if([1,2].indexOf(req.session.auth) === -1) {
-    res.status(200).send(JSON.stringify({ msg: '權限不足！'}))
+    res.status(400).send(JSON.stringify({ msg: '權限不足！'}))
     return
   }
 

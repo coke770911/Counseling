@@ -2,44 +2,103 @@ extends ../layout
 
 block content
   .container
-    .row
-      .col.mb-1
-        label 想晤談的主題
+    .row.mb-1.text-center
+      .col 
+        h3 亞東科技大學諮商中心諮商服務紀錄表
+    .row.mb-1.text-center
+      .col-2
+        label 學號
+      .col-2.text-start
+        label 112101101
+      .col-2
+        label 姓名
+      .col-2.text-start
+        label 徐佐壹
+      .col-2
+        label 系級
+      .col-2.text-start
+        label 日間部資訊管理系4年A班
+    .row.mb-1.text-center
+      .col-2
+        label 身份
+      .col-2.text-start
+        select
+          each value in caseType
+            option(value=value.val) #{value.content} 
+      .col-2
+        label 日期
+      .col-2.text-start
+        input(type="date" name="")
+      .col-2
+        label 時間
+      .col-2.text-start
+        input(type="time" name="")
+    .row.mb-1.text-center
+      .col-2
+        label 會談心理師
+      .col-2.text-start
+        select
+          each value in talkMajor
+            option(value=value.val) #{value.content} 
+      .col-2
+        label 系個管員
+      .col-2.text-start
+        select
+          each value in talkManage
+            option(value=value.val) #{value.content} 
+      .col-2
+        label 危機評估
+      .col-2.text-start
+        select
+          each value in caseLevel
+            option(value=value.id) #{value.content}  
+    .row.mb-1.text-center
+      .col-2
+        label 處理方式
+      .col-2.text-start
+        select
+          each value in caseProcess
+            option(value=value.id) #{value.content}  
+      .col-2
+        label 個案來源
+      .col-2.text-start
+        select
+          each value in caseSource
+            option(value=value.id) #{value.content}     
+      .col-2
+        label 說明
+      .col-2.text-start
+        label 日間部資訊管理系4年A班
     .row.mb-1
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【生活適應】
+      .col
+        p.h6 會談主題
+    .row.mb-1
+      .col-3
+        label 【生活適應】
         each value in ThemeGroup1
           .row
             .col-12 
               .form-check
                 input.form-check-input(type="checkbox" name="Theme" value=value.id)
                 label.form-check-label #{value.content}
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【人際關係】
+      .col-3
+        label 【人際關係】
         each value in ThemeGroup2
           .row
             .col-12 
               .form-check
                 input.form-check-input(type="checkbox" name="Theme" value=value.id)
                 label.form-check-label #{value.content}
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【學校適應】
+      .col-3
+        label 【學校適應】
         each value in ThemeGroup3
           .row
             .col-12 
               .form-check
                 input.form-check-input(type="checkbox" name="Theme" value=value.id)
                 label.form-check-label #{value.content}
-      .col-6.col-md-3
-        .row.mb-1 
-          .col 
-            label 【前程規劃】
+      .col-3
+        label 【前程規劃】
         each value in ThemeGroup4
           .row
             .col-12
@@ -47,4 +106,14 @@ block content
                 input.form-check-input(type="checkbox" name="Theme" value=value.id)
                 label.form-check-label #{value.content}
     .row.mb-1
-
+      .col
+        p.h6 會談內容
+    .row.mb-1
+      .col 
+        textarea.w-100(maxlength="3000" rows="15")
+    .row.mb-1
+      .col
+        p.h6 評估、處遇及未來計畫
+    .row.mb-1
+      .col 
+        textarea.w-100(maxlength="3000" rows="15")

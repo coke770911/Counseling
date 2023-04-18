@@ -24,3 +24,47 @@ const mask = function (context = document) {
     }
   }
 }()
+
+
+/** remote tpl load */
+const LoadHtmlTemplet = (url,formdata = new FormData,context = document) => {
+  const Elements = Array.from(context.getElementsByTagName('body'))
+  const LoadHTML = document.createElement("div")
+  return {}
+  /*
+  axios.post('/calendar/detailed',data).then(res => {
+    let LoadHTML = document.createElement("div")
+    LoadHTML.innerHTML = res.data
+    Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
+      let $script = document.createElement('script');
+      $script.text = element.text
+      LoadHTML.appendChild($script)
+    })
+    document.querySelector('body').prepend(LoadHTML)
+  }).catch((error) => { 
+    console.dir(error)
+    Swal.fire(error.response.data.msg)
+  }).finally(() =>{
+    mask.hide()
+    calendar.unselect()
+  })*/
+}
+
+/** */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('#pwdchange').addEventListener('click', (event) => {
+    mask.show()
+    axios.get('/users/pwd').then((res) => {
+      let LoadHTML = document.createElement("div")
+      LoadHTML.innerHTML = res.data
+      Array.from(LoadHTML.getElementsByTagName('script')).forEach(element => {
+        let $script = document.createElement('script');
+        $script.text = element.text
+        LoadHTML.appendChild($script)
+      })
+      document.getElementsByTagName("body")[0].prepend(LoadHTML)
+    }).catch((error) => { 
+      Swal.fire('樣板發生錯誤。')
+    }).finally(() =>{ mask.hide() })
+  })
+})
