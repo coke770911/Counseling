@@ -34,10 +34,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: 0
       },
-      isInterview: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: 0
-      },
       creator: {
         type: Sequelize.STRING
       },

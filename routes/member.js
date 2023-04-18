@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 })
 
 //基本資料建檔介面
-router.get('/view/:uid', async (req, res, next) => {
+router.get('/view/:id', async (req, res, next) => {
   let memberData = {
     uid: '',
     cardId: '',
@@ -30,7 +30,7 @@ router.get('/view/:uid', async (req, res, next) => {
     mobile: '',
     tel: '',
     email: '',
-    is_contact: 1,
+    isContact: 1,
     address: '',
     regaddress: '',
     contactName: '',
@@ -42,8 +42,8 @@ router.get('/view/:uid', async (req, res, next) => {
     updatedLocal: new Date().toLocaleString(),
   }
 
-  if(req.params.uid !== 'new') {
-    memberData = await db.Member.findOne({where: {uid: req.params.uid}})
+  if(req.params.id !== 'new') {
+    memberData = await db.Member.findOne({where: {id: req.params.id}})
     console.dir(memberData)
   }
   
@@ -91,7 +91,7 @@ router.post('/', upload.none(), async (req, res, next) => {
       mobile: req.body.mobile,
       tel: req.body.tel,
       email: req.body.email,
-      is_contact: req.body.is_contact,
+      isContact: req.body.isContact,
       address: req.body.address,
       regaddress: req.body.regaddress,
       contactName: req.body.contactName,
@@ -117,7 +117,7 @@ router.put('/', upload.none(), async (req, res, next) => {
       mobile: req.body.mobile,
       tel: req.body.tel,
       email: req.body.email,
-      is_contact: req.body.is_contact,
+      isContact: req.body.isContact,
       address: req.body.address,
       regaddress: req.body.regaddress,
       contactName: req.body.contactName,

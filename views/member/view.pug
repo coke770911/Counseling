@@ -35,15 +35,15 @@ block content
               br
               .form-check.form-check-inline
                 if memberData.marry
-                  input(class="form-check-input" type="radio" name="marry" value="0" readonly)
+                  input(class="form-check-input" type="radio" name="marry" value="0" disabled)
                 else 
-                  input(class="form-check-input" type="radio" name="marry" value="0" checked readonly)
+                  input(class="form-check-input" type="radio" name="marry" value="0" checked)
                 label.form-check-label 未婚
               .form-check.form-check-inline
                 if memberData.marry
-                  input(class="form-check-input" type="radio" name="marry" value="1" checked readonly)
+                  input(class="form-check-input" type="radio" name="marry" value="1" checked)
                 else 
-                  input(class="form-check-input" type="radio" name="marry" value="1" readonly)
+                  input(class="form-check-input" type="radio" name="marry" value="1" disabled)
                 label.form-check-label 已婚
           .row.mb-1
             .col-12.col-md-4
@@ -57,7 +57,7 @@ block content
               input.form-control(class="form-control" type="text" name="grade" value=memberData.grade readonly) 
             .col-3.col-md-2
               label.form-label 班級
-              input.form-control(class="form-control" type="text" name="class" value=memberData.class ) 
+              input.form-control(class="form-control" type="text" name="class" value=memberData.class readonly) 
           .row.mb-1
             .col-12.col-md-6
               label.form-label 行動電話
@@ -73,16 +73,16 @@ block content
               label.form-label.me-2.mt-2 聯絡時是否可以表明輔導中心
               br
               .form-check.form-check-inline
-                if memberData.is_contact
-                  input(class="form-check-input" type="radio" name="is_contact" value="1" checked)
+                if memberData.isContact
+                  input(class="form-check-input" type="radio" name="isContact" value="1" checked)
                 else 
-                  input(class="form-check-input" type="radio" name="is_contact" value="1")
+                  input(class="form-check-input" type="radio" name="isContact" value="1")
                 label.form-check-label 是
               .form-check.form-check-inline
-                if memberData.is_contact
-                  input(class="form-check-input" type="radio" name="is_contact" value="0")
+                if memberData.isContact
+                  input(class="form-check-input" type="radio" name="isContact" value="0")
                 else
-                  input(class="form-check-input" type="radio" name="is_contact" value="0" checked)
+                  input(class="form-check-input" type="radio" name="isContact" value="0" checked)
                 label.form-check-label 否
           .row.mb-1
             .col-12.col-md-6

@@ -1,0 +1,16 @@
+
+
+
+npx sequelize-cli model:generate --name ConsultRecord --attributes memberid:string,refidentity:integer,talkAccount:string,casesendAccount:string,content:string,reflevelId:integer,refprocessId:integer,reftheme:string
+
+
+
+npx sequelize-cli model:generate --name Member --attributes uid:string,cardId:string,name:string,birthday:date,sex:string,marry:string,dept:string,grade:string,class:string,mobile:string,tel:string,email:string,is_contact:boolean,address:string,regaddress:string
+
+
+
+
+
+
+
+

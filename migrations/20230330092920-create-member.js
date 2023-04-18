@@ -46,7 +46,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      is_contact: {
+      isContact: {
         type: Sequelize.BOOLEAN
       },
       address: {

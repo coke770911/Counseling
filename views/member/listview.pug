@@ -42,7 +42,7 @@ block content
           {title: "性別", field: "sex", width: 60},
           {title: "系所年級", field: "deptfull", hozAlign: "left" , width: 300},
           {title: "資料更新日期", field: "updatedLocal" ,  width: 220},
-          {title: "功能",field: "uid",
+          {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
               return '<a class="btn btn-info mx-1" href="/member/view/'+value+'">查詢</a><a class="btn btn-success mx-1" href="/record/view/'+value+'">預約</a>'
