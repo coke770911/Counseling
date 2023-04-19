@@ -10,7 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
+      //CaseRecord.hasOne(models.UserData,{ as: 'aaa', sourceKey: 'caseCreator', foreignKey: 'account' });
+      CaseRecord.belongsTo(models.UserData, { as: 'refcaseCreator' , targetKey: 'account' , foreignKey: 'caseCreator' })
+      CaseRecord.belongsTo(models.UserData, { as: 'refcaseManage' , targetKey: 'account' , foreignKey: 'caseManage' })
+      CaseRecord.belongsTo(models.UserData, { as: 'refassignUser' , targetKey: 'account' , foreignKey: 'assignUser' })
+
     }
   }
   
@@ -20,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     memberGrade: DataTypes.STRING,
     memberClass: DataTypes.STRING,
     caseCreator: DataTypes.STRING,
+    caseManage: DataTypes.STRING,
     assignUser: DataTypes.STRING,
     isClose: DataTypes.BOOLEAN,
     isCloseName: {

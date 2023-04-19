@@ -24,6 +24,9 @@ module.exports = {
       caseCreator: {
         type: Sequelize.STRING
       },
+      caseManage: {
+        type: Sequelize.STRING
+      },
       assignUser: {
         type: Sequelize.STRING
       },

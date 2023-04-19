@@ -9,9 +9,20 @@ router.use((req, res, next) => {
   next()
 })
 
+router.get('/listview',(req, res, next) => {
+  res.render('case/listview')
+})
+
 
 router.get('/', async (req, res, next) => {
-  const CaseRecordList = await db.CaseRecord.findAll({})
+  const CaseRecordList = await db.CaseRecord.findAll({
+    include: [
+      { association: 'refcaseCreator' , attributes: ['username']},
+      { association: 'refcaseManage' , attributes: ['username']},
+      { association: 'refassignUser' , attributes: ['username']}
+    ],
+    order: [['id', 'DESC']]
+  })
   res.status(200).send(JSON.stringify(CaseRecordList))
 })
 
@@ -48,7 +59,7 @@ router.post('/', upload.none() , async (req, res, next) => {
 
   console.dir(createdata)
   if(created) {
-    res.status(200).send(JSON.stringify({msg: '已建立個案追蹤。'}))
+    res.status(200).send(JSON.stringify({msg: '建立完成。'}))
   } else {
     res.status(200).send(JSON.stringify({msg: '已有個案資料，尚未結案。'}))
   }

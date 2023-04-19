@@ -9,7 +9,7 @@ block content
           li.breadcrumb-item 
             a(href="/") 首頁
           li.breadcrumb-item 個案資料
-          li.breadcrumb-item.active 查詢個案資料
+          li.breadcrumb-item.active 個案追蹤
     .row
       .col-4
         .input-group.mb-3
@@ -20,7 +20,7 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
-        ajaxURL: "/member",
+        ajaxURL: "/case",
         ajaxConfig: "get",
         ajaxContentType: "json",
         layout: "fitColumns",
@@ -49,47 +49,6 @@ block content
             }
           },
         ],
-      })
-
-      //建立預約
-      document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
-        let target = event.target
-        if(!target.getAttribute("class")) { return }
-        if(target.getAttribute("class").indexOf("btn-CreatCase") !== -1) {
-          if(target.getAttribute("data-memberId")) {
-            let memberId = target.getAttribute("data-memberId");
-            Swal.fire({
-              title: '是否建立個案紀錄。',
-              showCancelButton: true,
-              confirmButtonText: '確認',
-              cancelButtonText: '取消',           
-            }).then((result) => {
-              if (result.isConfirmed) {
-                axios.post('/case',{memberId: memberId}).then((res) => { 
-                  Swal.fire(res.data.msg)
-                }).catch((error) => { 
-                  Swal.fire(error.response.data.msg)
-                }).finally(() => { 
-                  mask.hide()
-                })
-                //Swal.fire('Saved!', '', 'success')
-              } 
-            })
-          }
-          
-        }
-      })
-
-      document.querySelector('#btn-search').addEventListener('click',(e) => {
-        mask.show()
-        axios.get('/member/'+document.querySelector('#txt-search').value)
-        .then((res) => { 
-          table.setData(res.data);
-        }).catch((error) => { 
-          Swal.fire(error.response.data.msg)
-        }).finally(() => { 
-          mask.hide()
-        })
       })
 
     })

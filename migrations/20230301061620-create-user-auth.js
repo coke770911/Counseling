@@ -27,10 +27,6 @@ module.exports = {
 
     await queryInterface.bulkInsert('UserAuths', [
       {
-        titleName: '系統管理者',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }, {
         titleName: '總個管員',
         createdAt: new Date(),
         updatedAt: new Date()
