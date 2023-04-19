@@ -8,6 +8,12 @@ npx sequelize-cli model:generate --name ConsultRecord --attributes memberid:stri
 npx sequelize-cli model:generate --name Member --attributes uid:string,cardId:string,name:string,birthday:date,sex:string,marry:string,dept:string,grade:string,class:string,mobile:string,tel:string,email:string,is_contact:boolean,address:string,regaddress:string
 
 
+npx sequelize-cli model:generate --name CaseRecord --attributes memberUid:string,memberName:string,memberGrade:string,memberClass:string,caseCreator:string,assignUser:string,isClose:boolean
+
+
+
+
+
 
 
 

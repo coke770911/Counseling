@@ -13,6 +13,7 @@ const calendarRouter = require('./routes/calendar')
 const roomRouter = require('./routes/room')
 const memberRouter = require('./routes/member')
 const recordRouter = require('./routes/record')
+const caseRouter = require('./routes/case')
 
 const app = express()
 
@@ -56,6 +57,7 @@ app.use('/calendar', calendarRouter)
 app.use('/room', roomRouter)
 app.use('/member',memberRouter)
 app.use('/record',recordRouter)
+app.use('/case',caseRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

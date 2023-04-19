@@ -45,10 +45,39 @@ block content
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
-              return '<a class="btn btn-info mx-1" href="/member/view/'+value+'">查詢</a><a class="btn btn-success mx-1" href="/record/view/'+value+'">預約</a>'
+              return '<a class="btn btn-info mx-1" href="/member/view/'+value+'">查詢</a><button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">預約</button>'
             }
           },
         ],
+      })
+
+      //建立預約
+      document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
+        let target = event.target
+        if(!target.getAttribute("class")) { return }
+        if(target.getAttribute("class").indexOf("btn-CreatCase") !== -1) {
+          if(target.getAttribute("data-memberId")) {
+            let memberId = target.getAttribute("data-memberId");
+            Swal.fire({
+              title: '是否建立個案紀錄。',
+              showCancelButton: true,
+              confirmButtonText: '確認',
+              cancelButtonText: '取消',           
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.post('/case',{memberId: memberId}).then((res) => { 
+                  Swal.fire(res.data.msg)
+                }).catch((error) => { 
+                  Swal.fire(error.response.data.msg)
+                }).finally(() => { 
+                  mask.hide()
+                })
+                //Swal.fire('Saved!', '', 'success')
+              } 
+            })
+          }
+          
+        }
       })
 
       document.querySelector('#btn-search').addEventListener('click',(e) => {
@@ -57,12 +86,10 @@ block content
         .then((res) => { 
           table.setData(res.data);
         }).catch((error) => { 
-          console.error(error) 
+          Swal.fire(error.response.data.msg)
         }).finally(() => { 
           mask.hide()
         })
       })
-      
-
 
     })
