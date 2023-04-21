@@ -31,7 +31,7 @@ html(lang="en")
                 li
                   a.dropdown-item(href="#") 個管紀錄
                 li
-                  a.dropdown-item(href="#") 諮商紀錄
+                  a.dropdown-item(href="/record/view/0") 諮商紀錄
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" data-bs-toggle="dropdown" aria-expanded="false") 統計資料
               ul.dropdown-menu
@@ -44,14 +44,14 @@ html(lang="en")
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" data-bs-toggle="dropdown" aria-expanded="false") 系統設定
               ul.dropdown-menu
-                li
+                li(style="display:none;")
                   a.dropdown-item(href="#") 個人化設定
                 li
                   a.dropdown-item(href="#" id="pwdchange") 密碼修改
-                if [1,2].indexOf(user.auth) !== -1
+                if [1].indexOf(user.auth) !== -1
                   li
                     a.dropdown-item(href="/users/view") 權限設定
-                if [1,2].indexOf(user.auth) !== -1
+                if [1].indexOf(user.auth) !== -1
                   li
                     a.dropdown-item(href="/room/view") 空間設定
           .d-lg-flex.col-lg-3.justify-content-lg-end

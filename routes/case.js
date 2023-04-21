@@ -9,17 +9,78 @@ router.use((req, res, next) => {
   next()
 })
 
-router.get('/listview',(req, res, next) => {
-  res.render('case/listview')
+
+//建立個案UI
+router.get('/view', async (req, res, next) => {
+  let CaseData = {
+    id: req.query.id,
+    memberUid: '',
+    memberName: '',
+    memberSex: '',
+    memberDept: '',
+    memberGrade: '',
+    memberClass: '',
+    memberIdentity: 1,
+    memberSource: 1,
+    caseManage: 1,
+  }
+  
+  if(req.query.id === '0') {
+    const MemberData = await db.Member.findOne({
+      raw: true, 
+      where:{ id: req.query.memberId }
+    })
+    CaseData.memberUid = MemberData.uid
+    CaseData.memberName = MemberData.name
+    CaseData.memberSex = MemberData.sex
+    CaseData.memberDept = MemberData.dept
+    CaseData.memberGrade = MemberData. grade
+    CaseData.memberClass = MemberData.class
+  } else {
+    const MemberData = await db.CaseRecord.findOne({
+      raw: true, 
+      where:{ id: req.query.id }
+    })
+    CaseData = MemberData
+  }
+
+  //個案身份
+  const RefIdentityList = await db.RefIdentity.findAll()
+  //個案來源
+  const RefSourceList = await db.RefSource.findAll()
+  //個管員資料
+  const UserList = await db.UserData.findAll({
+    attributes: ['id', 'account', 'username', 'isDisabled'],
+    include: [{
+      model: db.UserAuth,
+      attributes: ['id', 'titleName']
+    }],
+    where: {
+      isDisabled: false,
+      id: {
+        [db.Sequelize.Op.ne]: 1
+      }
+    }
+  })
+
+  console.dir(UserList)
+
+  res.render('caserecord/caserecord_detailed',{ RefIdentityList: RefIdentityList, RefSourceList: RefSourceList, CaseData: CaseData , UserList: UserList})
 })
 
 
+router.get('/listview',(req, res, next) => {
+  res.render('caserecord/caserecord_list')
+})
+
+//個案追蹤清單
 router.get('/', async (req, res, next) => {
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
       { association: 'refcaseManage' , attributes: ['username']},
-      { association: 'refassignUser' , attributes: ['username']}
+      { association: 'refIdentity' },
+      { association: 'refSource' },
     ],
     order: [['id', 'DESC']]
   })
@@ -31,38 +92,43 @@ router.post('/', upload.none() , async (req, res, next) => {
   //抓取個案資料。
   const MemberData = await db.Member.findOne({
     raw: true, 
-    where:{ id: req.body.memberId }
+    where:{ uid: req.body.memberUid }
   })
 
   if(MemberData === null) {
     res.status(200).send(JSON.stringify({msg: '尚未建立個案基本資料。'}))
     return
   }
-
   //建立紀錄
   const [createdata, created] = await db.CaseRecord.findOrCreate({
     raw: true, 
     where: { 
       [db.Sequelize.Op.and]: [
         { memberUid: MemberData.uid }, 
+        { memberSource: req.body.memberSource},
         { isClose: 0 }
       ],
     },
     defaults: {
       memberUid: MemberData.uid,
       memberName: MemberData.name,
+      memberSex: MemberData.sex,
+      memberDept: MemberData.dept,
       memberGrade: MemberData.grade,
       memberClass: MemberData.class,
+      memberIdentity: req.body.memberIdentity,
+      memberSource: req.body.memberSource,
       caseCreator: req.session.account,
+      caseManage: req.body.caseManage,
     }
   })
 
-  console.dir(createdata)
   if(created) {
     res.status(200).send(JSON.stringify({msg: '建立完成。'}))
   } else {
     res.status(200).send(JSON.stringify({msg: '已有個案資料，尚未結案。'}))
   }
+
 })
 
 router.put('/', async (req, res, next) => {

@@ -15,19 +15,28 @@ module.exports = {
       memberName: {
         type: Sequelize.STRING
       },
+      memberSex: {
+        type: Sequelize.STRING
+      },
+      memberDept: {
+        type: Sequelize.STRING
+      },
       memberGrade: {
         type: Sequelize.STRING
       },
       memberClass: {
         type: Sequelize.STRING
       },
+      memberIdentity: {
+        type: Sequelize.INTEGER
+      },
+      memberSource: {
+        type: Sequelize.INTEGER
+      },
       caseCreator: {
         type: Sequelize.STRING
       },
       caseManage: {
-        type: Sequelize.STRING
-      },
-      assignUser: {
         type: Sequelize.STRING
       },
       isClose: {

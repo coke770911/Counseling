@@ -23,7 +23,7 @@ block content
         ajaxURL: "/case",
         ajaxConfig: "get",
         ajaxContentType: "json",
-        layout: "fitColumns",
+        layout: "fitDataStretch",
         minHeight: 300,
         maxHeight : "100%",
         placeholder: "尚無資料",
@@ -37,15 +37,19 @@ block content
         },
         columns: [
           {title: "#", formatter: "rownum", width: 50},
-          {title: "學號", field: "uid" },
-          {title: "學生姓名", field: "name"},
-          {title: "性別", field: "sex"},
-          {title: "系所年級", field: "deptfull", hozAlign: "left"},
+          {title: "學號", field: "memberUid" },
+          {title: "學生姓名", field: "memberName"},
+          {title: "性別", field: "memberSex"},
+          {title: "系所年級", field: "memberDeptFull", hozAlign: "left"},
+          {title: "個案身份", field: "refIdentity.content", hozAlign: "left"},
+          {title: "個案來源", field: "refSource.content", hozAlign: "left"},
+          {title: "個管員", field: "refcaseManage.username"},
+          {title: "案件進度", field: "isCloseName"},
           {title: "資料更新日期", field: "updatedLocal" },
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
-              return '<a class="btn btn-info mx-1" href="/member/view/'+value+'">查詢</a><button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">預約</button>'
+              return '<button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">指派</button><button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">晤談</button><button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">結案</button>'
             }
           },
         ],

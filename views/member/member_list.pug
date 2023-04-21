@@ -23,7 +23,7 @@ block content
         ajaxURL: "/member",
         ajaxConfig: "get",
         ajaxContentType: "json",
-        layout: "fitColumns",
+        layout: "fitDataStretch",
         minHeight: 300,
         maxHeight : "100%",
         placeholder: "尚無資料",
@@ -62,17 +62,23 @@ block content
               title: '是否建立個案紀錄。',
               showCancelButton: true,
               confirmButtonText: '確認',
-              cancelButtonText: '取消',           
+              cancelButtonText: '取消',
             }).then((result) => {
               if (result.isConfirmed) {
-                axios.post('/case',{memberId: memberId}).then((res) => { 
-                  Swal.fire(res.data.msg)
+                axios.get('/case/view',{ params: { id: 0,memberId: memberId } }).then(res => {
+                  let LoadHTML = document.createElement("div")
+                  LoadHTML.innerHTML = res.data
+                  Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
+                    let $script = document.createElement('script');
+                    $script.text = element.text
+                    LoadHTML.appendChild($script)
+                  })
+                  document.querySelector('body').prepend(LoadHTML)
                 }).catch((error) => { 
                   Swal.fire(error.response.data.msg)
-                }).finally(() => { 
+                }).finally(() =>{
                   mask.hide()
                 })
-                //Swal.fire('Saved!', '', 'success')
               } 
             })
           }

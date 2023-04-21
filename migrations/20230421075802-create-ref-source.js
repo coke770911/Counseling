@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('RefReasons', {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('RefSources', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -23,9 +23,9 @@ module.exports = {
       deletedAt: {
         type: Sequelize.DATE
       }
-    })
+    });
 
-    await queryInterface.bulkInsert('RefReasons', [
+    await queryInterface.bulkInsert('RefSources', [
       {
         content: '自行前來',
         createdAt: new Date(),
@@ -72,8 +72,9 @@ module.exports = {
         updatedAt: new Date()
       }
     ])
+
   },
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('RefReasons')
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('RefSources');
   }
-}
+};

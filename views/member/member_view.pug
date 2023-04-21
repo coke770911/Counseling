@@ -167,10 +167,19 @@ block content
         document.querySelector('#btn-update').addEventListener('click', e => {
           let data = new FormData(document.querySelector('#BaseData'));
           axios.put('/member',data).then((res) => {
-            console.dir(res.data)
             Swal.fire(res.data.msg).then((result) => {
               if(result.isConfirmed) {
-                
+                document.querySelector('#BaseData').reset()
+                Swal.fire({
+                  title: '是否要轉至個案基本資料進行開案動作。',
+                  showCancelButton: true,
+                  confirmButtonText: '是',
+                  cancelButtonText: '否',
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    document.location = '/member/listview'
+                  } 
+                })
               }
             })
           }).catch(error => { 
@@ -187,6 +196,16 @@ block content
             Swal.fire(res.data.msg).then((result) => {
               if(result.isConfirmed) {
                 document.querySelector('#BaseData').reset()
+                Swal.fire({
+                  title: '是否要轉至個案基本資料進行開案動作。',
+                  showCancelButton: true,
+                  confirmButtonText: '是',
+                  cancelButtonText: '否',
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    document.location = '/member/listview'
+                  } 
+                })
               }
             })
           }).catch(error => { 

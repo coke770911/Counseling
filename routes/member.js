@@ -37,8 +37,10 @@ router.get('/view/:id', async (req, res, next) => {
     contactRelation: '',
     contactTel: '',
     contactPhone: '',
-    creator: req.session.username,
-    editor: req.session.username,
+    creator: req.session.account,
+    creatorName: req.session.username,
+    editor: req.session.account,
+    editorName: req.session.username,
     updatedLocal: new Date().toLocaleString(),
   }
 
@@ -46,13 +48,12 @@ router.get('/view/:id', async (req, res, next) => {
     memberData = await db.Member.findOne({where: {id: req.params.id}})
     console.dir(memberData)
   }
-  
-  res.render('member/view', { title: '基本資料建檔',memberData: memberData})
+  res.render('member/member_view', { title: '基本資料建檔',memberData: memberData})
 })
 
 //個案資料列表介面
 router.get('/listview', async (req, res, next) => {
-  res.render('member/listview', { title: '基本資料建檔'})
+  res.render('member/member_list', { title: '基本資料建檔'})
 })
 
 //取得單筆
@@ -98,8 +99,8 @@ router.post('/', upload.none(), async (req, res, next) => {
       contactRelation: req.body.contactRelation,
       contactTel: req.body.contactTel,
       contactPhone: req.body.contactPhone,
-      creator: req.session.username,
-      editor: req.session.username,
+      creator: req.session.account,
+      editor: req.session.account,
     }
   })
   res.status(200).send(JSON.stringify({ msg: created ? '建立基本檔案完成。' : '已建立過檔案。' }))

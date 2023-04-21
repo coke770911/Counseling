@@ -1,0 +1,79 @@
+.modal.fade
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h1.modal-title.fs-5 個案追蹤
+        button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+      .modal-body
+        form(action="#" id="formData")
+          .mb-3
+            input(type="hidden" name="id" value=CaseData.id)
+            label.form-label 學號
+            input.form-control(type="text" readonly name="memberUid" id="memberUid" maxlength="20" value=CaseData.memberUid )
+          .mb-3
+            label.form-label 姓名
+            input.form-control(type="text" readonly name="memberName" id="memberName" maxlength="20" value=CaseData.memberName ) 
+          .mb-3
+            label.form-label 性別
+            input.form-control(type="text" readonly name="memberSex" id="memberSex" maxlength="20" value=CaseData.memberSex ) 
+          .mb-3
+            label.form-label 系所
+            input.form-control(type="text" readonly name="memberDept" id="memberDept" maxlength="20" value=CaseData.memberDept ) 
+          .mb-3
+            label.form-label 年級
+            input.form-control(type="text" readonly name="memberGrade" id="memberGrade" maxlength="20" value=CaseData.memberGrade ) 
+          .mb-3
+            label.form-label 年級
+            input.form-control(type="text" readonly name="memberClass" id="memberClass" maxlength="20" value=CaseData.memberClass ) 
+          .mb-3
+            label.form-label 個案身份
+            select.form-select(name="memberIdentity" id="memberIdentity")
+              each value in RefIdentityList
+                if value.id === CaseData.memberIdentity
+                  option(value=value.id selected) #{value.content}
+                else 
+                  option(value=value.id) #{value.content}
+          .mb-3
+            label.form-label 個案來源
+            select.form-select(name="memberSource" id="memberSource")
+              each value in RefSourceList
+                if value.id === CaseData.memberSource
+                  option(value=value.id selected) #{value.content}
+                else 
+                  option(value=value.id) #{value.content}
+            .mb-3
+            label.form-label 個管員
+            select.form-select(name="caseManage" id="caseManage")
+              each value in UserList
+                if value.account === CaseData.caseManage
+                  option(value=value.account selected) #{value.username}
+                else 
+                  option(value=value.account) #{value.username} #{value.UserAuth.titleName}
+      .modal-footer
+        if CaseData.id === 0 
+          buttin.btn.btn-primary(type="button" id="btn_create") 確認送出
+        else 
+          buttin.btn.btn-primary(type="button" id="btn_create") 確認修改
+        buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
+  script.
+    (function() {
+      //bs遠端模板載入
+      let ModalElement = document.querySelectorAll(".modal")[0]
+      let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})
+      ModalElement.addEventListener('hidden.bs.modal', event => {  
+        ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
+      })
+      modalMethod.show()
+      //axios
+      document.querySelector('#btn_create').addEventListener('click', (e) => {
+        let data = new FormData(document.querySelector('#formData'));
+        axios.post('/case',data).then((res) => { 
+          Swal.fire(res.data.msg)
+          modalMethod.hide()
+        }).catch((error) => { 
+          Swal.fire(error.response.data.msg)
+        }).finally(() => { 
+          mask.hide()
+        })
+      })      
+    })()

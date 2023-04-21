@@ -29,6 +29,7 @@ router.get('/view/:uid', async (req, res, next) => {
       }
     }
   })
+
   //個管員
   let talkManage = await db.UserData.findAll({
     raw: true,
@@ -39,14 +40,15 @@ router.get('/view/:uid', async (req, res, next) => {
     }],
     where: {userauthId: 2 }
   })
+  //個案來源
+  let ReasonList = await db.RefReason.findAll()
   //個案身份
   let RefIdentity = await db.RefIdentity.findAll()
   //危機評估
   let RefLevel = await db.RefLevel.findAll()
   //處理方式
   let RefProcess = await db.RefProcess.findAll()
-  //個案來源
-  let ReasonList = await db.RefReason.findAll()
+
   //主題來源
   let ThemeGroup1 = await db.RefTheme.findAll({where:{parentId:1}})
   let ThemeGroup2 = await db.RefTheme.findAll({where:{parentId:2}})
