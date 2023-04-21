@@ -43,11 +43,21 @@ router.get('/view/:id', async (req, res, next) => {
     editorName: req.session.username,
     updatedLocal: new Date().toLocaleString(),
   }
+  memberData.creatorName = req.session.username
+  memberData.editorName = req.session.username
 
   if(req.params.id !== 'new') {
-    memberData = await db.Member.findOne({where: {id: req.params.id}})
+    memberData = await db.Member.findOne({
+      include: [
+        { association: 'refCreator' , attributes: ['username']},
+        { association: 'refEditor' , attributes: ['username']},
+      ],
+      where: { id: req.params.id }})
     console.dir(memberData)
+    memberData.creatorName = memberData.refCreator.username
+    memberData.editorName = memberData.refEditor.username
   }
+  
   res.render('member/member_view', { title: '基本資料建檔',memberData: memberData})
 })
 
@@ -58,13 +68,23 @@ router.get('/listview', async (req, res, next) => {
 
 //取得單筆
 router.get('/:uid', async (req, res, next) => {
-  const MemberData = await db.Member.findOne({where:{uid: req.params.uid}})
+  const MemberData = await db.Member.findOne({
+    include: [
+      { association: 'refCreator' , attributes: ['username']},
+      { association: 'refEditor' , attributes: ['username']},
+    ],
+    where: { uid: req.params.uid }
+  })
   res.status(200).send(JSON.stringify([MemberData]))
 })
 
 //取得多筆
 router.get('/', async (req, res, next) => {
   const MemberList = await db.Member.findAll({
+    include: [
+      { association: 'refCreator' , attributes: ['username']},
+      { association: 'refEditor' , attributes: ['username']},
+    ],
     order: [['updatedAt','DESC']],
   });
   res.status(200).send(JSON.stringify(MemberList))

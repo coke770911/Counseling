@@ -107,11 +107,11 @@ block content
           .row.mb-2
             .col-12.text-end
               if memberData.uid === ''
-                label.mx-2 建檔人：#{memberData.creator}
+                label.mx-2 建檔人：#{memberData.creatorName}
                 label 建立時間：#{memberData.updatedLocal}
               else
-                label.mx-2 建檔人：#{memberData.creator}
-                label.mx-2 修改人：#{memberData.editor}
+                label.mx-2 建檔人：#{memberData.creatorName}
+                label.mx-2 修改人：#{memberData.editorName}
                 label 最後更新時間：#{memberData.updatedLocal}
           hr
           if memberData.uid !== ''
