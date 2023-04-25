@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       //CaseRecord.hasOne(models.UserData,{ as: 'aaa', sourceKey: 'caseCreator', foreignKey: 'account' });
       CaseRecord.belongsTo(models.UserData, { as: 'refcaseCreator' , targetKey: 'account' , foreignKey: 'caseCreator' })
       CaseRecord.belongsTo(models.UserData, { as: 'refcaseManage' , targetKey: 'account' , foreignKey: 'caseManage' })
+      CaseRecord.belongsTo(models.UserData, { as: 'refcaseAssign' , targetKey: 'account' , foreignKey: 'caseAssign' })
       CaseRecord.belongsTo(models.RefIdentity, { as: 'refIdentity' , foreignKey: 'memberIdentity' })
       CaseRecord.belongsTo(models.RefSource, { as: 'refSource' , foreignKey: 'memberSource' })
     }
@@ -35,6 +36,13 @@ module.exports = (sequelize, DataTypes) => {
     memberSource: DataTypes.INTEGER,
     caseCreator: DataTypes.STRING,
     caseManage: DataTypes.STRING,
+    caseAssign: DataTypes.STRING,
+    isAssign: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        return this.getDataValue('caseAssign') === null ? '未指派心理師' : '已指派心理師'
+      }
+    },
     isClose: DataTypes.BOOLEAN,
     isCloseName: {
       type: DataTypes.VIRTUAL,
@@ -45,13 +53,13 @@ module.exports = (sequelize, DataTypes) => {
     createdLocal: {
       type: DataTypes.VIRTUAL,
       get () {
-        return this.getDataValue('createdAt').toLocaleString()
+        return this.getDataValue('createdAt') === undefined ? '' : this.getDataValue('createdAt').toLocaleString()
       }
     },
     updatedLocal: {
       type: DataTypes.VIRTUAL,
       get () {
-        return this.getDataValue('updatedAt').toLocaleString()
+        return this.getDataValue('updatedAt') === undefined ? '' : this.getDataValue('updatedAt').toLocaleString()
       }
     },
   }, {

@@ -63,7 +63,7 @@ router.get('/view', async (req, res, next) => {
     }
   })
 
-  console.dir(UserList)
+  //console.dir(UserList)
 
   res.render('caserecord/caserecord_detailed',{ RefIdentityList: RefIdentityList, RefSourceList: RefSourceList, CaseData: CaseData , UserList: UserList})
 })
@@ -79,6 +79,7 @@ router.get('/', async (req, res, next) => {
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
       { association: 'refcaseManage' , attributes: ['username']},
+      { association: 'refcaseAssign' , attributes: ['username']},
       { association: 'refIdentity' },
       { association: 'refSource' },
     ],

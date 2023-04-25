@@ -1,0 +1,69 @@
+.modal.fade
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h1.modal-title.fs-5 行事曆資訊
+        button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+      .modal-body
+        form(action="#" id="formData")
+          input(type="hidden" name="CalendarId" id="CalendarId" value=CalendarData.id )
+          .mb-3
+            span 時間：#{new Date(CalendarData.start).toLocaleString()}
+            span 至 
+            span #{new Date(CalendarData.end).toLocaleString()}
+          .mb-3
+            label.form-label 事件標題
+            input.form-control(type="text" value=CalendarData.title readonly)
+          .mb-3
+            label.form-label 備註內容
+            textarea.form-control(rows="4" readonly) #{CalendarData.content}
+          if CalendarData.CaseRecord !== null
+            .mb-3
+              label.form-label 個案學號：#{CalendarData.CaseRecord.memberUid}
+            .mb-3
+              label.form-label 個案姓名：#{CalendarData.CaseRecord.memberName}
+            .mb-3
+              label.form-label 個案系級年班：#{CalendarData.CaseRecord.memberDeptFull}
+          if CalendarData.refcaseAssign !== null
+            .mb-3
+              label.form-label 負責心理師：#{CalendarData.refcaseAssign.username}
+          if CalendarData.Room !== null 
+            .mb-3
+              label.form-label 使用空間：#{CalendarData.Room.title}
+      .modal-footer
+        if [1].indexOf(user.auth) !== -1 || CalendarData.creator === user.account
+          buttin.btn.btn-danger(type="button" id="btn_del_event") 刪除此事件
+        if CalendarData.caseAssign === user.account
+          buttin.btn.btn-danger(type="button" id="btn_add_record") 填寫晤談紀錄
+        buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 關閉
+  script.
+    (function() {
+      let ModalElement = document.querySelectorAll(".modal")[0]
+      let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})
+      ModalElement.addEventListener('hidden.bs.modal', event => {  
+        ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
+      })
+      modalMethod.show()
+
+      if(document.querySelector('#btn_del_event') !== null) { 
+        document.querySelector('#btn_del_event').addEventListener('click', (e) => {
+          let CalendarId = calendar.getEventById(document.querySelector('#CalendarId').value)
+          mask.show()
+          axios.delete('/calendar/'+CalendarId.id).then((res) => {
+            modalMethod.hide()
+            CalendarId.remove()
+            Swal.fire(res.data.msg)
+          }).catch(error => { 
+            Swal.fire(error.response.data.msg)
+          }).finally(() => { mask.hide() })
+        })
+      }
+
+      if(document.querySelector('#btn_add_record') !== null) { 
+        document.querySelector('#btn_add_record').addEventListener('click', (e) => {
+          
+        })
+      }
+
+
+    })()

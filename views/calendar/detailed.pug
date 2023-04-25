@@ -23,18 +23,21 @@
               option(value="3") 重複三周
               option(value="4") 重複四周
           .mb-3
-            label.form-label 標題
+            label.form-label 事件標題
             input.form-control(type="text" name="title" id="title" maxlength="255")
           .mb-3
             label.form-label 備註內容
             textarea.form-control(name="content" id="content" rows="4" maxlength="255")
           .mb-3
             label.form-label 個案學號
-            input.form-control(type="text" name="memberId" id="memberId" maxlength="10")
+            select.form-select(name="caserecordId" id="caserecordId")
+              option(value="0") 無
+              each value in CaseRecordList
+                option(value=value.id) #{value.memberUid} #{value.memberName} (#{value.isAssign})
           .mb-3
             label.form-label 指派心理師
-            select.form-select(name="major" id="major")
-              option(value="0") 無
+            select.form-select(name="caseAssign" id="caseAssign")
+              option(value="") 無
               each value in UserData
                 option(value=value.account) #{value.username} #{value.UserAuth.titleName}
           .mb-3
@@ -59,7 +62,7 @@
       modalMethod.show()
       document.querySelector('#btn_process').addEventListener('click', (e) => {
         let data = new FormData(document.querySelector('#formData'));
-        data.append('majorName',document.querySelector('#major')[document.querySelector('#major').selectedIndex].text)
+        data.append('caseAssignName',document.querySelector('#caseAssign')[document.querySelector('#caseAssign').selectedIndex].text)
         axios.post('/calendar',data).then((res) => {
           Swal.fire(res.data.msg).then((result) => {
             if(result.isConfirmed) {

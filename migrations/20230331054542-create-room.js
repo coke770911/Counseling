@@ -51,6 +51,13 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       }
+      ,
+      {
+        title: '團體諮商室',
+        eventColor: '#3399FF',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
     ])
 
   },

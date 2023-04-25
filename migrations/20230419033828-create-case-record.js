@@ -38,6 +38,10 @@ module.exports = {
       },
       caseManage: {
         type: Sequelize.STRING
+        
+      },
+      caseAssign: {
+        type: Sequelize.STRING  
       },
       isClose: {
         type: Sequelize.BOOLEAN,

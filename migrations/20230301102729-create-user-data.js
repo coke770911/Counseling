@@ -71,14 +71,14 @@ module.exports = {
         account: 'ot221',
         password: '25d55ad283aa400af464c76d713c07ad',
         username: '李育珊',
-        userauthId: 3,
+        userauthId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
         account: 'ot222',
         password: '25d55ad283aa400af464c76d713c07ad',
         username: '游富翔',
-        userauthId: 3,
+        userauthId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
       }, {

@@ -36,7 +36,7 @@ block content
           {title: "狀態", field: "isDisabledName"},
           {title: "最後變更日期", field: "updatedLocal"},
           {title: "功能",field: "id",headerSort: false,
-            formatter:function(cell ,  formatterParams ){
+            formatter: function( cell , formatterParams ){
               let value = cell.getValue()
               return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>'
             }

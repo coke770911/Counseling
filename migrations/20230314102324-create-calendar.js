@@ -15,10 +15,10 @@ module.exports = {
       content: {
         type: Sequelize.STRING
       },
-      memberId: {
-        type: Sequelize.STRING
+      caserecordId: {
+        type: Sequelize.INTEGER
       },
-      major: {
+      caseAssign: {
         type: Sequelize.STRING
       },
       roomId: {

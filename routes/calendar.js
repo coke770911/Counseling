@@ -36,6 +36,18 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
     }
   })
 
+  const CaseRecordList = await db.CaseRecord.findAll({
+    include: [
+      { association: 'refcaseManage' , attributes: ['username']},
+      { association: 'refcaseAssign' , attributes: ['username']},
+      { association: 'refIdentity' },
+      { association: 'refSource' },
+    ],
+    wehere: { 
+      isClose: 0 },
+    order: [['updatedAt', 'DESC']]
+  })
+
   const RoomData = await db.Room.findAll({ where: { isDisabled: false } })
   let CalendarData = {};
   CalendarData.id = req.body.id
@@ -46,34 +58,34 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
   CalendarData.end = new Date(req.body.end).toISOString()
   CalendarData.allDay = req.body.allDay
   CalendarData.resourceId = req.body.resourceId
-  console.dir(req.body)
-  const Calendar = await db.Calendar.findAll({})
-  res.render('calendar/detailed', { title: '新增事件',UserData,RoomData,CalendarData: CalendarData})
+
+  res.render('calendar/detailed', { title: '新增事件',UserData,RoomData,CalendarData: CalendarData , CaseRecordList: CaseRecordList})
 })
 
-//查詢
-router.get('/detailed/:id', async (req, res, next) => {
-  let sql = "SELECT cd.content,cd.[id],cd.[title],cd.[setstaff],ISNULL(staff.username,'無') AS staffName,ISNULL(ua.titleName,'無') AS titleName,cd.[venuespaceId],ISNULL(vs.spaceName,'無') AS spaceName,cd.[start],cd.[end],cd.[allDay],cd.[creatorPople],ca.username AS creatorPopleName,cd.[modifyPople],md.username AS modifyPopleName "
-  sql += ' FROM [Counseling].[dbo].[CalendarData] AS cd '
-  sql += ' LEFT JOIN [Counseling].[dbo].[VenueSpaces] AS vs ON vs.id = cd.[venuespaceId] '
-  sql += ' LEFT JOIN [Counseling].[dbo].[UserData] AS staff ON staff.account = cd.[setstaff] '
-  sql += ' LEFT JOIN [Counseling].[dbo].[UserAuths] AS ua ON ua.id = staff.userauthId  '
-  sql += ' LEFT JOIN [Counseling].[dbo].[UserData] AS ca ON ca.account = cd.[creatorPople] '
-  sql += ' LEFT JOIN [Counseling].[dbo].[UserData] AS md ON md .account = cd.[modifyPople] '
-  sql += ' WHERE cd.[deletedAt] IS NULL AND cd.id = :id'
-  const Calendardata = await db.sequelize.query(sql, {
-    replacements: { id: req.params.id },
-    type: db.sequelize.QueryTypes.SELECT,
-    nest: true
+//查詢事件資訊
+router.get('/info/:id', async (req, res, next) => {
+  const CalendarData = await db.Calendar.findOne({
+    include: [
+      { association: 'refcaseAssign' , attributes: ['username']},
+      { association: 'refcaseCreator' , attributes: ['username']},
+      db.CaseRecord,
+      db.Room,
+    ],
+    where: {
+      id: req.params.id 
+    }
   })
-  console.dir(Calendardata)
-  res.render('calendar/detailed', { Calendardata: Calendardata[0], aa: 'abc' })
+  /*
+  console.log(JSON.stringify(res.locals.user,null,4))
+  console.log(JSON.stringify(CalendarData,null,4))
+  */
+  res.render('calendar/info',{CalendarData: CalendarData})
 })
 
 
 //撈取行事曆
 router.get('/', async (req, res, next) => {
-  const Calendardata = await db.Calendar.findAll({})
+  const Calendardata = await db.Calendar.findAll()
   res.status(200).send(JSON.stringify(Calendardata))
 })
 
@@ -84,12 +96,26 @@ router.post('/', upload.none(), async (req, res, next) => {
   let end = new Date(req.body.end)
   let i = 0
 
+  let title = req.body.title
+  if(req.body.caserecordId !== '0') {
+    title = req.body.caseAssignName + '&' + title
+  }
+
+  //案件寫入派任心理師
+  db.CaseRecord.update({
+    caseAssign: req.body.caseAssign,
+  },{
+    where: {
+      id: req.body.caserecordId
+    }
+  })
+
   do {
     let Calendar = await db.Calendar.create({
-      title: req.body.title,
+      title: title,
       content: req.body.content,
-      memberId: req.body.memberId || '',
-      major: req.body.major,
+      caserecordId: req.body.caserecordId || '',
+      caseAssign: req.body.caseAssign,
       roomId: req.body.roomId,
       start: start,
       end: end,
@@ -120,8 +146,8 @@ router.put('/', upload.none(), async (req, res, next) => {
 
 //刪除行事曆行程
 router.delete('/:id', async (req, res, next) => {
-  const Calendardata = await db.Calendar.destroy({where: {id: req.params.id }})
-  res.status(200).send(JSON.stringify({ msg: '已刪除行程！', Calendardata: Calendardata }))
+  const Calendardata = await db.Calendar.destroy({ where: { id: req.params.id }})
+  res.status(200).send(JSON.stringify({ msg: '已刪除事件！', Calendardata: Calendardata }))
 })
 
 module.exports = router

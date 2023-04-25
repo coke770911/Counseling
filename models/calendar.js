@@ -10,14 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      // define association here
+      Calendar.belongsTo(models.UserData, { as: 'refcaseAssign' , targetKey: 'account' , foreignKey: 'caseAssign' })
+      Calendar.belongsTo(models.UserData, { as: 'refcaseCreator' , targetKey: 'account' , foreignKey: 'creator' })
+      Calendar.belongsTo(models.CaseRecord, { foreignKey: 'caserecordId' })
     }
   }
   Calendar.init({
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    memberId: DataTypes.STRING,
-    major: DataTypes.STRING,
+    caserecordId: DataTypes.INTEGER,
+    caseAssign: DataTypes.STRING,
     roomId: DataTypes.INTEGER,
     resourceId: {
       type: DataTypes.VIRTUAL,
