@@ -64,12 +64,9 @@
         let data = new FormData(document.querySelector('#formData'));
         data.append('caseAssignName',document.querySelector('#caseAssign')[document.querySelector('#caseAssign').selectedIndex].text)
         axios.post('/calendar',data).then((res) => {
+          calendar.refetchEvents()
           Swal.fire(res.data.msg).then((result) => {
             if(result.isConfirmed) {
-              res.data.Calendardata.forEach(element => {
-                calendar.addEvent(element)
-                console.dir(element)
-              });
               modalMethod.hide()
             }
           })

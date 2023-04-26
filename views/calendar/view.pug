@@ -88,7 +88,7 @@ block content
           mask.hide()
         })
       },
-      eventChange: (arg,a,b,c) => {
+      eventChange: (arg) => {
         mask.show()
         let data = new FormData()
         data.append('id', arg.event.id)
@@ -96,12 +96,14 @@ block content
         data.append('end', arg.event.end)
         data.append('allDay', arg.event.allDay)
         data.append('resourceId', arg.event.getResources()[0] === null ? 0 : arg.event.getResources()[0].id)    
-        axios.put('/calendar',data).then(res => {
-        }).catch((error) => { 
+        axios.put('/calendar',data).catch((error) => { 
           Swal.fire(error.response.data.msg)
         }).finally(() =>{
           mask.hide()
         })
+      },
+      eventsSet: (arg) => {
+        console.dir(arg)
       },
       resourceAreaHeaderContent: '空間名稱',
       resources: '/room',

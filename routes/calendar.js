@@ -62,7 +62,7 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
   res.render('calendar/detailed', { title: '新增事件',UserData,RoomData,CalendarData: CalendarData , CaseRecordList: CaseRecordList})
 })
 
-//查詢事件資訊
+//查詢行事曆事件資訊
 router.get('/info/:id', async (req, res, next) => {
   const CalendarData = await db.Calendar.findOne({
     include: [
@@ -75,17 +75,23 @@ router.get('/info/:id', async (req, res, next) => {
       id: req.params.id 
     }
   })
-  /*
+  
   console.log(JSON.stringify(res.locals.user,null,4))
   console.log(JSON.stringify(CalendarData,null,4))
-  */
+
   res.render('calendar/info',{CalendarData: CalendarData})
 })
 
 
 //撈取行事曆
 router.get('/', async (req, res, next) => {
-  const Calendardata = await db.Calendar.findAll()
+  const Calendardata = await db.Calendar.findAll({
+    where: {
+      start: {
+        [db.Sequelize.Op.between]: [req.query.start,req.query.end]
+      }
+    }
+  })
   res.status(200).send(JSON.stringify(Calendardata))
 })
 
@@ -97,6 +103,12 @@ router.post('/', upload.none(), async (req, res, next) => {
   let i = 0
 
   let title = req.body.title
+
+  if(title === '') {
+    res.status(400).send(JSON.stringify({ msg: '請輸入事件標題。', Calendardata }))
+    return 
+  }
+
   if(req.body.caserecordId !== '0') {
     title = req.body.caseAssignName + '&' + title
   }

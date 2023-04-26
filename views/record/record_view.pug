@@ -22,9 +22,7 @@ block content
       .col-2
         label 身份
       .col-2.text-start
-        select
-          each value in caseType
-            option(value=value.val) #{value.content} 
+
       .col-2
         label 日期
       .col-2.text-start
@@ -37,15 +35,10 @@ block content
       .col-2
         label 會談心理師
       .col-2.text-start
-        select
-          each value in talkMajor
-            option(value=value.val) #{value.content} 
       .col-2
         label 系個管員
       .col-2.text-start
-        select
-          each value in talkManage
-            option(value=value.val) #{value.content} 
+      
       .col-2
         label 危機評估
       .col-2.text-start
@@ -62,9 +55,7 @@ block content
       .col-2
         label 個案來源
       .col-2.text-start
-        select
-          each value in caseSource
-            option(value=value.id) #{value.content}     
+          
       .col-2
         label 說明
       .col-2.text-start

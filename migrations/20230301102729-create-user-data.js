@@ -46,52 +46,43 @@ module.exports = {
         userauthId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
-      }, {
-        account: 'fx048',
-        password: '25d55ad283aa400af464c76d713c07ad',
-        username: '張韶砡',
-        userauthId: 2,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }, {
+      }, 
+      {
         account: 'fz108',
         password: '25d55ad283aa400af464c76d713c07ad',
         username: '楊茜燁',
         userauthId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
-      }, {
+      }, 
+      {
+        account: 'fx048',
+        password: '25d55ad283aa400af464c76d713c07ad',
+        username: '張韶砡',
+        userauthId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }, 
+      {
         account: 'fz118',
         password: '25d55ad283aa400af464c76d713c07ad',
         username: '楊智雅',
         userauthId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
-      }, {
+      }, 
+      {
         account: 'ot221',
         password: '25d55ad283aa400af464c76d713c07ad',
         username: '李育珊',
         userauthId: 4,
         createdAt: new Date(),
         updatedAt: new Date()
-      }, {
+      }, 
+      {
         account: 'ot222',
         password: '25d55ad283aa400af464c76d713c07ad',
         username: '游富翔',
-        userauthId: 4,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }, {
-        account: 'fz083',
-        password: '25d55ad283aa400af464c76d713c07ad',
-        username: '徐佐壹',
-        userauthId: 4,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }, {
-        account: 'ot088',
-        password: '25d55ad283aa400af464c76d713c07ad',
-        username: '蔡易勳',
         userauthId: 4,
         createdAt: new Date(),
         updatedAt: new Date()

@@ -14,55 +14,36 @@ router.use((req, res, next) => {
   next()
 })
 
-router.get('/view/:uid', async (req, res, next) => {
-  //心理師
-  let talkMajor = await db.UserData.findAll({
-    raw: true,
-    attributes: [['account','val'], ['username','content']],
-    include: [{
-      model: db.UserAuth,
-      attributes: ['id', 'titleName']
-    }],
-    where: {
-      userauthId: {
-        [db.Sequelize.Op.in]: [3,4]
-      }
+router.get('/view', async (req, res, next) => {
+  //個案基本資料
+  console.dir(req.params)
+  const CaseRecordList = await db.CaseRecord.findOne({
+    include: [
+      { association: 'refcaseCreator' , attributes: ['username']},
+      { association: 'refcaseManage' , attributes: ['username']},
+      { association: 'refcaseAssign' , attributes: ['username']},
+      { association: 'refIdentity' },
+      { association: 'refSource' },
+    ],
+    where: { 
+      id: 1 
     }
   })
 
-  //個管員
-  let talkManage = await db.UserData.findAll({
-    raw: true,
-    attributes: [['account','val'], ['username','content']],
-    include: [{
-      model: db.UserAuth,
-      attributes: ['id', 'titleName']
-    }],
-    where: {userauthId: 2 }
-  })
-  //個案來源
-  let ReasonList = await db.RefReason.findAll()
-  //個案身份
-  let RefIdentity = await db.RefIdentity.findAll()
   //危機評估
   let RefLevel = await db.RefLevel.findAll()
   //處理方式
   let RefProcess = await db.RefProcess.findAll()
-
   //主題來源
   let ThemeGroup1 = await db.RefTheme.findAll({where:{parentId:1}})
   let ThemeGroup2 = await db.RefTheme.findAll({where:{parentId:2}})
   let ThemeGroup3 = await db.RefTheme.findAll({where:{parentId:3}})
   let ThemeGroup4 = await db.RefTheme.findAll({where:{parentId:4}})
 
-  res.render('record/view', { 
+  res.render('record/record_view', { 
     title: '基本資料建檔',
-    talkMajor: talkMajor,
-    talkManage: talkManage,
-    caseType: RefIdentity,
     caseLevel: RefLevel,
     caseProcess: RefProcess,
-    caseSource: ReasonList,
     ThemeGroup1: ThemeGroup1,
     ThemeGroup2: ThemeGroup2,
     ThemeGroup3: ThemeGroup3,
