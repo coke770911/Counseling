@@ -5,61 +5,54 @@ block content
     .row.mb-1.text-center
       .col 
         h3 亞東科技大學諮商中心諮商服務紀錄表
-    .row.mb-1.text-center
+    .row.mb-1.text-left
       .col-2
         label 學號
       .col-2.text-start
-        label 112101101
+        label #{CaseRecordData.memberUid}
       .col-2
         label 姓名
       .col-2.text-start
-        label 徐佐壹
+        label #{CaseRecordData.memberName}
       .col-2
         label 系級
       .col-2.text-start
-        label 日間部資訊管理系4年A班
-    .row.mb-1.text-center
+        label #{CaseRecordData.memberDeptFull}
+    .row.mb-1.text-left
       .col-2
         label 身份
       .col-2.text-start
-
+        label #{CaseRecordData.refIdentity.content}
+      .col-2
+        label 個案來源
+      .col-2.text-start
+        label #{CaseRecordData.refSource.content} 
       .col-2
         label 日期
       .col-2.text-start
-        input(type="date" name="")
-      .col-2
-        label 時間
-      .col-2.text-start
-        input(type="time" name="")
-    .row.mb-1.text-center
+        input(type="datetime" name="")
+    .row.mb-1.text-left
       .col-2
         label 會談心理師
       .col-2.text-start
+        label #{CaseRecordData.refcaseAssign.username} 
       .col-2
         label 系個管員
       .col-2.text-start
-      
+        label #{CaseRecordData.refcaseManage.username} 
+    .row.mb-1.text-left
+      .col-2
+        label 處理方式
+      .col-2.text-start
+        select
+          each value in caseProcess
+            option(value=value.id) #{value.content}
       .col-2
         label 危機評估
       .col-2.text-start
         select
           each value in caseLevel
             option(value=value.id) #{value.content}  
-    .row.mb-1.text-center
-      .col-2
-        label 處理方式
-      .col-2.text-start
-        select
-          each value in caseProcess
-            option(value=value.id) #{value.content}  
-      .col-2
-        label 個案來源
-      .col-2.text-start
-          
-      .col-2
-        label 說明
-      .col-2.text-start
-        label 日間部資訊管理系4年A班
     .row.mb-1
       .col
         p.h6 會談主題

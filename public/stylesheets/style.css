@@ -1,3 +1,10 @@
 .fc-license-message {
   display: none;
 }
+
+@media print { 
+  select {
+    border: 0px;
+    appearance: none;
+  }
+}

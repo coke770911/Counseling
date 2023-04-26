@@ -16,8 +16,8 @@ router.use((req, res, next) => {
 
 router.get('/view', async (req, res, next) => {
   //個案基本資料
-  console.dir(req.params)
-  const CaseRecordList = await db.CaseRecord.findOne({
+  console.dir(req.query)
+  const CaseRecordData = await db.CaseRecord.findOne({
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
       { association: 'refcaseManage' , attributes: ['username']},
@@ -26,22 +26,26 @@ router.get('/view', async (req, res, next) => {
       { association: 'refSource' },
     ],
     where: { 
-      id: 1 
+      id: req.query.CaseRecordId
     }
   })
+  console.dir(JSON.stringify(CaseRecordData,null,4))
 
+  //CalendarId
+  //RecordId
   //危機評估
   let RefLevel = await db.RefLevel.findAll()
   //處理方式
   let RefProcess = await db.RefProcess.findAll()
   //主題來源
-  let ThemeGroup1 = await db.RefTheme.findAll({where:{parentId:1}})
-  let ThemeGroup2 = await db.RefTheme.findAll({where:{parentId:2}})
-  let ThemeGroup3 = await db.RefTheme.findAll({where:{parentId:3}})
-  let ThemeGroup4 = await db.RefTheme.findAll({where:{parentId:4}})
+  let ThemeGroup1 = await db.RefTheme.findAll({ where: { parentId: 1 }})
+  let ThemeGroup2 = await db.RefTheme.findAll({ where: { parentId: 2 }})
+  let ThemeGroup3 = await db.RefTheme.findAll({ where: { parentId: 3 }})
+  let ThemeGroup4 = await db.RefTheme.findAll({ where: { parentId: 4 }})
 
   res.render('record/record_view', { 
     title: '基本資料建檔',
+    CaseRecordData: CaseRecordData,
     caseLevel: RefLevel,
     caseProcess: RefProcess,
     ThemeGroup1: ThemeGroup1,

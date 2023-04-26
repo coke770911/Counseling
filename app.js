@@ -33,7 +33,6 @@ app.use('/stylesheets/bootstrap', express.static(path.join(__dirname, 'node_modu
 // tabulator-tables
 app.use('/javascripts/tabulator-tables', express.static(path.join(__dirname, 'node_modules/tabulator-tables/dist/js')))
 app.use('/stylesheets/tabulator-tables', express.static(path.join(__dirname, 'node_modules/tabulator-tables/dist/css')))
-
 //fullcalendar
 app.use('/javascripts/fullcalendar', express.static(path.join(__dirname, 'node_modules/fullcalendar')))
 // sweetalert2/dist

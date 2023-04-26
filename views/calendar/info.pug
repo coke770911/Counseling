@@ -35,7 +35,7 @@
         if [1].indexOf(user.auth) !== -1 || CalendarData.creator === user.account
           buttin.btn.btn-danger(type="button" id="btn_del_event") 刪除此事件
         if CalendarData.caseAssign === user.account
-          buttin.btn.btn-danger(type="button" id="btn_add_record") 填寫晤談紀錄
+          button.btn.btn-danger(type="button" id="btn_add_record") 填寫晤談紀錄
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 關閉
   script.
     (function() {
@@ -45,7 +45,7 @@
         ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
       })
       modalMethod.show()
-
+      
       if(document.querySelector('#btn_del_event') !== null) { 
         document.querySelector('#btn_del_event').addEventListener('click', (e) => {
           let CalendarId = calendar.getEventById(document.querySelector('#CalendarId').value)
@@ -59,22 +59,24 @@
           }).finally(() => { mask.hide() })
         })
       }
-
+      
       if(document.querySelector('#btn_add_record') !== null) { 
         document.querySelector('#btn_add_record').addEventListener('click', (e) => {
-          let CalendarId = document.querySelector('#CalendarId').value
-          let CaseRecordId = document.querySelector('#CaseRecordId').value
+          let QueryStringObj = {}
+          QueryStringObj.CaseRecordId = document.querySelector('#CaseRecordId').value
+          QueryStringObj.CalendarId = document.querySelector('#CalendarId').value
+          QueryStringObj.RecordId = 0
+          document.location.href = '/record/view?'+new URLSearchParams(QueryStringObj).toString()
+          /*
           mask.show()
           axios.get('/record/view/',{ 
-              params: { 
-                CaseRecordId: CaseRecordId,
-                CalendarId: CalendarId
-            } 
+              params: QueryStringObj
           }).then((res) => {
-            Swal.fire(res.data.msg)
+            
           }).catch(error => { 
             Swal.fire(error.response.data.msg)
           }).finally(() => { mask.hide() })
-        })
+          */
+        }) 
       }
     })()
