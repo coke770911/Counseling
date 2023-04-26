@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         return this.getDataValue('roomId')
       }
     },
+    talkId: DataTypes.INTEGER,
     start: DataTypes.DATE,
     end: DataTypes.DATE,
     allDay: DataTypes.BOOLEAN,

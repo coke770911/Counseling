@@ -21,6 +21,10 @@ module.exports = {
       caseAssign: {
         type: Sequelize.STRING
       },
+      talkId:{
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
       roomId: {
         type: Sequelize.INTEGER
       },

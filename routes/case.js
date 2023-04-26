@@ -9,7 +9,6 @@ router.use((req, res, next) => {
   next()
 })
 
-
 //建立個案UI
 router.get('/view', async (req, res, next) => {
   let CaseData = {
@@ -62,9 +61,8 @@ router.get('/view', async (req, res, next) => {
       }
     }
   })
-
   //console.dir(UserList)
-
+  console.dir(CaseData)
   res.render('caserecord/caserecord_detailed',{ RefIdentityList: RefIdentityList, RefSourceList: RefSourceList, CaseData: CaseData , UserList: UserList})
 })
 
@@ -73,8 +71,10 @@ router.get('/listview',(req, res, next) => {
   res.render('caserecord/caserecord_list')
 })
 
+
 //個案追蹤清單
-router.get('/', async (req, res, next) => {
+router.get('/:user', async (req, res, next) => {
+  if([1].indexOf(req.session.auth) !== -1) {}
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
@@ -83,9 +83,11 @@ router.get('/', async (req, res, next) => {
       { association: 'refIdentity' },
       { association: 'refSource' },
     ],
+    //where: { memberUid: },
     order: [['id', 'DESC']]
   })
   res.status(200).send(JSON.stringify(CaseRecordList))
+
 })
 
 //建立個案紀錄
@@ -132,12 +134,21 @@ router.post('/', upload.none() , async (req, res, next) => {
 
 })
 
-router.put('/', async (req, res, next) => {
-
+router.put('/', upload.none(), async (req, res, next) => {
+  const updatedata = await db.CaseRecord.update({
+    memberIdentity: req.body.memberIdentity,
+    memberSource: req.body.memberSource,
+    caseManage: req.body.caseManage
+  },{
+    where: {id: req.body.id}
+  })
+  console.dir(updatedata)
+  res.status(200).send(JSON.stringify({msg: '更新完成。'}))
 })
 
 router.delete('/', async (req, res, next) => {
-
+  const deleted = await db.CaseRecord.destroy({where: {id: req.query.id}})
+  res.status(200).send(JSON.stringify({msg: deleted ? '已刪除個案追蹤資料。' : '刪除失敗。'}))
 })
 
 

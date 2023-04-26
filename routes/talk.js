@@ -43,7 +43,7 @@ router.get('/view', async (req, res, next) => {
   let ThemeGroup3 = await db.RefTheme.findAll({ where: { parentId: 3 }})
   let ThemeGroup4 = await db.RefTheme.findAll({ where: { parentId: 4 }})
 
-  res.render('record/record_view', { 
+  res.render('talkrecord/talkrecord_view', { 
     title: '基本資料建檔',
     CaseRecordData: CaseRecordData,
     caseLevel: RefLevel,

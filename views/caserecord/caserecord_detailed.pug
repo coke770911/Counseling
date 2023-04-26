@@ -50,10 +50,10 @@
                 else 
                   option(value=value.account) #{value.username} #{value.UserAuth.titleName}
       .modal-footer
-        if CaseData.id === 0 
+        if CaseData.id === '0' 
           buttin.btn.btn-primary(type="button" id="btn_create") 確認送出
         else 
-          buttin.btn.btn-primary(type="button" id="btn_create") 確認修改
+          buttin.btn.btn-primary(type="button" id="btn_update") 確認修改
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
   script.
     (function() {
@@ -65,15 +65,30 @@
       })
       modalMethod.show()
       //axios
-      document.querySelector('#btn_create').addEventListener('click', (e) => {
-        let data = new FormData(document.querySelector('#formData'));
-        axios.post('/case',data).then((res) => { 
-          Swal.fire(res.data.msg)
-          modalMethod.hide()
-        }).catch((error) => { 
-          Swal.fire(error.response.data.msg)
-        }).finally(() => { 
-          mask.hide()
-        })
-      })      
+      if(document.querySelector('#btn_create') !== null) { 
+        document.querySelector('#btn_create').addEventListener('click', (e) => {
+          let data = new FormData(document.querySelector('#formData'));
+          axios.post('/case',data).then((res) => { 
+            Swal.fire(res.data.msg)
+            modalMethod.hide()
+          }).catch((error) => { 
+            Swal.fire(error.response.data.msg)
+          }).finally(() => { 
+            mask.hide()
+          })
+        })   
+      }
+      if(document.querySelector('#btn_update') !== null) { 
+        document.querySelector('#btn_update').addEventListener('click', (e) => {
+          let data = new FormData(document.querySelector('#formData'));
+          axios.put('/case',data).then((res) => { 
+            Swal.fire(res.data.msg)
+            modalMethod.hide()
+          }).catch((error) => { 
+            Swal.fire(error.response.data.msg)
+          }).finally(() => { 
+            mask.hide()
+          })
+        })   
+      }
     })()

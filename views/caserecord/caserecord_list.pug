@@ -20,7 +20,7 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
-        ajaxURL: "/case",
+        ajaxURL: "/case/all",
         ajaxConfig: "get",
         ajaxContentType: "json",
         layout: "fitDataTable",
@@ -46,14 +46,95 @@ block content
           {title: "個管員", field: "refcaseManage.username"},
           {title: "心理師", field: "refcaseAssign.username"},
           {title: "案件進度", field: "isCloseName"},
-          {title: "資料更新日期", field: "updatedLocal" },
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
-              return '<button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">指派</button><button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">晤談</button><button class="btn btn-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">結案</button>'
+              let buttonString = '<button class="btn btn-primary mx-1 btn-CreatTalk" type="button" data-caseId="'+value+'">晤談</button><button class="btn btn-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
+              let auth = #{user.auth}
+              if([1].indexOf(auth) !== -1)
+                buttonString += '<button class="btn btn-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button><button class="btn btn-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
+              return buttonString
             }
           },
         ],
+      })
+
+      document.querySelector('#btn-search').addEventListener('click',(e) => {
+        mask.show()
+        axios.get('/case/'+document.querySelector('#txt-search').value)
+        .then((res) => { 
+          table.setData(res.data);
+        }).catch((error) => { 
+          Swal.fire(error.response.data.msg)
+        }).finally(() => { 
+          mask.hide()
+        })
+      })
+
+      document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
+        let target = event.target
+        if(!target.getAttribute("class")) { return }
+
+        if(target.getAttribute("class").indexOf("btn-CreatTalk") !== -1) {
+          console.dir('A')
+        }
+
+        if(target.getAttribute("class").indexOf("btn-CloseCase") !== -1) {
+          console.dir('B')
+        }
+        //delete
+        if(target.getAttribute("class").indexOf("btn-DelCase") !== -1) {
+          if(target.getAttribute("data-caseId")) {
+            let caseId = target.getAttribute("data-caseId");
+            Swal.fire({
+              title: '是否刪除個案。',
+              showCancelButton: true,
+              confirmButtonText: '確認',
+              cancelButtonText: '取消',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.delete('/case',{ params: { id: caseId } }).then( res => {
+                  Swal.fire(res.data.msg).then((result) => {
+                    document.location.reload()
+                  })
+                }).catch((error) => { 
+                  Swal.fire(error.response.data.msg)
+                }).finally(() =>{
+                  mask.hide()
+                })
+              } 
+            })
+          }
+        }
+        //update
+        if(target.getAttribute("class").indexOf("btn-CreatCase") !== -1) {
+          if(target.getAttribute("data-caseId")) {
+            let caseId = target.getAttribute("data-caseId");
+            Swal.fire({
+              title: '是否修改個案。',
+              showCancelButton: true,
+              confirmButtonText: '確認',
+              cancelButtonText: '取消',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.get('/case/view',{ params: { id: caseId } }).then(res => {
+                  let LoadHTML = document.createElement("div")
+                  LoadHTML.innerHTML = res.data
+                  Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
+                    let $script = document.createElement('script');
+                    $script.text = element.text
+                    LoadHTML.appendChild($script)
+                  })
+                  document.querySelector('body').prepend(LoadHTML)
+                }).catch((error) => { 
+                  Swal.fire(error.response.data.msg)
+                }).finally(() =>{
+                  mask.hide()
+                })
+              } 
+            })
+          }
+        }
       })
 
     })

@@ -6,50 +6,33 @@ block content
       .col 
         h3 亞東科技大學諮商中心諮商服務紀錄表
     .row.mb-1.text-left
-      .col-2
-        label 學號
-      .col-2.text-start
-        label #{CaseRecordData.memberUid}
-      .col-2
-        label 姓名
-      .col-2.text-start
-        label #{CaseRecordData.memberName}
-      .col-2
-        label 系級
-      .col-2.text-start
-        label #{CaseRecordData.memberDeptFull}
+      .col-4
+        label 學號：#{CaseRecordData.memberUid}
+      .col-4
+        label 姓名：#{CaseRecordData.memberName}
+      .col-4
+        label 系級：#{CaseRecordData.memberDeptFull}
     .row.mb-1.text-left
-      .col-2
-        label 身份
-      .col-2.text-start
-        label #{CaseRecordData.refIdentity.content}
-      .col-2
-        label 個案來源
-      .col-2.text-start
-        label #{CaseRecordData.refSource.content} 
-      .col-2
-        label 日期
-      .col-2.text-start
-        input(type="datetime" name="")
+      .col-4
+        label 身份：#{CaseRecordData.refIdentity.content}
+      .col-4
+        label 個案來源：#{CaseRecordData.refSource.content} 
+      .col-4
+        label 日期：
+        input(type="datetime-local" name="")   
     .row.mb-1.text-left
-      .col-2
-        label 會談心理師
-      .col-2.text-start
-        label #{CaseRecordData.refcaseAssign.username} 
-      .col-2
-        label 系個管員
-      .col-2.text-start
-        label #{CaseRecordData.refcaseManage.username} 
+      .col-4
+        label 會談心理師：#{CaseRecordData.refcaseAssign.username} 
+      .col-4
+        label 個管員：#{CaseRecordData.refcaseManage.username}
     .row.mb-1.text-left
-      .col-2
-        label 處理方式
-      .col-2.text-start
+      .col-4
+        label 處理方式：
         select
           each value in caseProcess
-            option(value=value.id) #{value.content}
-      .col-2
-        label 危機評估
-      .col-2.text-start
+            option(value=value.id) #{value.content}     
+      .col-4
+        label 危機評估：
         select
           each value in caseLevel
             option(value=value.id) #{value.content}  
