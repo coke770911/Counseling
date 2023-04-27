@@ -12,7 +12,7 @@
             input.form-control(type="text" name="title" id="title" maxlength="20" value=RoomData.title ) 
           .mb-3
             label.form-label 標籤顏色
-            input.form-control(type="text" name="eventColor" id="eventColor" data-jscolor="{}" value=RoomData.eventColor )
+            input.form-control(type="color" name="eventColor" id="eventColor" value=RoomData.eventColor )
           .form-check
             if RoomData.isDisabled
               input.form-check-input(type="checkbox" name="isDisabled" value="1" checked)
@@ -27,8 +27,6 @@
         buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
   script.
     (function() {
-      //選色器
-      jscolor.install()
       //bs遠端模板載入
       let ModalElement = document.querySelectorAll(".modal")[0]
       let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})

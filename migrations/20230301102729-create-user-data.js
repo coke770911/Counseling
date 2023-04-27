@@ -18,6 +18,14 @@ module.exports = {
       username: {
         type: Sequelize.STRING(20)
       },
+      color: {
+        type: Sequelize.STRING(20),
+        defaultValue: '#198754',
+      },
+      textColor: {
+        type: Sequelize.STRING(20),
+        defaultValue: '#ffffff',
+      },
       userauthId: {
         type: Sequelize.INTEGER
       },
@@ -37,6 +45,8 @@ module.exports = {
         type: Sequelize.DATE
       }
     })
+
+
 
     await queryInterface.bulkInsert('UserData', [
       {

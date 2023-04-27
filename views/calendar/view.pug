@@ -15,10 +15,11 @@ block content
       headerToolbar: {
         left: 'today prev,next' ,
         center: 'title' ,
-        right: 'resourceTimelineDay,resourceTimelineThreeDays,resourceTimeGridDay,resourceTimeGridFourDay,timeGridWeek,dayGridMonth,listWeek' ,
+        right: 'resourceTimeGridDay,resourceTimeGridFourDay,timeGridWeek,dayGridMonth,listWeek' ,
       },
+      height: 'auto',
       slotMinTime: '08:00:00', //最小開始時間
-      slotMaxTime: '22:30:00', //最大開始時間
+      slotMaxTime: '22:00:00', //最大開始時間
       slotDuration: '00:10', //時間間隔
       editable: #{isEdit},       //允許移動
       selectable: #{isEdit},     //允許選擇
@@ -29,18 +30,10 @@ block content
       firstDay: 1, //周的開始
       fixedWeekCount: false,//最多顯示五周
       views: {
-        resourceTimelineThreeDays: {
-          type: 'resourceTimeline',
-          duration: { days: 3 },
-          buttonText: '橫式3day',
-        },
         resourceTimeGridFourDay: {
           type: 'resourceTimeGrid',
           duration: { days: 3 } ,
           buttonText: '直式3day',
-        },
-        resourceTimelineDay: { 
-          buttonText: '橫',
         },
         resourceTimeGridDay: { 
           buttonText: '直',

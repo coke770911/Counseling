@@ -18,14 +18,13 @@ block content
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
         layout : "fitColumns" ,
-        height : "100%" ,
         minHeight : 300 ,
+        maxHeight: "100%",
         placeholder:"資料載入中",
         ajaxURL : "/users" ,
         ajaxConfig : "get" ,
         ajaxContentType: "json",
         columnDefaults: {
-          width: 200, //set the width on all columns to 200px
           headerHozAlign: "center",
           hozAlign: "center",
           headerSort: false ,
@@ -34,6 +33,8 @@ block content
           {title: "#", formatter: "rownum",width: 40},
           {title: "帳號", field: "account"},
           {title: "姓名", field: "username"},
+          {title: "標籤顏色", field: "color",formatter:"color", width:90},
+          {title: "文字顏色", field: "textColor",formatter:"color", width:90},
           {title: "系統身份", field: "UserAuth.titleName"},
           {title: "狀態", field: "isDisabledName"},
           {title: "最後變更日期", field: "updatedLocal"},

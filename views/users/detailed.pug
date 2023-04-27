@@ -26,7 +26,13 @@
             else 
               input.form-control(type="text" name="username" id="username" maxlength="20" value=UserData.username readonly)
           .mb-3
-            label.form-label 使用者權限 #{UserData.isDisabled}
+            label.form-label 標籤顏色
+            input.form-control(type="color" name="color" id="color" value=UserData.color )
+          .mb-3
+            label.form-label 文字顏色
+            input.form-control(type="color" name="textColor" id="textColor" value=UserData.textColor )
+          .mb-3
+            label.form-label 使用者權限 
             select.form-select(name="userauthId" id="userauthId")
               each value in UserAuthList
                 if UserData.UserAuth.id === value.id

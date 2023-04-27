@@ -21,12 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     caserecordId: DataTypes.INTEGER,
     caseAssign: DataTypes.STRING,
     roomId: DataTypes.INTEGER,
-    resourceId: {
-      type: DataTypes.VIRTUAL,
-      get () {
-        return this.getDataValue('roomId')
-      }
-    },
     talkId: DataTypes.INTEGER,
     start: DataTypes.DATE,
     end: DataTypes.DATE,

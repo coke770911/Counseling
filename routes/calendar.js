@@ -65,6 +65,11 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
 //查詢行事曆事件資訊
 router.get('/info/:id', async (req, res, next) => {
   const CalendarData = await db.Calendar.findOne({
+    attributes: [
+      'id','title','caserecordId','caseAssign','start','end','allDay',['RoomId','resourceId'],
+      [db.Sequelize.col('refcaseAssign.color'),'color'],
+      [db.Sequelize.col('refcaseAssign.textColor'),'textColor']
+    ],
     include: [
       { association: 'refcaseAssign' , attributes: ['username']},
       { association: 'refcaseCreator' , attributes: ['username']},
@@ -86,6 +91,14 @@ router.get('/info/:id', async (req, res, next) => {
 //撈取行事曆
 router.get('/', async (req, res, next) => {
   const Calendardata = await db.Calendar.findAll({
+    attributes: [
+      'id','title','caserecordId','caseAssign','start','end','allDay',['RoomId','resourceId'],
+      [db.Sequelize.col('refcaseAssign.color'),'color'],
+      [db.Sequelize.col('refcaseAssign.textColor'),'textColor']
+    ],
+    include: [
+      { association: 'refcaseAssign' , attributes: ['username','color','textColor']},
+    ],
     where: {
       start: {
         [db.Sequelize.Op.between]: [req.query.start,req.query.end]
@@ -108,7 +121,7 @@ router.post('/', upload.none(), async (req, res, next) => {
     return 
   }
 
-  if(req.body.caserecordId !== '0') {
+  if(req.body.caserecordId !== '0' || req.body.caseAssign !== '') {
     title = req.body.caseAssignName + '&' + title
   }
 

@@ -32,16 +32,11 @@ router.get('/view', async (req, res, next) => {
 router.get('/detailed/:id', async (req, res, next) => {
   const UserAuthList = await db.UserAuth.findAll({
     attributes: ['id', 'titleName'],
-    where: {
-      id: {
-        [db.Sequelize.Op.notIn]: [1]
-      }
-    },
     order: [['id', 'DESC']]
   })
 
   const UserDataAuth = await db.UserData.findOne({
-    attributes: ['id', 'account', 'username', 'isDisabled', 'updatedAt'],
+    attributes: ['id', 'account', 'username', 'isDisabled', 'updatedAt','color','textColor'],
     include: db.UserAuth,
     where: {
       [db.Sequelize.Op.and]: [{ id: req.params.id }, { id: { [db.Sequelize.Op.notIn]: [1] } }]
@@ -54,12 +49,11 @@ router.get('/detailed/:id', async (req, res, next) => {
     "id": 0,
     "account": '',
     "username": '',
+    "color": '#0d6efd',
+    "textColor": '#000000',
     "UserAuth": {
       "id": '',
       "titleName": '',
-      "createdAt": '',
-      "updatedAt": '',
-      "deletedAt": '',
     }
   }
   if(UserDataAuth) {
@@ -74,6 +68,8 @@ router.post('/', upload.none(), async (req, res, next) => {
   const [createdata, created] = await db.UserData.findOrCreate({
     where: { account: req.body.account },
     defaults: {
+      color: req.body.color,
+      textColor: req.body.textColor,
       password: md5(req.body.password),
       username: req.body.username,
       userauthId: req.body.userauthId,
@@ -90,8 +86,11 @@ router.put('/', upload.none(), async (req, res, next) => {
     Datafield.password = md5(req.body.password)
   }
   Datafield.username = req.body.username
+  Datafield.color = req.body.color
+  Datafield.textColor = req.body.textColor
   Datafield.userauthId = req.body.userauthId
   Datafield.isDisabled = req.body.isDisabled || 0
+
   const updated = await db.UserData.update(Datafield, {
     where: {
       id: req.body.uid
@@ -103,7 +102,7 @@ router.put('/', upload.none(), async (req, res, next) => {
 //取得全部 id:1為系統帳號不允許編輯
 router.get('/', async (req, res, next) => {
   const UserAuthData = await db.UserData.findAll({
-    attributes: ['id', 'account', 'username', 'isDisabled', 'updatedAt','isDisabledName','updatedLocal'],
+    attributes: ['id', 'account', 'username', 'isDisabled', 'updatedAt','isDisabledName','updatedLocal','color','textColor'],
     include: [{
       model: db.UserAuth,
       attributes: ['id', 'titleName']
