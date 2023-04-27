@@ -79,7 +79,6 @@ router.get('/:user', async (req, res, next) => {
   req.params.user
   let wherestr =  {id: 1}
   
-  
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
@@ -107,7 +106,8 @@ router.post('/', upload.none() , async (req, res, next) => {
     res.status(200).send(JSON.stringify({msg: '尚未建立個案基本資料。'}))
     return
   }
-  //建立紀錄
+
+  //建立個案追蹤紀錄
   const [createdata, created] = await db.CaseRecord.findOrCreate({
     raw: true, 
     where: { 
@@ -131,17 +131,11 @@ router.post('/', upload.none() , async (req, res, next) => {
       caseAssign: req.body.caseAssign,
     }
   })
-
-  if(created) {
-    res.status(200).send(JSON.stringify({msg: '建立完成。'}))
-  } else {
-    res.status(200).send(JSON.stringify({msg: '已有個案資料，尚未結案。'}))
-  }
-
+  res.status(200).send(JSON.stringify({msg: created ? '建立完成。' : '已有個案資料，尚未結案。'}))
 })
-
+//更新個案派案資料
 router.put('/', upload.none(), async (req, res, next) => {
-  const updatedata = await db.CaseRecord.update({
+  const updated = await db.CaseRecord.update({
     memberIdentity: req.body.memberIdentity,
     memberSource: req.body.memberSource,
     caseManage: req.body.caseManage,
@@ -149,15 +143,12 @@ router.put('/', upload.none(), async (req, res, next) => {
   },{
     where: {id: req.body.id}
   })
-  console.dir(updatedata)
-  res.status(200).send(JSON.stringify({msg: '更新完成。'}))
+  res.status(200).send(JSON.stringify({msg: updated ? '更新完成。' : '更新失敗。'}))
 })
-
+//刪除個案追蹤
 router.delete('/', async (req, res, next) => {
   const deleted = await db.CaseRecord.destroy({where: {id: req.query.id}})
   res.status(200).send(JSON.stringify({msg: deleted ? '已刪除個案追蹤資料。' : '刪除失敗。'}))
 })
-
-
 
 module.exports = router

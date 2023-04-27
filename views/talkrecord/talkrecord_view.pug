@@ -78,21 +78,21 @@ block content
                 .form-check
                   input.form-check-input(type="checkbox" name="Theme" value=value.id)
                   label.form-check-label #{value.content}
-    .row.mb-1
-      .col
-        p.h6 會談內容
-    .row.mb-1
-      .col 
-        textarea.w-100(maxlength="3000" rows="15" name="talkContent")
-    .row.mb-1
-      .col
-        p.h6 評估、處遇及未來計畫
-    .row.mb-1
-      .col 
-        textarea.w-100(maxlength="3000" rows="15" name="processPlan")
-    .row.mb-2.mt-2
-      .col-12
-      button.btn.btn-success.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
+      .row.mb-1
+        .col
+          p.h6 會談內容
+      .row.mb-1
+        .col 
+          textarea.w-100(maxlength="3000" rows="15" name="talkContent")
+      .row.mb-1
+        .col
+          p.h6 評估、處遇及未來計畫
+      .row.mb-1
+        .col 
+          textarea.w-100(maxlength="3000" rows="15" name="processPlan")
+      .row.mb-2.mt-2
+        .col-12
+        button.btn.btn-success.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
   script.
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#TalkData').addEventListener('submit', e => { 
@@ -103,8 +103,10 @@ block content
         mask.show()
         let data = new FormData(document.querySelector('#TalkData'));
         axios.post('/talk',data).then((res) => { 
-          console.dir(res.data)
           mask.hide()
+          Swal.fire(res.data.msg).then(() => {
+
+          })  
         }).catch((error) => { 
           Swal.fire(error.response.data.msg)
         }).finally(() => { 

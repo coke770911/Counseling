@@ -82,8 +82,38 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', upload.none(), async (req, res, next) => {
-  console.dir(req.body)
-  res.status(200).send(JSON.stringify({msg: '建立完成。'}))
+  /*
+  const createdata = await db.TalkRecord.create({
+    caseId: req.body.CaseId ,
+    keyinUser: req.session.account ,
+    keyinDate: req.body.keyinDate ,
+    refProcessesId: req.body.refProcessesId ,
+    refLevelId: req.body.refLevelId ,
+    refTheme: req.body.Theme.toString(),
+    talkContent: req.body.talkContent,
+    processPlan: req.body.processPlan,
+  })
+  */
+  const [createdata, created] = await db.TalkRecord.findOrCreate({
+    raw: true, 
+    where: { 
+      [db.Sequelize.Op.and]: [
+        { keyinUser: req.session.account }, 
+        { keyinDate: req.body.keyinDate },
+      ],
+    },
+    defaults: {
+      caseId: req.body.CaseId ,
+      keyinUser: req.session.account ,
+      keyinDate: req.body.keyinDate ,
+      refProcessesId: req.body.refProcessesId ,
+      refLevelId: req.body.refLevelId ,
+      refTheme: req.body.Theme.toString(),
+      talkContent: req.body.talkContent,
+      processPlan: req.body.processPlan,
+    }
+  })
+  res.status(200).send(JSON.stringify({msg: created ? '建立完成。' : '建立失敗，已有相同晤談紀錄資料。'}))
 })
 router.put('/', upload.none(), async (req, res, next) => {})
 router.delete('/', async (req, res, next) => {})
