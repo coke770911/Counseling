@@ -15,21 +15,21 @@ block content
             .col-12.col-md-4
               label.form-label 學生學號
               .input-group.mb-3
-                input.form-control(class="form-control" type="text" name="uid" value=memberData.uid)
-                button(class="btn btn-outline-secondary" tpye="button" id="import" ) 由教務處代入基本資料
+                input.form-control(type="text" name="uid" value=memberData.uid)
+                button.btn.btn-outline-secondary.d-print-none(tpye="button" id="import" ) 由教務處代入基本資料
             .col-12.col-md-4
               label.form-label 學生姓名
-              input.form-control(class="form-control" type="text" name="name" value=memberData.name readonly)
+              input.form-control(type="text" name="name" value=memberData.name readonly)
             .col-12.col-md-4
               label.form-label 出生年月日
-              input.form-control(class="form-control" type="date" name="birthday" value=memberData.birthday readonly)
+              input.form-control(type="date" name="birthday" value=memberData.birthday readonly)
           .row.my-2
             .col-12.col-md-4
               label.form-label 性別
-              input.form-control(class="form-control" type="text" name="sex" value=memberData.sex readonly)
+              input.form-control(type="text" name="sex" value=memberData.sex readonly)
             .col-12.col-md-4
               label.form-label 年齡
-              input.form-control(class="form-control" type="text" name="age" value=memberData.age readonly) 
+              input.form-control(type="text" name="age" value=memberData.age readonly) 
             .col-12.col-md-4
               label.form-label.me-2.mt-2 婚姻狀況
               br
@@ -48,62 +48,62 @@ block content
           .row.mb-1
             .col-12.col-md-4
               label.form-label 身分證字號
-              input.form-control(class="form-control" type="text" name="cardId" value=memberData.cardId readonly) 
+              input.form-control(type="text" name="cardId" value=memberData.cardId readonly) 
             .col-6.col-md-4
               label.form-label 系所
-              input.form-control(class="form-control" type="text" name="dept" value=memberData.dept readonly) 
+              input.form-control(type="text" name="dept" value=memberData.dept readonly) 
             .col-3.col-md-2
               label.form-label 年級
-              input.form-control(class="form-control" type="text" name="grade" value=memberData.grade readonly) 
+              input.form-control(type="text" name="grade" value=memberData.grade readonly) 
             .col-3.col-md-2
               label.form-label 班級
-              input.form-control(class="form-control" type="text" name="class" value=memberData.class readonly) 
+              input.form-control(type="text" name="class" value=memberData.class readonly) 
           .row.mb-1
             .col-12.col-md-6
               label.form-label 行動電話
-              input.form-control(class="form-control" type="text" name="mobile" value=memberData.mobile ) 
+              input.form-control(type="text" name="mobile" value=memberData.mobile ) 
             .col-12.col-md-6
               label.form-label 市內電話
-              input.form-control(class="form-control" type="text" name="tel" value=memberData.tel ) 
+              input.form-control(type="text" name="tel" value=memberData.tel ) 
           .row.mb-1
             .col-12.col-md-6
               label.form-label E-Mail
-              input.form-control(class="form-control" type="text" name="email" value=memberData.email )
+              input.form-control(type="text" name="email" value=memberData.email )
             .col-12.col-md-6
               label.form-label.me-2.mt-2 聯絡時是否可以表明輔導中心
               br
               .form-check.form-check-inline
                 if memberData.isContact
-                  input(class="form-check-input" type="radio" name="isContact" value="1" checked)
+                  input.form-check-input(type="radio" name="isContact" value="1" checked)
                 else 
-                  input(class="form-check-input" type="radio" name="isContact" value="1")
+                  input.form-check-input(type="radio" name="isContact" value="1")
                 label.form-check-label 是
               .form-check.form-check-inline
                 if memberData.isContact
-                  input(class="form-check-input" type="radio" name="isContact" value="0")
+                  input.form-check-input(type="radio" name="isContact" value="0")
                 else
-                  input(class="form-check-input" type="radio" name="isContact" value="0" checked)
+                  input.form-check-input(type="radio" name="isContact" value="0" checked)
                 label.form-check-label 否
           .row.mb-1
             .col-12.col-md-6
               label.form-label 住宿地址
-              input.form-control(class="form-control" type="text" name="address" value=memberData.address ) 
+              input.form-control(type="text" name="address" value=memberData.address ) 
             .col-12.col-md-6
               label.form-label 戶籍地址
-              input.form-control(class="form-control" type="text" name="regaddress" value=memberData.regaddress ) 
+              input.form-control(type="text" name="regaddress" value=memberData.regaddress ) 
           .row.mb-5
             .col-6.col-md-3
               label.form-label 緊急聯絡人
-              input.form-control(class="form-control" type="text" name="contactName" value=memberData.contactName ) 
+              input.form-control(type="text" name="contactName" value=memberData.contactName ) 
             .col-6.col-md-3
               label.form-label 關係
-              input.form-control(class="form-control" type="text" name="contactRelation" value=memberData.contactRelation ) 
+              input.form-control(type="text" name="contactRelation" value=memberData.contactRelation ) 
             .col-6.col-md-3
               label.form-label 緊急連絡人電話
-              input.form-control(class="form-control" type="text" name="contactTel" value=memberData.contactTel ) 
+              input.form-control(type="text" name="contactTel" value=memberData.contactTel ) 
             .col-6.col-md-3
               label.form-label 緊急連絡人手機
-              input.form-control(class="form-control" type="text" name="contactPhone" value=memberData.contactPhone ) 
+              input.form-control(type="text" name="contactPhone" value=memberData.contactPhone ) 
           .row.mb-2
             .col-12.text-end
               if memberData.uid === ''
@@ -116,10 +116,10 @@ block content
           hr
           if memberData.uid !== ''
             .row.mb-2.mt-2
-              button.btn.btn-success(type="button" id="btn-update") 基本資料更新
+              button.btn.btn-success.d-print-none(type="button" id="btn-update") 基本資料更新
           else
             .row.mb-2.mt-2
-              button.btn.btn-primary(type="button" id="btn-create") 基本資料建檔
+              button.btn.btn-primary.d-print-none(type="button" id="btn-create") 基本資料建檔
   script.
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#BaseData').addEventListener('submit', e => { 

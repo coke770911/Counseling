@@ -7,7 +7,6 @@
       .modal-body
         form(action="#" id="formData")
           input(type="hidden" name="CalendarId" id="CalendarId" value=CalendarData.id )
-          input(type="hidden" name="CaseRecordId" id="CaseRecordId" value=CalendarData.CaseRecord.id)
           .mb-3
             span 時間：#{new Date(CalendarData.start).toLocaleString()}
             span 至 
@@ -20,6 +19,7 @@
             textarea.form-control(rows="4" readonly) #{CalendarData.content}
           if CalendarData.CaseRecord !== null
             .mb-3
+              input(type="hidden" name="CaseRecordId" id="CaseRecordId" value=CalendarData.CaseRecord.id)
               label.form-label 個案學號：#{CalendarData.CaseRecord.memberUid}
             .mb-3
               label.form-label 個案姓名：#{CalendarData.CaseRecord.memberName}

@@ -74,7 +74,12 @@ router.get('/listview',(req, res, next) => {
 
 //個案追蹤清單
 router.get('/:user', async (req, res, next) => {
+  
   if([1].indexOf(req.session.auth) !== -1) {}
+  req.params.user
+  let wherestr =  {id: 1}
+  
+  
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
@@ -83,7 +88,7 @@ router.get('/:user', async (req, res, next) => {
       { association: 'refIdentity' },
       { association: 'refSource' },
     ],
-    //where: { memberUid: },
+    //where: wherestr,
     order: [['id', 'DESC']]
   })
   res.status(200).send(JSON.stringify(CaseRecordList))

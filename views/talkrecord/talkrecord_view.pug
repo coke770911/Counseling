@@ -2,85 +2,114 @@ extends ../layout
 
 block content
   .container
-    .row.mb-1.text-center
-      .col 
-        h3 亞東科技大學諮商中心諮商服務紀錄表
-    .row.mb-1.text-left
-      .col-4
-        label 學號：#{CaseRecordData.memberUid}
-      .col-4
-        label 姓名：#{CaseRecordData.memberName}
-      .col-4
-        label 系級：#{CaseRecordData.memberDeptFull}
-    .row.mb-1.text-left
-      .col-4
-        label 身份：#{CaseRecordData.refIdentity.content}
-      .col-4
-        label 個案來源：#{CaseRecordData.refSource.content} 
-      .col-4
-        label 日期：
-        input(type="datetime-local" name="")   
-    .row.mb-1.text-left
-      .col-4
-        label 會談心理師：#{CaseRecordData.refcaseAssign.username} 
-      .col-4
-        label 個管員：#{CaseRecordData.refcaseManage.username}
-    .row.mb-1.text-left
-      .col-4
-        label 處理方式：
-        select
-          each value in caseProcess
-            option(value=value.id) #{value.content}     
-      .col-4
-        label 危機評估：
-        select
-          each value in caseLevel
-            option(value=value.id) #{value.content}  
-    .row.mb-1
-      .col
-        p.h6 會談主題
-    .row.mb-1
-      .col-3
-        label 【生活適應】
-        each value in ThemeGroup1
-          .row
-            .col-12 
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
-      .col-3
-        label 【人際關係】
-        each value in ThemeGroup2
-          .row
-            .col-12 
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
-      .col-3
-        label 【學校適應】
-        each value in ThemeGroup3
-          .row
-            .col-12 
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
-      .col-3
-        label 【前程規劃】
-        each value in ThemeGroup4
-          .row
-            .col-12
-              .form-check
-                input.form-check-input(type="checkbox" name="Theme" value=value.id)
-                label.form-check-label #{value.content}
+    form#TalkData
+      .row.mb-1.text-center
+        .col 
+          h3 亞東科技大學諮商中心諮商服務紀錄表
+      .row.mb-1.text-left
+        .col-4
+          input(type="hidden" name="CaseId" value=CaseRecordData.id)
+          input(type="hidden" name="TalkId" value=TalkRecordData.id)
+          input(type="hidden" name="CalendarId" value=CalendarId)
+          label 學號：#{CaseRecordData.memberUid}
+        .col-4
+          label 姓名：#{CaseRecordData.memberName}
+        .col-4
+          label 系級：#{CaseRecordData.memberDeptFull}
+      .row.mb-1.text-left
+        .col-4
+          label 身份：#{CaseRecordData.refIdentity.content}
+        .col-4
+          label 個案來源：#{CaseRecordData.refSource.content} 
+
+      .row.mb-1.text-left
+        .col-4
+          label 個管員：#{CaseRecordData.refcaseManage.username}
+        .col-4
+          label 會談心理師：#{user.username}
+        .col-4
+          label 日期：
+          input(type="datetime-local" name="keyinDate" value=TalkRecordData.keyinDate)   
+      .row.mb-1.text-left
+        .col-4
+          label 處理方式：
+          select(name="refProcessesId")
+            each value in caseProcess
+              option(value=value.id) #{value.content}     
+        .col-4
+          label 危機評估：
+          select(name="refLevelId")
+            each value in caseLevel
+              option(value=value.id) #{value.content}  
+      hr
+      .row.mb-1
+        .col
+          p.h6 會談主題
+      .row.mb-1
+        .col-3
+          label 【生活適應】
+          each value in ThemeGroup1
+            .row
+              .col-12 
+                .form-check
+                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  label.form-check-label #{value.content}
+        .col-3
+          label 【人際關係】
+          each value in ThemeGroup2
+            .row
+              .col-12 
+                .form-check
+                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  label.form-check-label #{value.content}
+        .col-3
+          label 【學校適應】
+          each value in ThemeGroup3
+            .row
+              .col-12 
+                .form-check
+                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  label.form-check-label #{value.content}
+        .col-3
+          label 【前程規劃】
+          each value in ThemeGroup4
+            .row
+              .col-12
+                .form-check
+                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  label.form-check-label #{value.content}
     .row.mb-1
       .col
         p.h6 會談內容
     .row.mb-1
       .col 
-        textarea.w-100(maxlength="3000" rows="15")
+        textarea.w-100(maxlength="3000" rows="15" name="talkContent")
     .row.mb-1
       .col
         p.h6 評估、處遇及未來計畫
     .row.mb-1
       .col 
-        textarea.w-100(maxlength="3000" rows="15")
+        textarea.w-100(maxlength="3000" rows="15" name="processPlan")
+    .row.mb-2.mt-2
+      .col-12
+      button.btn.btn-success.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('#TalkData').addEventListener('submit', e => { 
+        e.preventDefault() 
+      })
+
+      document.querySelector('#btn-create-talkrecord').addEventListener('click',(e) => {
+        mask.show()
+        let data = new FormData(document.querySelector('#TalkData'));
+        axios.post('/talk',data).then((res) => { 
+          console.dir(res.data)
+          mask.hide()
+        }).catch((error) => { 
+          Swal.fire(error.response.data.msg)
+        }).finally(() => { 
+          mask.hide()
+        })
+      })
+    })
+

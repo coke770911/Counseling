@@ -15,8 +15,30 @@ router.use((req, res, next) => {
 })
 
 router.get('/view', async (req, res, next) => {
+
+  let TalkRecordData = {
+    id: 0,
+    caseId: req.query.CaseRecordId,
+    keyinUser: req.session.account,
+    keyinDate: '',
+    refProcessesId: 0,
+    refLevelId: 0,
+    refTheme: [],
+    talkContent: '',
+    processPlan: '',
+  }
+
+  //晤談紀錄 如果沒資料就是新增
+  const TalkRecordOne = await db.TalkRecord.findOne({
+    include: [
+      { association: 'refkeyinUser' , attributes: ['username']},
+    ],
+    where: {id: req.query.RecordId}
+  })
+  //console.dir(JSON.stringify(TalkRecordData,null,4))
+  //console.dir(TalkRecordData)
+
   //個案基本資料
-  console.dir(req.query)
   const CaseRecordData = await db.CaseRecord.findOne({
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
@@ -29,15 +51,13 @@ router.get('/view', async (req, res, next) => {
       id: req.query.CaseRecordId
     }
   })
-  console.dir(JSON.stringify(CaseRecordData,null,4))
+  //console.dir(JSON.stringify(TalkRecordData,null,4))
 
-  //CalendarId
-  //RecordId
-  //危機評估
+  //危機評估 陣列
   let RefLevel = await db.RefLevel.findAll()
-  //處理方式
+  //處理方式 陣列
   let RefProcess = await db.RefProcess.findAll()
-  //主題來源
+  //主題來源 陣列
   let ThemeGroup1 = await db.RefTheme.findAll({ where: { parentId: 1 }})
   let ThemeGroup2 = await db.RefTheme.findAll({ where: { parentId: 2 }})
   let ThemeGroup3 = await db.RefTheme.findAll({ where: { parentId: 3 }})
@@ -46,6 +66,8 @@ router.get('/view', async (req, res, next) => {
   res.render('talkrecord/talkrecord_view', { 
     title: '基本資料建檔',
     CaseRecordData: CaseRecordData,
+    TalkRecordData: TalkRecordData,
+    CalendarId: req.query.CalendarId || 0,
     caseLevel: RefLevel,
     caseProcess: RefProcess,
     ThemeGroup1: ThemeGroup1,
@@ -55,8 +77,14 @@ router.get('/view', async (req, res, next) => {
   })
 })
 
-router.get('/', async (req, res, next) => {})
-router.post('/', upload.none(), async (req, res, next) => {})
+router.get('/', async (req, res, next) => {
+  res.status(200).send(JSON.stringify({msg: '建立完成。'}))
+})
+
+router.post('/', upload.none(), async (req, res, next) => {
+  console.dir(req.body)
+  res.status(200).send(JSON.stringify({msg: '建立完成。'}))
+})
 router.put('/', upload.none(), async (req, res, next) => {})
 router.delete('/', async (req, res, next) => {})
 

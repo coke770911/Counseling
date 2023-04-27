@@ -12,7 +12,7 @@ module.exports = {
       caseId: {
         type: Sequelize.INTEGER
       },  
-      caseAssign: {
+      keyinUser: {
         type: Sequelize.STRING
       },
       keyinDate: {

@@ -75,10 +75,19 @@ block content
         let target = event.target
         if(!target.getAttribute("class")) { return }
 
+        //addrecord
         if(target.getAttribute("class").indexOf("btn-CreatTalk") !== -1) {
-          console.dir('A')
+          if(target.getAttribute("data-caseId")) {
+            let caseId = target.getAttribute("data-caseId");
+            let QueryStringObj = {}
+            QueryStringObj.CaseRecordId = caseId
+            QueryStringObj.CalendarId = 0
+            QueryStringObj.RecordId = 0
+            document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
+          }
         }
 
+        //
         if(target.getAttribute("class").indexOf("btn-CloseCase") !== -1) {
           console.dir('B')
         }

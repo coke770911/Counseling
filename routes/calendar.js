@@ -101,7 +101,6 @@ router.post('/', upload.none(), async (req, res, next) => {
   let start = new Date(req.body.start)
   let end = new Date(req.body.end)
   let i = 0
-
   let title = req.body.title
 
   if(title === '') {

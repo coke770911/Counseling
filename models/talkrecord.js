@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      TalkRecord.belongsTo(models.UserData, { as: 'refkeyinUser' , targetKey: 'account' , foreignKey: 'keyinUser' })
     }
   }
   TalkRecord.init({
     caseId: DataTypes.INTEGER,
-    caseAssign: DataTypes.STRING,
+    keyinUser: DataTypes.STRING,
     keyinDate: DataTypes.DATE,
     refProcessesId: DataTypes.INTEGER,
     refLevelId: DataTypes.INTEGER,
