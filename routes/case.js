@@ -128,6 +128,7 @@ router.post('/', upload.none() , async (req, res, next) => {
       memberSource: req.body.memberSource,
       caseCreator: req.session.account,
       caseManage: req.body.caseManage,
+      caseAssign: req.body.caseAssign,
     }
   })
 
@@ -143,7 +144,8 @@ router.put('/', upload.none(), async (req, res, next) => {
   const updatedata = await db.CaseRecord.update({
     memberIdentity: req.body.memberIdentity,
     memberSource: req.body.memberSource,
-    caseManage: req.body.caseManage
+    caseManage: req.body.caseManage,
+    caseAssign: req.body.caseAssign,
   },{
     where: {id: req.body.id}
   })

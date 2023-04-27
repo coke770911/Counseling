@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     creator: DataTypes.STRING,
     editor: DataTypes.STRING
   }, {
-    sequelize,
+    sequelize ,
     paranoid: true,
     modelName: 'Calendar'
   })

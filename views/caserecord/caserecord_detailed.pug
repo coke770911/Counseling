@@ -46,9 +46,17 @@
             select.form-select(name="caseManage" id="caseManage")
               each value in UserList
                 if value.account === CaseData.caseManage
-                  option(value=value.account selected) #{value.username}
+                  option(value=value.account selected) #{value.username} #{value.UserAuth.titleName} 
                 else 
                   option(value=value.account) #{value.username} #{value.UserAuth.titleName}
+          .mb-3
+            label.form-label 心理師
+            select.form-select(name="caseAssign" id="caseAssign")
+              each value in UserList
+                if value.account === CaseData.caseAssign
+                  option(value=value.account selected) #{value.username} #{value.UserAuth.titleName} 
+                else 
+                  option(value=value.account) #{value.username} #{value.UserAuth.titleName} 
       .modal-footer
         if CaseData.id === '0' 
           buttin.btn.btn-primary(type="button" id="btn_create") 確認送出

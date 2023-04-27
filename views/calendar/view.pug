@@ -26,17 +26,18 @@ block content
       locale: 'zh-tw',       //本地化
       aspectRatio: 1.8,     //長寬比
       navLinks: true,       //日期可以直接跳當天預設模式
-      initialView: 'resourceTimeGridFourDay', //預設模式
+      initialView: 'resourceTimeGridDay', //預設模式
       firstDay: 1, //周的開始
       fixedWeekCount: false,//最多顯示五周
+      datesAboveResources: true,//時間顯示在上直式列表
       views: {
         resourceTimeGridFourDay: {
           type: 'resourceTimeGrid',
-          duration: { days: 3 } ,
-          buttonText: '直式3day',
+          duration: { days: 3 },
+          buttonText: '空間近三日列表',
         },
         resourceTimeGridDay: { 
-          buttonText: '直',
+          buttonText: '空間列表',
         },
       },
       select: arg => {
