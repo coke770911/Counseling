@@ -17,6 +17,7 @@ block content
         center: 'title' ,
         right: 'resourceTimeGridDay,resourceTimeGridFourDay,timeGridWeek,dayGridMonth,listWeek' ,
       },
+      hiddenDays: [ 0, 6 ], //隱藏星期六日
       height: 'auto',
       slotMinTime: '08:00:00', //最小開始時間
       slotMaxTime: '22:00:00', //最大開始時間
@@ -33,8 +34,8 @@ block content
       views: {
         resourceTimeGridFourDay: {
           type: 'resourceTimeGrid',
-          duration: { days: 3 },
-          buttonText: '空間近三日列表',
+          duration: { days: 7 },
+          buttonText: '空間近五天列表',
         },
         resourceTimeGridDay: { 
           buttonText: '空間列表',

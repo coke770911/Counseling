@@ -74,10 +74,27 @@ router.get('/listview',(req, res, next) => {
 
 //個案追蹤清單
 router.get('/:user', async (req, res, next) => {
-  
-  if([1].indexOf(req.session.auth) !== -1) {}
-  req.params.user
-  let wherestr =  {id: 1}
+  let wherestr = {}
+  if([1].indexOf(req.session.auth) !== -1) {
+    wherestr = {}
+  }
+
+  if([2].indexOf(req.session.auth) !== -1) {
+    wherestr = {
+      [Op.and]: [
+        { caseManage: req.session.account }
+      ] 
+    }
+  }
+
+  if([3,4].indexOf(req.session.auth) !== -1) {
+    wherestr = {
+      [Op.and]: [
+        { caseAssign: req.session.account} ,
+        { isClose: 0 }
+      ] 
+    }
+  }
   
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
@@ -87,7 +104,7 @@ router.get('/:user', async (req, res, next) => {
       { association: 'refIdentity' },
       { association: 'refSource' },
     ],
-    //where: wherestr,
+    where: wherestr,
     order: [['id', 'DESC']]
   })
   res.status(200).send(JSON.stringify(CaseRecordList))

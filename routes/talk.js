@@ -15,12 +15,13 @@ router.use((req, res, next) => {
 })
 
 router.get('/view', async (req, res, next) => {
-
+  let d = new Date()
+  console.dir(d.toISOString().slice(0,16))
   let TalkRecordData = {
     id: 0,
     caseId: req.query.CaseRecordId,
     keyinUser: req.session.account,
-    keyinDate: '',
+    keyinDate: d.toISOString().slice(0,16),
     refProcessesId: 0,
     refLevelId: 0,
     refTheme: [],
@@ -52,7 +53,6 @@ router.get('/view', async (req, res, next) => {
     }
   })
   //console.dir(JSON.stringify(TalkRecordData,null,4))
-
   //危機評估 陣列
   let RefLevel = await db.RefLevel.findAll()
   //處理方式 陣列
@@ -82,6 +82,10 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', upload.none(), async (req, res, next) => {
+  
+  console.dir(req.body)
+  res.status(200).send(JSON.stringify({ msg: 123}))
+  return 
   /*
   const createdata = await db.TalkRecord.create({
     caseId: req.body.CaseId ,
@@ -98,6 +102,7 @@ router.post('/', upload.none(), async (req, res, next) => {
     raw: true, 
     where: { 
       [db.Sequelize.Op.and]: [
+        { caseId: req.body.CaseId }, 
         { keyinUser: req.session.account }, 
         { keyinDate: req.body.keyinDate },
       ],
@@ -113,8 +118,9 @@ router.post('/', upload.none(), async (req, res, next) => {
       processPlan: req.body.processPlan,
     }
   })
-  res.status(200).send(JSON.stringify({msg: created ? '建立完成。' : '建立失敗，已有相同晤談紀錄資料。'}))
+  res.status(200).send(JSON.stringify({ msg: created ? '建立晤談紀錄完成。' : '建立晤談紀錄失敗，已有相同晤談紀錄資料。'}))
 })
+
 router.put('/', upload.none(), async (req, res, next) => {})
 router.delete('/', async (req, res, next) => {})
 

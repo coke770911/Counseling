@@ -18,6 +18,7 @@ block content
           button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
     table.table#maintable
   script.
+    let tableA
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
         ajaxURL: "/case/all",
@@ -58,7 +59,7 @@ block content
           },
         ],
       })
-
+      
       document.querySelector('#btn-search').addEventListener('click',(e) => {
         mask.show()
         axios.get('/case/'+document.querySelector('#txt-search').value)
@@ -104,7 +105,7 @@ block content
               if (result.isConfirmed) {
                 axios.delete('/case',{ params: { id: caseId } }).then( res => {
                   Swal.fire(res.data.msg).then((result) => {
-                    document.location.reload()
+                    axios.get('/case/all').then((res) => { table.setData(res.data) }).catch((error) => { Swal.fire(error.response.data.msg) })
                   })
                 }).catch((error) => { 
                   Swal.fire(error.response.data.msg)
@@ -145,5 +146,5 @@ block content
           }
         }
       })
-
+      tableA = table
     })

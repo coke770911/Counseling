@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  .container
+    .row
+      .col
+      nav(aria-label="breadcrumb")
+        ol.breadcrumb
+          li.breadcrumb-item 
+            a(href="/") 首頁
+          li.breadcrumb-item 個案資料
+          li.breadcrumb-item.active 個案追蹤
+    .row
+      .col-4
+        .input-group.mb-3
+          span.input-group-text(id="inputGroup-memberUid") 學號
+          input.form-control(type="text" placeholder="輸入學號" aria-label="輸入學號" aria-describedby="btn-search" name="txt-search" id="txt-search")
+          button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
+    table.table#maintable
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      
+    })

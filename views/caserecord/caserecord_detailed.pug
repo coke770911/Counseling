@@ -79,6 +79,7 @@
           axios.post('/case',data).then((res) => { 
             Swal.fire(res.data.msg)
             modalMethod.hide()
+            
           }).catch((error) => { 
             Swal.fire(error.response.data.msg)
           }).finally(() => { 
@@ -86,12 +87,14 @@
           })
         })   
       }
+      
       if(document.querySelector('#btn_update') !== null) { 
         document.querySelector('#btn_update').addEventListener('click', (e) => {
           let data = new FormData(document.querySelector('#formData'));
           axios.put('/case',data).then((res) => { 
             Swal.fire(res.data.msg)
             modalMethod.hide()
+            axios.get('/case/all').then((res) => { table.setData(res.data) }).catch((error) => { Swal.fire(error.response.data.msg) })
           }).catch((error) => { 
             Swal.fire(error.response.data.msg)
           }).finally(() => { 
