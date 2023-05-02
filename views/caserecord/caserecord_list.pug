@@ -18,7 +18,7 @@ block content
           button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
     table.table#maintable
   script.
-    let tableA
+    let caseTable 
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
         ajaxURL: "/case/all",
@@ -146,5 +146,5 @@ block content
           }
         }
       })
-      tableA = table
+      caseTable = table
     })

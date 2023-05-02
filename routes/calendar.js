@@ -12,7 +12,7 @@ router.use((req, res, next) => {
 //行事曆介面
 router.get('/view', async (req, res, next) => {
   let isEdit = [1,2].indexOf(req.session.auth) === -1 ? false : true
-  res.render('calendar/view', { title: '行事曆',isEdit: isEdit})
+  res.render('calendar/calendar_view', { title: '行事曆',isEdit: isEdit})
 })
 
 //新增行程介面
@@ -59,7 +59,7 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
   CalendarData.allDay = req.body.allDay
   CalendarData.resourceId = req.body.resourceId
 
-  res.render('calendar/detailed', { title: '新增事件',UserData,RoomData,CalendarData: CalendarData , CaseRecordList: CaseRecordList})
+  res.render('calendar/calendar_detailed', { title: '新增事件',UserData,RoomData,CalendarData: CalendarData , CaseRecordList: CaseRecordList})
 })
 
 //查詢行事曆事件資訊
@@ -84,7 +84,7 @@ router.get('/info/:id', async (req, res, next) => {
   console.log(JSON.stringify(res.locals.user,null,4))
   console.log(JSON.stringify(CalendarData,null,4))
 
-  res.render('calendar/info',{CalendarData: CalendarData})
+  res.render('calendar/calendar_info',{CalendarData: CalendarData})
 })
 
 

@@ -79,7 +79,7 @@
           axios.post('/case',data).then((res) => { 
             Swal.fire(res.data.msg)
             modalMethod.hide()
-            
+            axios.get('/case/all').then((res) => { caseTable.setData(res.data) }).catch((error) => { Swal.fire(error.response.data.msg) })
           }).catch((error) => { 
             Swal.fire(error.response.data.msg)
           }).finally(() => { 
@@ -94,7 +94,7 @@
           axios.put('/case',data).then((res) => { 
             Swal.fire(res.data.msg)
             modalMethod.hide()
-            axios.get('/case/all').then((res) => { table.setData(res.data) }).catch((error) => { Swal.fire(error.response.data.msg) })
+            axios.get('/case/all').then((res) => { caseTable.setData(res.data) }).catch((error) => { Swal.fire(error.response.data.msg) })
           }).catch((error) => { 
             Swal.fire(error.response.data.msg)
           }).finally(() => { 

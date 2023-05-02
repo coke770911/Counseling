@@ -48,7 +48,7 @@
       
       if(document.querySelector('#btn_del_event') !== null) { 
         document.querySelector('#btn_del_event').addEventListener('click', (e) => {
-          let CalendarId = calendar.getEventById(document.querySelector('#CalendarId').value)
+          let CalendarId = eventCalendar.getEventById(document.querySelector('#CalendarId').value)
           mask.show()
           axios.delete('/calendar/'+CalendarId.id).then((res) => {
             modalMethod.hide()
@@ -67,16 +67,6 @@
           QueryStringObj.CalendarId = document.querySelector('#CalendarId').value
           QueryStringObj.RecordId = 0
           document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
-          /*
-          mask.show()
-          axios.get('/record/view/',{ 
-              params: QueryStringObj
-          }).then((res) => {
-            
-          }).catch(error => { 
-            Swal.fire(error.response.data.msg)
-          }).finally(() => { mask.hide() })
-          */
         }) 
       }
     })()
