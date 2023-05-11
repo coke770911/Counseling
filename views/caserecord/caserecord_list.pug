@@ -59,6 +59,34 @@ block content
             }
           },
         ],
+        rowFormatter: function(row){
+          //create and style holder elements
+          let holderEl = document.createElement("div");
+          let tableEl = document.createElement("div");
+
+          holderEl.style.boxSizing = "border-box";
+          holderEl.style.padding = "10px 30px 10px 10px";
+          holderEl.style.borderTop = "1px solid #333";
+          holderEl.style.borderBotom = "1px solid #333";
+          
+          holderEl.appendChild(tableEl);
+          row.getElement().appendChild(holderEl);
+          
+          let subTable = new Tabulator(tableEl, {
+            layout: "fitColumns",
+            data: row.getData().hasTalkRecord,
+            columnDefaults: {
+              headerHozAlign: "center",
+              hozAlign: "center",
+              headerSort: false,
+            },
+            columns:[
+              {title: "Date", field: "createdLocal", sorter: "date"},
+              {title: "Engineer", field: "keyinUser"},
+              {title: "Action", field: "processPlan"},
+            ]
+          })
+        },
       })
       
       document.querySelector('#btn-search').addEventListener('click',(e) => {

@@ -94,13 +94,32 @@ router.get('/', async (req, res, next) => {
   }
 
   const CaseRecordList = await db.CaseRecord.findAll({
+    attributes: ['id'
+    ,'memberUid'
+    ,'memberName'
+    ,'memberSex'
+    ,'memberDept'
+    ,'memberGrade'
+    ,'memberClass'
+    ,'memberIdentity'
+    ,'memberSource'
+    ,'isClose'
+    ,'createdAt'
+    ,'updatedAt'
+    ,'deletedAt'],
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
       { association: 'refcaseManage' , attributes: ['username']},
       { association: 'refcaseAssign' , attributes: ['username']},
       { association: 'refIdentity' , attributes: ['content']},
       { association: 'refSource' , attributes: ['content']},
-      { association: 'hasTalkRecord'},
+      { association: 'hasTalkRecord' , include: [
+          { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
+          { association: 'refkeyinUser' , attributes: ['username']},
+          { association: 'refProcess' , attributes: ['content']},
+          { association: 'refLevel' , attributes: ['content']},
+        ]
+      },
     ],
     where: wherestr,
     order: [['id', 'DESC']]
