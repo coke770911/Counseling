@@ -21,7 +21,7 @@ block content
     let caseTable 
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
-        ajaxURL: "/case/all",
+        ajaxURL: "/case",
         ajaxConfig: "get",
         ajaxContentType: "json",
         layout: "fitDataTable",
@@ -46,6 +46,7 @@ block content
           {title: "個案來源", field: "refSource.content", hozAlign: "left"},
           {title: "個管員", field: "refcaseManage.username"},
           {title: "心理師", field: "refcaseAssign.username"},
+          {title: "建立時間", field: "createdLocal"},
           {title: "案件進度", field: "isCloseName"},
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){

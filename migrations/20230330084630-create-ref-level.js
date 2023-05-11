@@ -30,13 +30,8 @@ module.exports = {
 
     await queryInterface.bulkInsert('RefLevels', [
       {
-        content: '紅',
-        memo: '個案有高度自殺/自傷或傷人之危機。',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }, {
-        content: '橙',
-        memo: '個案有嚴重情緒/精神困擾，需個管持續介入輔導。',
+        content: '綠',
+        memo: '個案狀況穩定，可結案。',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
@@ -45,8 +40,13 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
-        content: '綠',
-        memo: '個案狀況穩定，可結案。',
+        content: '橙',
+        memo: '個案有嚴重情緒/精神困擾，需個管持續介入輔導。',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }, {
+        content: '紅',
+        memo: '個案有高度自殺/自傷或傷人之危機。',
         createdAt: new Date(),
         updatedAt: new Date()
       },

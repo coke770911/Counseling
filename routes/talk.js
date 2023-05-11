@@ -14,6 +14,11 @@ router.use((req, res, next) => {
   next()
 })
 
+
+router.get('/listview', async (req, res, next) => {
+  res.render('talkrecord/talkrecord_list', { title: '基本資料建檔'})
+})
+
 router.get('/view', async (req, res, next) => {
   let d = new Date()
   console.dir(d.toISOString().slice(0,16))
@@ -64,7 +69,7 @@ router.get('/view', async (req, res, next) => {
   let ThemeGroup4 = await db.RefTheme.findAll({ where: { parentId: 4 }})
 
   res.render('talkrecord/talkrecord_view', { 
-    title: '基本資料建檔',
+    title: '晤談記錄建檔',
     CaseRecordData: CaseRecordData,
     TalkRecordData: TalkRecordData,
     CalendarId: req.query.CalendarId || 0,
@@ -77,12 +82,51 @@ router.get('/view', async (req, res, next) => {
   })
 })
 
+//取得資料
 router.get('/', async (req, res, next) => {
-  res.status(200).send(JSON.stringify({msg: '建立完成。'}))
+
+  let wherestr = {
+    [db.Sequelize.Op.and]: [
+      { memberUid: req.params.user },
+    ] 
+  }
+  
+  if([2].indexOf(req.session.auth) !== -1) {
+    wherestr = {
+      [db.Sequelize.Op.and]: [
+        { memberUid: req.params.user },
+        { caseManage: req.session.account },
+      ] 
+    }
+  }
+
+  if([3,4].indexOf(req.session.auth) !== -1) {
+    wherestr = {
+      [db.Sequelize.Op.and]: [
+        { memberUid: req.params.user },
+        { caseAssign: req.session.account} ,
+        { isClose: 0 }
+      ] 
+    }
+  }
+
+  const TalkRecordList = await db.TalkRecord.findAll({
+    required: true,
+    include: [
+      { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
+      { association: 'refkeyinUser' , attributes: ['username']},
+      { association: 'refProcess' , attributes: ['content']},
+      { association: 'refLevel' , attributes: ['content']},
+    ],
+    where: {
+      '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null }
+    },
+    order: [['id', 'DESC']]
+  })
+  res.status(200).send(JSON.stringify(TalkRecordList))
 })
 
 router.post('/', upload.none(), async (req, res, next) => {
-  
   console.dir(req.body)
   res.status(200).send(JSON.stringify({ msg: 123}))
   return 

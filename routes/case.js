@@ -72,30 +72,69 @@ router.get('/listview',(req, res, next) => {
 })
 
 
-//個案追蹤清單
-router.get('/:user', async (req, res, next) => {
-  let wherestr = {}
-  if([1].indexOf(req.session.auth) !== -1) {
-    wherestr = {}
-  }
 
+//個案追蹤清單
+router.get('/', async (req, res, next) => {
+  let wherestr = {}
   if([2].indexOf(req.session.auth) !== -1) {
     wherestr = {
-      [Op.and]: [
-        { caseManage: req.session.account }
+      [db.Sequelize.Op.and]: [
+        { caseManage: req.session.account },
       ] 
     }
   }
 
   if([3,4].indexOf(req.session.auth) !== -1) {
     wherestr = {
-      [Op.and]: [
+      [db.Sequelize.Op.and]: [
         { caseAssign: req.session.account} ,
         { isClose: 0 }
       ] 
     }
   }
+
+  const CaseRecordList = await db.CaseRecord.findAll({
+    include: [
+      { association: 'refcaseCreator' , attributes: ['username']},
+      { association: 'refcaseManage' , attributes: ['username']},
+      { association: 'refcaseAssign' , attributes: ['username']},
+      { association: 'refIdentity' , attributes: ['content']},
+      { association: 'refSource' , attributes: ['content']},
+      { association: 'hasTalkRecord'},
+    ],
+    where: wherestr,
+    order: [['id', 'DESC']]
+  })
+  res.status(200).send(JSON.stringify(CaseRecordList))
+})
+
+//指定個案追蹤清單
+router.get('/:user', async (req, res, next) => {
+  let wherestr = {
+    [db.Sequelize.Op.and]: [
+      { memberUid: req.params.user },
+    ] 
+  }
   
+  if([2].indexOf(req.session.auth) !== -1) {
+    wherestr = {
+      [db.Sequelize.Op.and]: [
+        { memberUid: req.params.user },
+        { caseManage: req.session.account },
+      ] 
+    }
+  }
+
+  if([3,4].indexOf(req.session.auth) !== -1) {
+    wherestr = {
+      [db.Sequelize.Op.and]: [
+        { memberUid: req.params.user },
+        { caseAssign: req.session.account} ,
+        { isClose: 0 }
+      ] 
+    }
+  }
+
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
@@ -108,7 +147,6 @@ router.get('/:user', async (req, res, next) => {
     order: [['id', 'DESC']]
   })
   res.status(200).send(JSON.stringify(CaseRecordList))
-
 })
 
 //建立個案紀錄

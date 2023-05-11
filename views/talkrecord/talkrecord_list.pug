@@ -1,0 +1,58 @@
+extends ../layout
+
+block content
+  .container
+    .row
+      .col
+      nav(aria-label="breadcrumb")
+        ol.breadcrumb
+          li.breadcrumb-item 
+            a(href="/") 首頁
+          li.breadcrumb-item 個案管理
+          li.breadcrumb-item.active 晤談紀錄
+    .row
+      .col-4
+        .input-group.mb-3
+          span.input-group-text(id="inputGroup-memberUid") 學號
+          input.form-control(type="text" placeholder="輸入學號" aria-label="輸入學號" aria-describedby="btn-search" name="txt-search" id="txt-search")
+          button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
+    table.table#maintable
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+        const table = new Tabulator("#maintable", {
+        ajaxURL: "/talk",
+        ajaxConfig: "get",
+        ajaxContentType: "json",
+        layout: "fitDataTable",
+        minHeight: 300,
+        maxHeight : "100%",
+        placeholder: "尚無資料",
+        resizableColumnFit: true,
+        pagination: true, //啟用分頁
+        paginationSize: 10, //可選參數以請求每頁的特定行數
+        columnDefaults: {
+          headerHozAlign: "center",
+          hozAlign: "center",
+          headerSort: false,
+        },
+        columns: [
+          {title: "#", formatter: "rownum", width: 50},
+          {title: "學號", field: "refCase.memberUid" },
+          {title: "學生姓名", field: "refCase.memberName"},
+          {title: "性別", field: "refCase.memberSex"},
+          {title: "系所年級", field: "refCase.memberDeptFull", hozAlign: "left"},
+          {title: "個案評估", field: "refLevel.content", hozAlign: "left"},
+          {title: "處理方式", field: "refProcess.content", hozAlign: "left"},
+          {title: "建立紀錄心理師", field: "refkeyinUser.username"},
+          {title: "建立時間", field: "createdLocal"},
+          {title: "功能",field: "id",
+            formatter: function(cell ,  formatterParams ){
+              let value = cell.getValue()
+              let buttonString = '<button class="btn btn-primary mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button><button class="btn btn-secondary mx-1 btn-editTalk" type="button" data-talkId="'+value+'">修改</button>'
+              let auth = #{user.auth}
+              return buttonString
+            }
+          },
+        ],
+      })
+    })
