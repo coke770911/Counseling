@@ -127,9 +127,10 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', upload.none(), async (req, res, next) => {
+  /*
   console.dir(req.body)
   res.status(200).send(JSON.stringify({ msg: 123}))
-  return 
+  return */
   /*
   const createdata = await db.TalkRecord.create({
     caseId: req.body.CaseId ,

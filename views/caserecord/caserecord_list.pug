@@ -11,7 +11,7 @@ block content
           li.breadcrumb-item 個案資料
           li.breadcrumb-item.active 個案追蹤
     .row
-      .col-4
+      .col-12.col-md-6.col-lg-4
         .input-group.mb-3
           span.input-group-text(id="inputGroup-memberUid") 學號
           input.form-control(type="text" placeholder="輸入學號" aria-label="輸入學號" aria-describedby="btn-search" name="txt-search" id="txt-search")
@@ -27,7 +27,7 @@ block content
         layout: "fitDataTable",
         minHeight: 300,
         maxHeight : "100%",
-        placeholder: "尚無資料",
+        placeholder: "查無個管案件資料",
         resizableColumnFit: true,
         pagination: true, //啟用分頁
         paginationSize: 10, //可選參數以請求每頁的特定行數
@@ -60,20 +60,38 @@ block content
           },
         ],
         rowFormatter: function(row){
-          //create and style holder elements
-          let holderEl = document.createElement("div");
-          let tableEl = document.createElement("div");
 
-          holderEl.style.boxSizing = "border-box";
-          holderEl.style.padding = "10px 30px 10px 10px";
-          holderEl.style.borderTop = "1px solid #333";
-          holderEl.style.borderBotom = "1px solid #333";
+          console.dir(row.getData())
+
+          let accordion = document.createElement("div");
+          accordion.classList.add("accordion");
           
-          holderEl.appendChild(tableEl);
-          row.getElement().appendChild(holderEl);
+          let accordion_item = document.createElement("div");
+          accordion_item.classList.add("accordion-item");
+
+          let accordion_header = document.createElement("h2");
+          accordion_header.classList.add("accordion-header");
+          accordion_header.innerHTML = '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'+row.getData().id+'" aria-expanded="true" aria-controls="#collapse'+row.getData().id+'">'+row.getData().memberName+' 晤談記錄列表 '+row.getData().hasTalkRecord.length+'筆紀錄</button>' 
+
+          let accordion_collapse = document.createElement("div");
+          accordion_collapse.id = "collapse"+row.getData().id
+          accordion_collapse.classList.add("accordion-collapse");
+          accordion_collapse.classList.add("collapse");
           
+          let accordion_body = document.createElement("div");
+          
+          accordion.appendChild(accordion_item);
+          accordion_item.appendChild(accordion_header);
+          accordion_item.appendChild(accordion_collapse);
+          accordion_collapse.appendChild(accordion_body);
+
+          let tableEl = document.createElement("div");
+          accordion_body.appendChild(tableEl);
+          row.getElement().appendChild(accordion);
           let subTable = new Tabulator(tableEl, {
-            layout: "fitColumns",
+            layout: "fitDataTable",
+            maxHeight : "100%",
+            placeholder: "尚無晤談記錄",
             data: row.getData().hasTalkRecord,
             columnDefaults: {
               headerHozAlign: "center",
@@ -81,9 +99,17 @@ block content
               headerSort: false,
             },
             columns:[
-              {title: "Date", field: "createdLocal", sorter: "date"},
-              {title: "Engineer", field: "keyinUser"},
-              {title: "Action", field: "processPlan"},
+              {title: "#", formatter: "rownum", width: 50},
+              {title: "填寫紀錄日期", field: "createdLocal", sorter: "date"},
+              {title: "填寫紀錄心理師", field: "refkeyinUser.username"},
+              {title: "處理方式", field: "refProcess.content"},
+              {title: "評估等級", field: "refLevel.content"},
+              {title: "功能",field: "id",formatter: function(cell ,  formatterParams ){
+                  let value = cell.getValue()
+                  let buttonString = '<button class="btn btn-info mx-1 btn-talkInfo" type="button" data-caseId="'+value+'">查詢</button>'
+                  return buttonString
+                }
+              },
             ]
           })
         },

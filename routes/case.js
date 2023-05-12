@@ -66,12 +66,9 @@ router.get('/view', async (req, res, next) => {
   res.render('caserecord/caserecord_detailed',{ RefIdentityList: RefIdentityList, RefSourceList: RefSourceList, CaseData: CaseData , UserList: UserList})
 })
 
-
 router.get('/listview',(req, res, next) => {
   res.render('caserecord/caserecord_list')
 })
-
-
 
 //個案追蹤清單
 router.get('/', async (req, res, next) => {
@@ -101,12 +98,16 @@ router.get('/', async (req, res, next) => {
     ,'memberDept'
     ,'memberGrade'
     ,'memberClass'
+    ,'memberDeptFull'
     ,'memberIdentity'
     ,'memberSource'
     ,'isClose'
     ,'createdAt'
     ,'updatedAt'
-    ,'deletedAt'],
+    ,'deletedAt'
+    ,'isCloseName'
+    ,'createdLocal'
+    ],
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
       { association: 'refcaseManage' , attributes: ['username']},
