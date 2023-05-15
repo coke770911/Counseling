@@ -72,26 +72,9 @@ router.get('/listview',(req, res, next) => {
 
 //個案追蹤清單
 router.get('/', async (req, res, next) => {
-  let wherestr = {}
-  if([2].indexOf(req.session.auth) !== -1) {
-    wherestr = {
-      [db.Sequelize.Op.and]: [
-        { caseManage: req.session.account },
-      ] 
-    }
-  }
-
-  if([3,4].indexOf(req.session.auth) !== -1) {
-    wherestr = {
-      [db.Sequelize.Op.and]: [
-        { caseAssign: req.session.account} ,
-        { isClose: 0 }
-      ] 
-    }
-  }
-
-  const CaseRecordList = await db.CaseRecord.findAll({
-    attributes: ['id'
+  let CaseRecordObj = {
+    attributes: [
+    'id'
     ,'memberUid'
     ,'memberName'
     ,'memberSex'
@@ -114,58 +97,97 @@ router.get('/', async (req, res, next) => {
       { association: 'refcaseAssign' , attributes: ['username']},
       { association: 'refIdentity' , attributes: ['content']},
       { association: 'refSource' , attributes: ['content']},
-      { association: 'hasTalkRecord' , include: [
+      { association: 'hasTalkRecord' , 
+        include: [
           { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
           { association: 'refkeyinUser' , attributes: ['username']},
           { association: 'refProcess' , attributes: ['content']},
           { association: 'refLevel' , attributes: ['content']},
-        ]
+        ],
+        required: false
       },
     ],
-    where: wherestr,
-    order: [['id', 'DESC']]
-  })
+    order: [['updatedAt', 'DESC'],['isClose','DESC']]
+  }
+  
+  //個管員
+  if([2].indexOf(req.session.auth) !== -1) {
+    CaseRecordObj.where = {
+      caseManage: req.session.account
+    }
+  }
+
+  //心理師
+  if([3,4].indexOf(req.session.auth) !== -1) {
+    CaseRecordObj.where = {
+      isClose: 0 ,
+      caseAssign: req.session.account ,   
+    }
+    CaseRecordObj.include[5].where = { keyinUser: req.session.account }
+  }
+  
+
+  const CaseRecordList = await db.CaseRecord.findAll(CaseRecordObj)
   res.status(200).send(JSON.stringify(CaseRecordList))
 })
 
 //指定個案追蹤清單
 router.get('/:user', async (req, res, next) => {
-  let wherestr = {
-    [db.Sequelize.Op.and]: [
-      { memberUid: req.params.user },
-    ] 
-  }
-  
-  if([2].indexOf(req.session.auth) !== -1) {
-    wherestr = {
-      [db.Sequelize.Op.and]: [
-        { memberUid: req.params.user },
-        { caseManage: req.session.account },
-      ] 
-    }
-  }
-
-  if([3,4].indexOf(req.session.auth) !== -1) {
-    wherestr = {
-      [db.Sequelize.Op.and]: [
-        { memberUid: req.params.user },
-        { caseAssign: req.session.account} ,
-        { isClose: 0 }
-      ] 
-    }
-  }
-
-  const CaseRecordList = await db.CaseRecord.findAll({
+  let CaseRecordObj = {
+    attributes: [
+    'id'
+    ,'memberUid'
+    ,'memberName'
+    ,'memberSex'
+    ,'memberDept'
+    ,'memberGrade'
+    ,'memberClass'
+    ,'memberDeptFull'
+    ,'memberIdentity'
+    ,'memberSource'
+    ,'isClose'
+    ,'createdAt'
+    ,'updatedAt'
+    ,'deletedAt'
+    ,'isCloseName'
+    ,'createdLocal'
+    ],
     include: [
       { association: 'refcaseCreator' , attributes: ['username']},
       { association: 'refcaseManage' , attributes: ['username']},
       { association: 'refcaseAssign' , attributes: ['username']},
-      { association: 'refIdentity' },
-      { association: 'refSource' },
+      { association: 'refIdentity' , attributes: ['content']},
+      { association: 'refSource' , attributes: ['content']},
+      { association: 'hasTalkRecord' , 
+        include: [
+          { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
+          { association: 'refkeyinUser' , attributes: ['username']},
+          { association: 'refProcess' , attributes: ['content']},
+          { association: 'refLevel' , attributes: ['content']},
+        ],
+        required: false
+      },
     ],
-    where: wherestr,
-    order: [['id', 'DESC']]
-  })
+    where: { memberUid: req.params.user },
+    order: [['updatedAt', 'DESC'],['isClose','DESC']]
+  }
+  
+  if([2].indexOf(req.session.auth) !== -1) {
+    CaseRecordObj.where = {
+      caseManage: req.session.account , 
+      memberUid: req.params.user 
+    }
+  }
+
+  if([3,4].indexOf(req.session.auth) !== -1) {
+    CaseRecordObj.where = {
+      isClose: 0 ,
+      caseAssign: req.session.account ,   
+      memberUid: req.params.user
+    }
+  }
+
+  const CaseRecordList = await db.CaseRecord.findAll(CaseRecordObj)
   res.status(200).send(JSON.stringify(CaseRecordList))
 })
 

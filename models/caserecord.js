@@ -16,8 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       CaseRecord.belongsTo(models.UserData, { as: 'refcaseAssign' , targetKey: 'account' , foreignKey: 'caseAssign' })
       CaseRecord.belongsTo(models.RefIdentity, { as: 'refIdentity' , foreignKey: 'memberIdentity' })
       CaseRecord.belongsTo(models.RefSource, { as: 'refSource' , foreignKey: 'memberSource' })
-      CaseRecord.hasMany(models.TalkRecord,{ as: 'hasTalkRecord' , foreignKey: 'caseId' } );
-
+      CaseRecord.hasMany(models.TalkRecord,{ as: 'hasTalkRecord' , foreignKey: 'caseId' });
     }
   }
   

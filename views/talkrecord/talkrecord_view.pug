@@ -105,7 +105,7 @@ block content
         axios.post('/talk',data).then((res) => { 
           mask.hide()
           Swal.fire(res.data.msg).then(() => {
-
+            
           })  
         }).catch((error) => { 
           Swal.fire(error.response.data.msg)

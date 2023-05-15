@@ -84,13 +84,23 @@ router.get('/view', async (req, res, next) => {
 
 //取得資料
 router.get('/', async (req, res, next) => {
-
-  let wherestr = {
-    [db.Sequelize.Op.and]: [
-      { memberUid: req.params.user },
-    ] 
+  let TalkRecordObj = {
+    required: true,
+    include: [
+      { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
+      { association: 'refkeyinUser' , attributes: ['username']},
+      { association: 'refProcess' , attributes: ['content']},
+      { association: 'refLevel' , attributes: ['content']},
+    ],
+    where: {
+      '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
+      memberUid: req.params.user ,
+      caseAssign: req.session.account ,
+      isClose: 0 
+    },
+    order: [['id', 'DESC']]
   }
-  
+
   if([2].indexOf(req.session.auth) !== -1) {
     wherestr = {
       [db.Sequelize.Op.and]: [
@@ -100,29 +110,7 @@ router.get('/', async (req, res, next) => {
     }
   }
 
-  if([3,4].indexOf(req.session.auth) !== -1) {
-    wherestr = {
-      [db.Sequelize.Op.and]: [
-        { memberUid: req.params.user },
-        { caseAssign: req.session.account} ,
-        { isClose: 0 }
-      ] 
-    }
-  }
-
-  const TalkRecordList = await db.TalkRecord.findAll({
-    required: true,
-    include: [
-      { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
-      { association: 'refkeyinUser' , attributes: ['username']},
-      { association: 'refProcess' , attributes: ['content']},
-      { association: 'refLevel' , attributes: ['content']},
-    ],
-    where: {
-      '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null }
-    },
-    order: [['id', 'DESC']]
-  })
+  const TalkRecordList = await db.TalkRecord.findAll(TalkRecordObj)
   res.status(200).send(JSON.stringify(TalkRecordList))
 })
 

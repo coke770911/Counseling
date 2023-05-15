@@ -34,6 +34,7 @@ block content
         columnDefaults: {
           headerHozAlign: "center",
           hozAlign: "center",
+          vertAlign: "middle",
           headerSort: false,
         },
         columns: [
@@ -71,7 +72,7 @@ block content
 
           let accordion_header = document.createElement("h2");
           accordion_header.classList.add("accordion-header");
-          accordion_header.innerHTML = '<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'+row.getData().id+'" aria-expanded="true" aria-controls="#collapse'+row.getData().id+'">'+row.getData().memberName+' 晤談記錄列表 '+row.getData().hasTalkRecord.length+'筆紀錄</button>' 
+          accordion_header.innerHTML = '<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'+row.getData().id+'" aria-expanded="true" aria-controls="#collapse'+row.getData().id+'">'+row.getData().memberName+' 晤談記錄列表 '+row.getData().hasTalkRecord.length+'筆紀錄</button>' 
 
           let accordion_collapse = document.createElement("div");
           accordion_collapse.id = "collapse"+row.getData().id
@@ -96,6 +97,7 @@ block content
             columnDefaults: {
               headerHozAlign: "center",
               hozAlign: "center",
+              vertAlign: "middle",
               headerSort: false,
             },
             columns:[
@@ -143,7 +145,7 @@ block content
           }
         }
 
-        //
+        //結案
         if(target.getAttribute("class").indexOf("btn-CloseCase") !== -1) {
           console.dir('B')
         }
