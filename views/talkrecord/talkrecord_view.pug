@@ -1,36 +1,43 @@
 extends ../layout
-
+  
 block content
   .container
+    .row.d-print-none
+      .col
+      nav(aria-label="breadcrumb")
+        ol.breadcrumb
+          li.breadcrumb-item 
+            a(href="/") 首頁
+          li.breadcrumb-item 個案追蹤
+          li.breadcrumb-item.active 填寫晤談紀錄
     form#TalkData
       .row.mb-1.text-center
         .col 
-          h3 亞東科技大學諮商中心諮商服務紀錄表
+          h3 亞東科技大學諮商中心諮商服務紀錄表          
       .row.mb-1.text-left
         .col-4
           input(type="hidden" name="CaseId" value=CaseRecordData.id)
           input(type="hidden" name="TalkId" value=TalkRecordData.id)
           input(type="hidden" name="CalendarId" value=CalendarId)
           label 學號：#{CaseRecordData.memberUid}
-        .col-4
-          label 姓名：#{CaseRecordData.memberName}
-        .col-4
+        .col-8
           label 系級：#{CaseRecordData.memberDeptFull}
       .row.mb-1.text-left
         .col-4
-          label 身份：#{CaseRecordData.refIdentity.content}
+          label 姓名：#{CaseRecordData.memberName}
+        .col-8
+          label 日期：
+          input(type="datetime-local" name="keyinDate" value=TalkRecordData.keyinDate)   
+      .row.mb-1.text-left
         .col-4
           label 個案來源：#{CaseRecordData.refSource.content} 
-
-      .row.mb-1.text-left
         .col-4
           label 個管員：#{CaseRecordData.refcaseManage.username}
         .col-4
           label 會談心理師：#{user.username}
-        .col-4
-          label 日期：
-          input(type="datetime-local" name="keyinDate" value=TalkRecordData.keyinDate)   
       .row.mb-1.text-left
+        .col-4
+          label 身份：#{CaseRecordData.refIdentity.content}
         .col-4
           label 處理方式：
           select(name="refProcessesId")
@@ -41,6 +48,74 @@ block content
           select(name="refLevelId")
             each value in caseLevel
               option(value=value.id) #{value.content}  
+      .accordion#accordionExample.d-print-none.my-2
+        .accordion-item
+          h2.accordion-header
+            button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne") #{CaseRecordData.memberUid} #{CaseRecordData.memberName} 基本資料
+          .accordion-collapse.collapse#collapseOne
+            .accordion-body
+              .row 
+                .col-12.col-md-4
+                  label.form-label 學生學號：#{CaseRecordData.refMember.uid}
+                .col-12.col-md-4
+                  label.form-label 學生姓名：#{CaseRecordData.refMember.name}
+                .col-12.col-md-4
+                  label.form-label 出生年月日：#{CaseRecordData.refMember.birthday}
+              .row.my-2
+                .col-12.col-md-4
+                  label.form-label 性別：#{CaseRecordData.refMember.sex}
+                .col-12.col-md-4
+                  label.form-label 年齡：#{CaseRecordData.refMember.age}
+                .col-12.col-md-4
+                  label.form-label.me-2.mt-2 婚姻狀況：
+                  .form-check.form-check-inline
+                    if CaseRecordData.refMember.marry
+                      input(class="form-check-input" type="radio" name="marry" value="0" disabled)
+                    else 
+                      input(class="form-check-input" type="radio" name="marry" value="0" checked)
+                    label.form-check-label 未婚
+                  .form-check.form-check-inline
+                    if CaseRecordData.refMember.marry
+                      input(class="form-check-input" type="radio" name="marry" value="1" checked)
+                    else 
+                      input(class="form-check-input" type="radio" name="marry" value="1" disabled)
+                    label.form-check-label 已婚
+              .row.mb-1
+                .col-12.col-md-6
+                  label.form-label 行動電話：#{CaseRecordData.refMember.mobile}
+                .col-12.col-md-6
+                  label.form-label 市內電話：#{CaseRecordData.refMember.tel}
+              .row.mb-1
+                .col-12.col-md-6
+                  label.form-label E-Mail：#{CaseRecordData.refMember.email}
+                .col-12.col-md-6
+                  label.form-label.me-2.mt-2 聯絡時是否可以表明輔導中心：
+                  .form-check.form-check-inline
+                    if CaseRecordData.refMember.isContact
+                      input.form-check-input(type="radio" name="isContact" value="1" checked)
+                    else 
+                      input.form-check-input(type="radio" name="isContact" value="1")
+                    label.form-check-label 是
+                  .form-check.form-check-inline
+                    if CaseRecordData.refMember.isContact
+                      input.form-check-input(type="radio" name="isContact" value="0")
+                    else
+                      input.form-check-input(type="radio" name="isContact" value="0" checked)
+                    label.form-check-label 否
+              .row.mb-1
+                .col-12.col-md-6
+                  label.form-label 住宿地址：#{CaseRecordData.refMember.address}
+                .col-12.col-md-6
+                  label.form-label 戶籍地址：#{CaseRecordData.refMember.regaddress}
+              .row.mb-5
+                .col-6.col-md-3
+                  label.form-label 緊急聯絡人：#{CaseRecordData.refMember.contactName}
+                .col-6.col-md-3
+                  label.form-label 關係：#{CaseRecordData.refMember.contactRelation}
+                .col-6.col-md-3
+                  label.form-label 緊急連絡人電話：#{CaseRecordData.refMember.contactTel}
+                .col-6.col-md-3
+                  label.form-label 緊急連絡人手機：#{CaseRecordData.refMember.contactPhone}
       hr
       .row.mb-1
         .col
@@ -114,4 +189,6 @@ block content
         })
       })
     })
+
+
 

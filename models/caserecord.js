@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       //CaseRecord.hasOne(models.UserData,{ as: 'aaa', sourceKey: 'caseCreator', foreignKey: 'account' });
+
+      CaseRecord.belongsTo(models.Member, { as: 'refMember' , targetKey: 'uid' , foreignKey: 'memberUid' })
       CaseRecord.belongsTo(models.UserData, { as: 'refcaseCreator' , targetKey: 'account' , foreignKey: 'caseCreator' })
       CaseRecord.belongsTo(models.UserData, { as: 'refcaseManage' , targetKey: 'account' , foreignKey: 'caseManage' })
       CaseRecord.belongsTo(models.UserData, { as: 'refcaseAssign' , targetKey: 'account' , foreignKey: 'caseAssign' })

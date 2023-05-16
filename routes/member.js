@@ -52,7 +52,8 @@ router.get('/view/:id', async (req, res, next) => {
         { association: 'refCreator' , attributes: ['username']},
         { association: 'refEditor' , attributes: ['username']},
       ],
-      where: { id: req.params.id }})
+      where: { id: req.params.id }
+    })
     console.dir(memberData)
     memberData.creatorName = memberData.refCreator.username
     memberData.editorName = memberData.refEditor.username

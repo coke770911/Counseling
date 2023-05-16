@@ -27,6 +27,7 @@ block content
         layout: "fitDataTable",
         minHeight: 300,
         maxHeight : "100%",
+        layoutColumnsOnNewData : true ,
         placeholder: "查無個管案件資料",
         resizableColumnFit: true,
         pagination: true, //啟用分頁
@@ -47,23 +48,20 @@ block content
           {title: "個案來源", field: "refSource.content", hozAlign: "left"},
           {title: "個管員", field: "refcaseManage.username"},
           {title: "心理師", field: "refcaseAssign.username"},
-          {title: "建立時間", field: "createdLocal"},
+          //{title: "建立時間", field: "createdLocal"},
           {title: "案件進度", field: "isCloseName"},
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
-              let buttonString = '<button class="btn btn-primary mx-1 btn-CreatTalk" type="button" data-caseId="'+value+'">晤談</button><button class="btn btn-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
+              let buttonString = '<button class="btn btn-outline-primary mx-1 btn-CreatTalk" type="button" data-caseId="'+value+'">晤談</button><button class="btn btn-outline-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
               let auth = #{user.auth}
               if([1].indexOf(auth) !== -1)
-                buttonString += '<button class="btn btn-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button><button class="btn btn-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
+                buttonString += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button><button class="btn btn-outline-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
               return buttonString
             }
           },
         ],
         rowFormatter: function(row){
-
-          console.dir(row.getData())
-
           let accordion = document.createElement("div");
           accordion.classList.add("accordion");
           
@@ -90,8 +88,7 @@ block content
           accordion_body.appendChild(tableEl);
           row.getElement().appendChild(accordion);
           let subTable = new Tabulator(tableEl, {
-            layout: "fitDataTable",
-            maxHeight : "100%",
+            layout : "fitColumns" , 
             placeholder: "尚無晤談記錄",
             data: row.getData().hasTalkRecord,
             columnDefaults: {
@@ -108,7 +105,7 @@ block content
               {title: "評估等級", field: "refLevel.content"},
               {title: "功能",field: "id",formatter: function(cell ,  formatterParams ){
                   let value = cell.getValue()
-                  let buttonString = '<button class="btn btn-info mx-1 btn-talkInfo" type="button" data-caseId="'+value+'">查詢</button>'
+                  let buttonString = '<button class="btn btn-outline-success mx-1 btn-talkInfo" type="button" data-caseId="'+value+'">查詢</button><button class="btn btn-outline-info mx-1 btn-print" type="button" data-talkId="'+value+'"><i class="bi bi-printer"></i>列印</button>'
                   return buttonString
                 }
               },

@@ -2,9 +2,29 @@
   display: none;
 }
 
+body {
+  font-family: 微軟正黑體 , 細明體;
+}
+
+@font-face { 
+  font-family: "細明體"; 
+  src: url('https://portal.aeust.edu.tw/core/css/fonts/eudc.eot') format('embedded-opentype'); 
+}
+
+@font-face { 
+  font-family: "細明體"; 
+  src: url('https://portal.aeust.edu.tw/core/css/fonts/eudc.ttf') format('truetype'); 
+}
+
 @media print { 
   select {
     border: 0px;
     appearance: none;
   }
+  
+  input {
+    border: 0px;
+    appearance: none;
+  }
+  
 }

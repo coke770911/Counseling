@@ -42,14 +42,14 @@ block content
           {title: "學生姓名", field: "refCase.memberName"},
           {title: "性別", field: "refCase.memberSex"},
           {title: "系所年級", field: "refCase.memberDeptFull", hozAlign: "left"},
-          {title: "個案評估", field: "refLevel.content", hozAlign: "left"},
-          {title: "處理方式", field: "refProcess.content", hozAlign: "left"},
+          {title: "個案評估", field: "refLevel.content"},
+          {title: "處理方式", field: "refProcess.content"},
           {title: "建立紀錄心理師", field: "refkeyinUser.username"},
-          {title: "建立時間", field: "createdLocal"},
+          //{title: "建立時間", field: "createdLocal"},
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
-              let buttonString = '<button class="btn btn-primary mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button><button class="btn btn-secondary mx-1 btn-editTalk" type="button" data-talkId="'+value+'">修改</button>'
+              let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button><button class="btn btn-outline-info mx-1 btn-print" type="button" data-talkId="'+value+'"><i class="bi bi-printer"></i>列印</button>'
               let auth = #{user.auth}
               return buttonString
             }
@@ -57,6 +57,33 @@ block content
         ],
       })
 
+      document.querySelector('#btn-search').addEventListener('click',(e) => {
+        mask.show()
+        axios.get('/case/'+document.querySelector('#txt-search').value)
+        .then((res) => { 
+          table.setData(res.data);
+        }).catch((error) => { 
+          Swal.fire(error.response.data.msg)
+        }).finally(() => { 
+          mask.hide()
+        })
+      })
 
+      document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
+        let target = event.target
+        if(!target.getAttribute("class")) { return }
 
+        //addrecord
+        if(target.getAttribute("class").indexOf("btn-CreatTalk") !== -1) {
+          if(target.getAttribute("data-caseId")) {
+            let caseId = target.getAttribute("data-caseId");
+            let QueryStringObj = {}
+            QueryStringObj.CaseRecordId = caseId
+            QueryStringObj.CalendarId = 0
+            QueryStringObj.RecordId = 0
+            document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
+          }
+        }
+      })
+      
     })

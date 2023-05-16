@@ -14,11 +14,12 @@ router.use((req, res, next) => {
   next()
 })
 
-
+//晤談紀錄清單
 router.get('/listview', async (req, res, next) => {
   res.render('talkrecord/talkrecord_list', { title: '基本資料建檔'})
 })
 
+//晤談紀錄填寫
 router.get('/view', async (req, res, next) => {
   let d = new Date()
   console.dir(d.toISOString().slice(0,16))
@@ -41,12 +42,17 @@ router.get('/view', async (req, res, next) => {
     ],
     where: {id: req.query.RecordId}
   })
-  //console.dir(JSON.stringify(TalkRecordData,null,4))
-  //console.dir(TalkRecordData)
+  console.dir(JSON.stringify(TalkRecordData,null,4))
+  console.dir(TalkRecordData)
 
-  //個案基本資料
+  
+  //案件基本資料
   const CaseRecordData = await db.CaseRecord.findOne({
     include: [
+      { association: 'refMember' , include: [
+          { association: 'refCreator' , attributes: ['username']},
+          { association: 'refEditor' , attributes: ['username']},
+        ]},
       { association: 'refcaseCreator' , attributes: ['username']},
       { association: 'refcaseManage' , attributes: ['username']},
       { association: 'refcaseAssign' , attributes: ['username']},
@@ -58,6 +64,7 @@ router.get('/view', async (req, res, next) => {
     }
   })
   //console.dir(JSON.stringify(TalkRecordData,null,4))
+
   //危機評估 陣列
   let RefLevel = await db.RefLevel.findAll()
   //處理方式 陣列
@@ -94,19 +101,21 @@ router.get('/', async (req, res, next) => {
     ],
     where: {
       '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
-      memberUid: req.params.user ,
-      caseAssign: req.session.account ,
-      isClose: 0 
+      keyinUser: req.session.account ,
     },
     order: [['id', 'DESC']]
   }
 
+  if([1].indexOf(req.session.auth) !== -1) {
+    TalkRecordObj.where = {
+      '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
+    }
+  }
+
   if([2].indexOf(req.session.auth) !== -1) {
-    wherestr = {
-      [db.Sequelize.Op.and]: [
-        { memberUid: req.params.user },
-        { caseManage: req.session.account },
-      ] 
+    TalkRecordObj.where = {
+      '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
+      '$refCase.caseManage$': req.session.account,
     }
   }
 
