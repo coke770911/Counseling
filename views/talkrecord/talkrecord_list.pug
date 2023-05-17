@@ -45,7 +45,7 @@ block content
           {title: "個案評估", field: "refLevel.content"},
           {title: "處理方式", field: "refProcess.content"},
           {title: "建立紀錄心理師", field: "refkeyinUser.username"},
-          //{title: "建立時間", field: "createdLocal"},
+          {title: "晤談建立日期", field: "keyinDateLocal"},
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
@@ -59,7 +59,7 @@ block content
 
       document.querySelector('#btn-search').addEventListener('click',(e) => {
         mask.show()
-        axios.get('/case/'+document.querySelector('#txt-search').value)
+        axios.get('/talk/'+document.querySelector('#txt-search').value)
         .then((res) => { 
           table.setData(res.data);
         }).catch((error) => { 
@@ -73,17 +73,29 @@ block content
         let target = event.target
         if(!target.getAttribute("class")) { return }
 
-        //addrecord
-        if(target.getAttribute("class").indexOf("btn-CreatTalk") !== -1) {
-          if(target.getAttribute("data-caseId")) {
-            let caseId = target.getAttribute("data-caseId");
+        if(target.getAttribute("class").indexOf("btn-infoTalk") !== -1) {
+          if(target.getAttribute("data-talkId")) {
             let QueryStringObj = {}
-            QueryStringObj.CaseRecordId = caseId
+            QueryStringObj.CaseRecordId = 0
             QueryStringObj.CalendarId = 0
-            QueryStringObj.RecordId = 0
+            QueryStringObj.RecordId = target.getAttribute("data-talkId");
             document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
           }
         }
+
+        if(target.getAttribute("class").indexOf("btn-print") !== -1) {
+          if(target.getAttribute("data-talkId")) {
+            /*
+            let QueryStringObj = {}
+            QueryStringObj.CaseRecordId = 0
+            QueryStringObj.CalendarId = 0
+            QueryStringObj.RecordId = target.getAttribute("data-talkId");
+            document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
+            */
+            window.print()
+          }
+        }
+
       })
-      
+
     })

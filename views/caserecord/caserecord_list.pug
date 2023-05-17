@@ -105,7 +105,7 @@ block content
               {title: "評估等級", field: "refLevel.content"},
               {title: "功能",field: "id",formatter: function(cell ,  formatterParams ){
                   let value = cell.getValue()
-                  let buttonString = '<button class="btn btn-outline-success mx-1 btn-talkInfo" type="button" data-caseId="'+value+'">查詢</button><button class="btn btn-outline-info mx-1 btn-print" type="button" data-talkId="'+value+'"><i class="bi bi-printer"></i>列印</button>'
+                  let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button><button class="btn btn-outline-info mx-1 btn-print" type="button" data-talkId="'+value+'"><i class="bi bi-printer"></i>列印</button>'
                   return buttonString
                 }
               },
@@ -199,6 +199,20 @@ block content
             })
           }
         }
+        
+        //晤談紀錄查詢
+        if(target.getAttribute("class").indexOf("btn-infoTalk") !== -1) {
+          console.dir("A")
+          if(target.getAttribute("data-talkId")) {
+            let QueryStringObj = {}
+            QueryStringObj.CaseRecordId = 0
+            QueryStringObj.CalendarId = 0
+            QueryStringObj.RecordId = target.getAttribute("data-talkId");
+            //document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
+            window.open('/talk/view?'+new URLSearchParams(QueryStringObj).toString());
+          }
+        }
+
       })
       caseTable = table
     })

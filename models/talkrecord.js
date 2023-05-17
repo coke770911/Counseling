@@ -21,6 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     caseId: DataTypes.INTEGER,
     keyinUser: DataTypes.STRING,
     keyinDate: DataTypes.DATE,
+    keyinDateLocal: {
+      type: DataTypes.VIRTUAL,
+      get () {
+        return this.getDataValue('keyinDate') === undefined ? '' : this.getDataValue('keyinDate').toLocaleString()
+      }
+    },
     refProcessesId: DataTypes.INTEGER,
     refLevelId: DataTypes.INTEGER,
     refTheme: DataTypes.INTEGER,

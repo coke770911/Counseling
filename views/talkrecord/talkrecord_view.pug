@@ -39,15 +39,21 @@ block content
         .col-4
           label 身份：#{CaseRecordData.refIdentity.content}
         .col-4
-          label 處理方式：
-          select(name="refProcessesId")
+          label(for="refProcessesId") 處理方式：
+          select(name="refProcessesId" id="refProcessesId" title="處理方式")
             each value in caseProcess
-              option(value=value.id) #{value.content}     
+              if TalkRecordData.refProcessesId == value.id
+                option(value=value.id selected="selected") #{value.content}
+              else 
+                option(value=value.id) #{value.content}  
         .col-4
-          label 危機評估：
-          select(name="refLevelId")
+          label(for="refLevelId") 危機評估：
+          select(name="refLevelId" id="refLevelId")
             each value in caseLevel
-              option(value=value.id) #{value.content}  
+              if TalkRecordData.refLevelId == value.id
+                option(value=value.id selected="selected") #{value.content}
+              else 
+                option(value=value.id) #{value.content}
       .accordion#accordionExample.d-print-none.my-2
         .accordion-item
           h2.accordion-header
@@ -72,11 +78,11 @@ block content
                     if CaseRecordData.refMember.marry
                       input(class="form-check-input" type="radio" name="marry" value="0" disabled)
                     else 
-                      input(class="form-check-input" type="radio" name="marry" value="0" checked)
+                      input(class="form-check-input" type="radio" name="marry" value="0" checked="checked")
                     label.form-check-label 未婚
                   .form-check.form-check-inline
                     if CaseRecordData.refMember.marry
-                      input(class="form-check-input" type="radio" name="marry" value="1" checked)
+                      input(class="form-check-input" type="radio" name="marry" value="1" checked="checked")
                     else 
                       input(class="form-check-input" type="radio" name="marry" value="1" disabled)
                     label.form-check-label 已婚
@@ -92,7 +98,7 @@ block content
                   label.form-label.me-2.mt-2 聯絡時是否可以表明輔導中心：
                   .form-check.form-check-inline
                     if CaseRecordData.refMember.isContact
-                      input.form-check-input(type="radio" name="isContact" value="1" checked)
+                      input.form-check-input(type="radio" name="isContact" value="1" checked="checked")
                     else 
                       input.form-check-input(type="radio" name="isContact" value="1")
                     label.form-check-label 是
@@ -100,7 +106,7 @@ block content
                     if CaseRecordData.refMember.isContact
                       input.form-check-input(type="radio" name="isContact" value="0")
                     else
-                      input.form-check-input(type="radio" name="isContact" value="0" checked)
+                      input.form-check-input(type="radio" name="isContact" value="0" checked="checked")
                     label.form-check-label 否
               .row.mb-1
                 .col-12.col-md-6
@@ -127,7 +133,10 @@ block content
             .row
               .col-12 
                 .form-check
-                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  if TalkRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
                   label.form-check-label #{value.content}
         .col-3
           label 【人際關係】
@@ -135,7 +144,10 @@ block content
             .row
               .col-12 
                 .form-check
-                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  if TalkRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
                   label.form-check-label #{value.content}
         .col-3
           label 【學校適應】
@@ -143,7 +155,10 @@ block content
             .row
               .col-12 
                 .form-check
-                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  if TalkRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
                   label.form-check-label #{value.content}
         .col-3
           label 【前程規劃】
@@ -151,43 +166,68 @@ block content
             .row
               .col-12
                 .form-check
-                  input.form-check-input(type="checkbox" name="Theme" value=value.id)
+                  if TalkRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
                   label.form-check-label #{value.content}
       .row.mb-1
         .col
           p.h6 會談內容
       .row.mb-1
         .col 
-          textarea.w-100(maxlength="3000" rows="15" name="talkContent")
+          textarea.w-100(maxlength="3000" rows="15" name="talkContent") #{TalkRecordData.talkContent}
       .row.mb-1
         .col
           p.h6 評估、處遇及未來計畫
       .row.mb-1
         .col 
-          textarea.w-100(maxlength="3000" rows="15" name="processPlan")
+          textarea.w-100(maxlength="3000" rows="15" name="processPlan") #{TalkRecordData.processPlan}
       .row.mb-2.mt-2
-        .col-12
-        button.btn.btn-success.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
+        .col-12.text-end
+          if TalkRecordData.id === 0
+            button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
+          if CaseRecordData.isClose === false && TalkRecordData.id !== 0
+            button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-edit-talkrecord") 修改晤談紀錄
   script.
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#TalkData').addEventListener('submit', e => { 
         e.preventDefault() 
       })
 
-      document.querySelector('#btn-create-talkrecord').addEventListener('click',(e) => {
-        mask.show()
-        let data = new FormData(document.querySelector('#TalkData'));
-        axios.post('/talk',data).then((res) => { 
-          mask.hide()
-          Swal.fire(res.data.msg).then(() => {
-            
-          })  
-        }).catch((error) => { 
-          Swal.fire(error.response.data.msg)
-        }).finally(() => { 
-          mask.hide()
+      if(document.querySelector('#btn-create-talkrecord') !== null) { 
+        document.querySelector('#btn-create-talkrecord').addEventListener('click',(e) => {
+          mask.show()
+          let data = new FormData(document.querySelector('#TalkData'));
+          axios.post('/talk',data).then((res) => { 
+            mask.hide()
+            Swal.fire(res.data.msg).then(() => {
+              location.href = '/talk/listview'
+            })  
+          }).catch((error) => { 
+            Swal.fire(error.response.data.msg)
+          }).finally(() => { 
+            mask.hide()
+          })
         })
-      })
+      }
+
+      if(document.querySelector('#btn-edit-talkrecord') !== null) { 
+        document.querySelector('#btn-edit-talkrecord').addEventListener('click',(e) => {
+          mask.show()
+          let data = new FormData(document.querySelector('#TalkData'));
+          axios.put('/talk',data).then((res) => { 
+            mask.hide()
+            Swal.fire(res.data.msg).then(() => {
+              location.href = '/talk/listview'
+            })  
+          }).catch((error) => { 
+            Swal.fire(error.response.data.msg)
+          }).finally(() => { 
+            mask.hide()
+          })
+        })
+      }
     })
 
 
