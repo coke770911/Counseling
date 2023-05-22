@@ -67,6 +67,7 @@ router.get('/view', async (req, res, next) => {
     where: { 
       id: TalkRecordData.caseId,
     }
+    
   })
   
   //危機評估 陣列
@@ -190,7 +191,7 @@ router.post('/', upload.none(), async (req, res, next) => {
 
 router.put('/', upload.none(), async (req, res, next) => {
   const updated = await db.TalkRecord.update({
-    keyinUser: req.session.account ,
+    //keyinUser: req.session.account ,
     keyinDate: req.body.keyinDate ,
     refProcessesId: req.body.refProcessesId ,
     refLevelId: req.body.refLevelId ,

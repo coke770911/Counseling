@@ -9,7 +9,7 @@ block content
           li.breadcrumb-item 
             a(href="/") 首頁
           li.breadcrumb-item 個案資料
-          li.breadcrumb-item.active 個案追蹤
+          li.breadcrumb-item.active 個案追蹤清單
     .row
       .col-12.col-md-6.col-lg-4
         .input-group.mb-3
@@ -99,13 +99,13 @@ block content
             },
             columns:[
               {title: "#", formatter: "rownum", width: 50},
-              {title: "填寫紀錄日期", field: "createdLocal", sorter: "date"},
+              {title: "填寫紀錄日期", field: "keyinDateLocal", sorter: "date"},
               {title: "填寫紀錄心理師", field: "refkeyinUser.username"},
               {title: "處理方式", field: "refProcess.content"},
               {title: "評估等級", field: "refLevel.content"},
               {title: "功能",field: "id",formatter: function(cell ,  formatterParams ){
                   let value = cell.getValue()
-                  let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button><button class="btn btn-outline-info mx-1 btn-print" type="button" data-talkId="'+value+'"><i class="bi bi-printer"></i>列印</button>'
+                  let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button>'
                   return buttonString
                 }
               },

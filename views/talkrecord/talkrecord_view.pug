@@ -176,21 +176,35 @@ block content
           p.h6 會談內容
       .row.mb-1
         .col 
-          textarea.w-100(maxlength="3000" rows="15" name="talkContent") #{TalkRecordData.talkContent}
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="talkContent") #{TalkRecordData.talkContent}
+          #talkContent.w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{TalkRecordData.talkContent}
       .row.mb-1
         .col
           p.h6 評估、處遇及未來計畫
       .row.mb-1
         .col 
-          textarea.w-100(maxlength="3000" rows="15" name="processPlan") #{TalkRecordData.processPlan}
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="processPlan") #{TalkRecordData.processPlan}
+          #processPlan.w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{TalkRecordData.processPlan}
       .row.mb-2.mt-2
         .col-12.text-end
+          if CaseRecordData.isClose === false && TalkRecordData.id !== 0 && TalkRecordData.keyinUser === user.account
+            button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-edit-talkrecord") 修改晤談紀錄
           if TalkRecordData.id === 0
             button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
-          if CaseRecordData.isClose === false && TalkRecordData.id !== 0
-            button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-edit-talkrecord") 修改晤談紀錄
+          else
+            button.btn.btn-outline-info.mx-1.d-print-none(type="button" onclick="window.print()")
+              i.bi.bi-printer 
+              | 列印
   script.
     document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('[name="talkContent"]').addEventListener('keyup',(e) => {
+        document.querySelector('#talkContent').innerHTML = document.querySelector('[name="talkContent"]').value
+      })
+
+      document.querySelector('[name="processPlan"]').addEventListener('keyup',(e) => {
+        document.querySelector('#processPlan').innerHTML = document.querySelector('[name="processPlan"]').value
+      })
+    
       document.querySelector('#TalkData').addEventListener('submit', e => { 
         e.preventDefault() 
       })

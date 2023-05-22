@@ -1,6 +1,4 @@
 
-
-
 npx sequelize-cli model:generate --name ConsultRecord --attributes memberid:string,refidentity:integer,talkAccount:string,casesendAccount:string,content:string,reflevelId:integer,refprocessId:integer,reftheme:string
 
 
@@ -11,6 +9,14 @@ npx sequelize-cli model:generate --name Member --attributes uid:string,cardId:st
 npx sequelize-cli model:generate --name CaseRecord --attributes memberUid:string,memberName:string,memberGrade:string,memberClass:string,caseCreator:string,assignUser:string,isClose:boolean
 
 
+
+
+
+
+npx sequelize-cli model:generate --name RefCloseItem --attributes content:string
+
+
+npx sequelize-cli model:generate --name CloseRecord --attributes caseId:integer,closeReason:integer,keyinUser:string,keyinDate:date,
 
 
 

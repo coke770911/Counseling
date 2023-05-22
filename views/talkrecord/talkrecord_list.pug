@@ -9,7 +9,7 @@ block content
           li.breadcrumb-item 
             a(href="/") 首頁
           li.breadcrumb-item 個案管理
-          li.breadcrumb-item.active 晤談紀錄
+          li.breadcrumb-item.active 晤談紀錄清單
     .row
       .col-4
         .input-group.mb-3
@@ -49,8 +49,7 @@ block content
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
-              let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button><button class="btn btn-outline-info mx-1 btn-print" type="button" data-talkId="'+value+'"><i class="bi bi-printer"></i>列印</button>'
-              let auth = #{user.auth}
+              let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button>'
               return buttonString
             }
           },
@@ -82,20 +81,6 @@ block content
             document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
           }
         }
-
-        if(target.getAttribute("class").indexOf("btn-print") !== -1) {
-          if(target.getAttribute("data-talkId")) {
-            /*
-            let QueryStringObj = {}
-            QueryStringObj.CaseRecordId = 0
-            QueryStringObj.CalendarId = 0
-            QueryStringObj.RecordId = target.getAttribute("data-talkId");
-            document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
-            */
-            window.print()
-          }
-        }
-
       })
 
     })

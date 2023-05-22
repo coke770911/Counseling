@@ -1,0 +1,91 @@
+extends ../layout
+  
+block content
+  .container
+    .row.d-print-none
+      .col
+      nav(aria-label="breadcrumb")
+        ol.breadcrumb
+          li.breadcrumb-item 
+            a(href="/") 首頁
+          li.breadcrumb-item 個案追蹤
+          li.breadcrumb-item.active 填寫晤談紀錄
+    form#TalkData
+      .row.mb-1.text-center
+        .col 
+          h3 亞東科技大學諮商中心諮商服務紀錄表          
+      .row.mb-1.text-left
+        .col-4
+          input(type="hidden" name="CaseId" value=CaseRecordData.id)
+          input(type="hidden" name="TalkId" value=TalkRecordData.id)
+          input(type="hidden" name="CalendarId" value=CalendarId)
+          label 學號：#{CaseRecordData.memberUid}
+       
+      .row.mb-1
+        .col
+          p.h6 會談內容
+      .row.mb-1
+        .col 
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="talkContent") #{TalkRecordData.talkContent}
+          .w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{TalkRecordData.talkContent}
+      .row.mb-1
+        .col
+          p.h6 評估、處遇及未來計畫
+      .row.mb-1
+        .col 
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="processPlan") #{TalkRecordData.processPlan}
+          .w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{TalkRecordData.processPlan}
+      .row.mb-2.mt-2
+        .col-12.text-end
+          button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('[name="talkContent"]').addEventListener('change',(e) => {
+        console.dir('A')
+      })
+
+      document.querySelector('[name="processPlan"]').addEventListener('change',(e) => {
+        console.dir('B')
+      })
+    
+      document.querySelector('#TalkData').addEventListener('submit', e => { 
+        e.preventDefault() 
+      })
+
+      if(document.querySelector('#btn-create-talkrecord') !== null) { 
+        document.querySelector('#btn-create-talkrecord').addEventListener('click',(e) => {
+          mask.show()
+          let data = new FormData(document.querySelector('#TalkData'));
+          axios.post('/talk',data).then((res) => { 
+            mask.hide()
+            Swal.fire(res.data.msg).then(() => {
+              location.href = '/talk/listview'
+            })  
+          }).catch((error) => { 
+            Swal.fire(error.response.data.msg)
+          }).finally(() => { 
+            mask.hide()
+          })
+        })
+      }
+
+      if(document.querySelector('#btn-edit-talkrecord') !== null) { 
+        document.querySelector('#btn-edit-talkrecord').addEventListener('click',(e) => {
+          mask.show()
+          let data = new FormData(document.querySelector('#TalkData'));
+          axios.put('/talk',data).then((res) => { 
+            mask.hide()
+            Swal.fire(res.data.msg).then(() => {
+              location.href = '/talk/listview'
+            })  
+          }).catch((error) => { 
+            Swal.fire(error.response.data.msg)
+          }).finally(() => { 
+            mask.hide()
+          })
+        })
+      }
+    })
+
+
+
