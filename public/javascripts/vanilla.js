@@ -67,4 +67,23 @@ document.addEventListener('DOMContentLoaded', () => {
       Swal.fire('樣板發生錯誤。')
     }).finally(() =>{ mask.hide() })
   })
+
+  document.querySelector('#styleset').addEventListener('click', (event) => {
+    mask.show()
+    axios.get('/users/style').then((res) => {
+      let LoadHTML = document.createElement("div")
+      LoadHTML.innerHTML = res.data
+      Array.from(LoadHTML.getElementsByTagName('script')).forEach(element => {
+        let $script = document.createElement('script');
+        $script.text = element.text
+        LoadHTML.appendChild($script)
+      })
+      document.getElementsByTagName("body")[0].prepend(LoadHTML)
+    }).catch((error) => { 
+      Swal.fire('樣板發生錯誤。')
+    }).finally(() =>{ mask.hide() })
+  })
+  
+
+
 })

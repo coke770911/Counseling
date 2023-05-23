@@ -1,0 +1,52 @@
+.modal.fade
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h1.modal-title.fs-5 行事曆標籤顏色修改
+        button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+      .modal-body
+        form(action="#" id="formData")
+          .mb-3
+            label.form-label 標籤顏色
+            input.form-control(type="color" name="color" id="color" value=UserData.color )
+          .mb-3
+            label.form-label 文字顏色
+            input.form-control(type="color" name="textColor" id="textColor" value=UserData.textColor )
+      .modal-footer
+        buttin.btn.btn-success(type="button" id="btn_process" data-btn-type="edit") 修改
+        buttin.btn.btn-secondary(type="button" data-bs-dismiss="modal") 取消
+  script.
+    (function(){
+      let ModalElement = document.getElementsByClassName("modal")[0]
+      let modalMethod = new bootstrap.Modal(ModalElement, {backdrop: 'static'})
+      ModalElement.addEventListener('hidden.bs.modal', event => {  
+        ModalElement.parentElement.parentElement.removeChild(ModalElement.parentNode) 
+      })
+      modalMethod.show()
+      //新增與修改
+      document.getElementById('btn_process').addEventListener('click', (e) => {
+        let data = new FormData(document.getElementById('formData'));
+        Swal.fire({
+          text: '是否要修改行事曆顯示的顏色？',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            mask.show()
+            axios.put('/users/style',data).then((res) => {
+              Swal.fire(res.data.msg).then((result) => {
+                if(result.isConfirmed) {
+                  location.reload()
+                }
+              })
+            })
+            .catch((error) => { Swal.fire(error.response.data.msg) })
+            .finally(() => {mask.hide()})
+          }
+        })     
+      });
+    })()

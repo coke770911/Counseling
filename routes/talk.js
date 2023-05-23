@@ -34,7 +34,7 @@ router.get('/view', async (req, res, next) => {
     talkContent: '',
     processPlan: '',
   }
-  console.dir(TalkRecordData.keyinDate)
+  
   //晤談紀錄編號 如果沒資料就是新增介面
   if(req.query.RecordId !== '0') {
     const TalkRecordOne = await db.TalkRecord.findOne({
@@ -44,11 +44,9 @@ router.get('/view', async (req, res, next) => {
       ],
       where: { id: req.query.RecordId }
     })
-
     TalkRecordOne.keyinDate = date.format(TalkRecordOne.keyinDate,'YYYY-MM-DD HH:mm')
     TalkRecordOne.refTheme = TalkRecordOne.refTheme.split(',')
     TalkRecordData = TalkRecordOne
-    console.dir(TalkRecordData.keyinDate)
   }
   
   //案件基本資料

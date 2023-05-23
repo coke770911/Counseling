@@ -14,6 +14,7 @@ const roomRouter = require('./routes/room')
 const memberRouter = require('./routes/member')
 const caseRouter = require('./routes/case')
 const talkRouter = require('./routes/talk')
+const closeRouter = require('./routes/close')
 
 const app = express()
 
@@ -57,6 +58,7 @@ app.use('/room', roomRouter)
 app.use('/member',memberRouter)
 app.use('/case',caseRouter)
 app.use('/talk',talkRouter)
+app.use('/close',closeRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

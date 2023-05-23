@@ -144,7 +144,13 @@ block content
 
         //結案
         if(target.getAttribute("class").indexOf("btn-CloseCase") !== -1) {
-          console.dir('B')
+          if(target.getAttribute("data-caseId")) {
+            let caseId = target.getAttribute("data-caseId");
+            let QueryStringObj = {}
+            QueryStringObj.CaseRecordId = caseId
+            QueryStringObj.CloseId = 0
+            document.location.href = '/close/view?'+new URLSearchParams(QueryStringObj).toString()
+          }
         }
         //delete
         if(target.getAttribute("class").indexOf("btn-DelCase") !== -1) {

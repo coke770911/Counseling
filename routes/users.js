@@ -11,6 +11,29 @@ router.use((req, res, next) => {
 })
 
 //修改密碼介面
+router.get('/style', async (req, res, next) => {
+  const UserData = await db.UserData.findOne({
+    attributes: ['color','textColor'],
+    where: {
+      account: req.session.account
+    }
+  })
+  res.render('users/style', { title: '諮商系統 密碼修改',UserData: UserData})
+})
+
+router.put('/style', upload.none(), async (req, res, next) => {
+  const updated = await db.UserData.update({ 
+    color: req.body.color , 
+    textColor: req.body.textColor
+  }, { 
+    where: { account:req.session.account 
+  } 
+})
+  res.status(200).send(JSON.stringify({ msg: updated ? '修改成功' : '修改成功' }))
+})
+
+
+//修改密碼介面
 router.get('/pwd', (req, res, next) => {
   res.render('users/pwd', { title: '諮商系統 密碼修改'})
 })
