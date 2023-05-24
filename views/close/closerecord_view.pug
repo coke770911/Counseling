@@ -9,56 +9,144 @@ block content
           li.breadcrumb-item 
             a(href="/") 首頁
           li.breadcrumb-item 個案追蹤
-          li.breadcrumb-item.active 填寫晤談紀錄
-    form#TalkData
+          li.breadcrumb-item.active 結案紀錄表
+    form#CloseData
       .row.mb-1.text-center
         .col 
-          h3 亞東科技大學諮商中心諮商服務紀錄表          
+          h3 亞東科技大學諮商中心諮商服務結案紀錄表          
       .row.mb-1.text-left
         .col-4
-          input(type="hidden" name="CaseId" value=CaseRecordData.id)
-          input(type="hidden" name="TalkId" value=TalkRecordData.id)
-          input(type="hidden" name="CalendarId" value=CalendarId)
+          input(type="hidden" name="CaseId" value=CloseRecordData.caseId)
+          input(type="hidden" name="CloseId" value=CloseRecordData.id)
           label 學號：#{CaseRecordData.memberUid}
+        .col-8
+          label 系級：#{CaseRecordData.memberDeptFull}
+      .row.mb-1.text-left
+        .col-4
+          label 姓名：#{CaseRecordData.memberName}
+        .col-8
+            label 晤談日期：#{CloseRecordData.dateStart} ~ #{CloseRecordData.dateEnd}
+        .row.mb-1.text-left
+          .col-4
+            label 結案心理師：#{CloseRecordData.keinUsername}
+          .col-8
+            label(for="closeReason") 結案原因：
+            select(name="closeReason" id="closeReason" title="結案原因")
+              each value in RefCloseItem
+                if CloseRecordData.closeReason == value.id
+                  option(value=value.id selected="selected") #{value.content}
+                else 
+                  option(value=value.id) #{value.content}  
+      hr
       .row.mb-1
         .col
-          p.h6 會談內容
+          p.h6 會談主題
       .row.mb-1
-        .col 
-          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="talkContent") #{TalkRecordData.talkContent}
-          .w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{TalkRecordData.talkContent}
+        .col-3
+          label 【生活適應】
+          each value in ThemeGroup1
+            .row
+              .col-12 
+                .form-check
+                  if CloseRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
+                  label.form-check-label #{value.content}
+        .col-3
+          label 【人際關係】
+          each value in ThemeGroup2
+            .row
+              .col-12 
+                .form-check
+                  if CloseRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
+                  label.form-check-label #{value.content}
+        .col-3
+          label 【學校適應】
+          each value in ThemeGroup3
+            .row
+              .col-12 
+                .form-check
+                  if CloseRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
+                  label.form-check-label #{value.content}
+        .col-3
+          label 【前程規劃】
+          each value in ThemeGroup4
+            .row
+              .col-12
+                .form-check
+                  if CloseRecordData.refTheme.indexOf(value.id.toString()) !== -1
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id checked="checked")
+                  else 
+                    input.form-check-input(type="checkbox" name="Theme" value=value.id )
+                  label.form-check-label #{value.content}
       .row.mb-1
         .col
-          p.h6 評估、處遇及未來計畫
+          p.h6 問題評估、分析
       .row.mb-1
         .col 
-          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="processPlan") #{TalkRecordData.processPlan}
-          .w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{TalkRecordData.processPlan}
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="evaluationAnalysis") #{CloseRecordData.evaluationAnalysis}
+          #evaluationAnalysis.w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{CloseRecordData.evaluationAnalysis}
+      .row.mb-1
+        .col
+          p.h6 目標達成程度
+      .row.mb-1
+        .col 
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="targetAchievement") #{CloseRecordData.targetAchievement}
+          #targetAchievement.w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{CloseRecordData.targetAchievement}
+      .row.mb-1
+        .col
+          p.h6 已做之處理
+      .row.mb-1
+        .col 
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="processed") #{CloseRecordData.processed}
+          #processed.w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{CloseRecordData.processed}
+      .row.mb-1
+        .col
+          p.h6 未來建議
+      .row.mb-1
+        .col 
+          textarea.w-100.d-print-none(maxlength="3000" rows="15" name="futureAdvice") #{CloseRecordData.futureAdvice}
+          #futureAdvice.w-100.border.px-1.mb-1.d-print-block.d-none(style="white-space: pre-wrap;") #{CloseRecordData.futureAdvice}
       .row.mb-2.mt-2
         .col-12.text-end
-          button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-create-talkrecord") 送出晤談紀錄
+          button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-create-closerecord") 送出結案紀錄
   script.
     document.addEventListener('DOMContentLoaded', function() {
-      document.querySelector('[name="talkContent"]').addEventListener('change',(e) => {
-        console.dir('A')
+      document.querySelector('[name="evaluationAnalysis"]').addEventListener('keyup',(e) => {
+        document.querySelector('#evaluationAnalysis').innerHTML = document.querySelector('[name="evaluationAnalysis"]').value
       })
 
-      document.querySelector('[name="processPlan"]').addEventListener('change',(e) => {
-        console.dir('B')
+      document.querySelector('[name="targetAchievement"]').addEventListener('keyup',(e) => {
+        document.querySelector('#targetAchievement').innerHTML = document.querySelector('[name="targetAchievement"]').value
       })
-    
+
+      document.querySelector('[name="processed"]').addEventListener('keyup',(e) => {
+        document.querySelector('#processed').innerHTML = document.querySelector('[name="processed"]').value
+      })
+
+      document.querySelector('[name="futureAdvice"]').addEventListener('keyup',(e) => {
+        document.querySelector('#futureAdvice').innerHTML = document.querySelector('[name="futureAdvice"]').value
+      })
+
       document.querySelector('#TalkData').addEventListener('submit', e => { 
         e.preventDefault() 
       })
 
-      if(document.querySelector('#btn-create-talkrecord') !== null) { 
-        document.querySelector('#btn-create-talkrecord').addEventListener('click',(e) => {
+      if(document.querySelector('#btn-create-closerecord') !== null) { 
+        document.querySelector('#btn-create-closerecord').addEventListener('click',(e) => {
           mask.show()
-          let data = new FormData(document.querySelector('#TalkData'));
-          axios.post('/talk',data).then((res) => { 
+          let data = new FormData(document.querySelector('#CloseData'));
+          axios.post('/close',data).then((res) => { 
             mask.hide()
             Swal.fire(res.data.msg).then(() => {
-              location.href = '/talk/listview'
+              //location.href = '/talk/listview'
             })  
           }).catch((error) => { 
             Swal.fire(error.response.data.msg)
@@ -68,11 +156,12 @@ block content
         })
       }
 
-      if(document.querySelector('#btn-edit-talkrecord') !== null) { 
-        document.querySelector('#btn-edit-talkrecord').addEventListener('click',(e) => {
+      /*
+      if(document.querySelector('#btn-create-closerecord') !== null) { 
+        document.querySelector('#btn-create-closerecord').addEventListener('click',(e) => {
           mask.show()
           let data = new FormData(document.querySelector('#TalkData'));
-          axios.put('/talk',data).then((res) => { 
+          axios.put('/close',data).then((res) => { 
             mask.hide()
             Swal.fire(res.data.msg).then(() => {
               location.href = '/talk/listview'
@@ -84,6 +173,7 @@ block content
           })
         })
       }
+      */
     })
 
 

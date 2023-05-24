@@ -51,39 +51,37 @@ block content
           //{title: "建立時間", field: "createdLocal"},
           {title: "案件進度", field: "isCloseName"},
           {title: "功能",field: "id",
-            formatter: function(cell ,  formatterParams ){
+            formatter: function(cell ,  formatterParams,aaa ) {
               let value = cell.getValue()
-              let buttonString = '<button class="btn btn-outline-primary mx-1 btn-CreatTalk" type="button" data-caseId="'+value+'">晤談</button><button class="btn btn-outline-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
-              let auth = #{user.auth}
-              if([1].indexOf(auth) !== -1)
-                buttonString += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button><button class="btn btn-outline-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
-              return buttonString
+              if(cell.getRow().getData().isClose) {
+                return '<button class="btn btn-outline-info mx-1 btn-CloseInfo" type="button" data-caseId="'+value+'">查詢結案紀錄</button>'
+              } else {
+                let buttonString = '<button class="btn btn-outline-primary mx-1 btn-CreatTalk" type="button" data-caseId="'+value+'">晤談</button><button class="btn btn-outline-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
+                let auth = #{user.auth}
+                if([1].indexOf(auth) !== -1)
+                  buttonString += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button><button class="btn btn-outline-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
+                return buttonString
+              }
             }
           },
         ],
         rowFormatter: function(row){
           let accordion = document.createElement("div");
           accordion.classList.add("accordion");
-          
           let accordion_item = document.createElement("div");
           accordion_item.classList.add("accordion-item");
-
           let accordion_header = document.createElement("h2");
           accordion_header.classList.add("accordion-header");
-          accordion_header.innerHTML = '<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'+row.getData().id+'" aria-expanded="true" aria-controls="#collapse'+row.getData().id+'">'+row.getData().memberName+' 晤談記錄列表 '+row.getData().hasTalkRecord.length+'筆紀錄</button>' 
-
+          accordion_header.innerHTML = '<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'+row.getData().id+'" aria-expanded="true" aria-controls="#collapse'+row.getData().id+'">'+row.getData().memberName+' 晤談記錄列表 '+row.getData().hasTalkRecord.length+'筆紀錄</button>'
           let accordion_collapse = document.createElement("div");
           accordion_collapse.id = "collapse"+row.getData().id
           accordion_collapse.classList.add("accordion-collapse");
           accordion_collapse.classList.add("collapse");
-          
           let accordion_body = document.createElement("div");
-          
           accordion.appendChild(accordion_item);
           accordion_item.appendChild(accordion_header);
           accordion_item.appendChild(accordion_collapse);
           accordion_collapse.appendChild(accordion_body);
-
           let tableEl = document.createElement("div");
           accordion_body.appendChild(tableEl);
           row.getElement().appendChild(accordion);
@@ -130,79 +128,112 @@ block content
         let target = event.target
         if(!target.getAttribute("class")) { return }
 
-        //addrecord
+        //晤談紀錄
         if(target.getAttribute("class").indexOf("btn-CreatTalk") !== -1) {
           if(target.getAttribute("data-caseId")) {
+            mask.show()
             let caseId = target.getAttribute("data-caseId");
             let QueryStringObj = {}
             QueryStringObj.CaseRecordId = caseId
             QueryStringObj.CalendarId = 0
             QueryStringObj.RecordId = 0
-            document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
+            axios.get('/case/state/'+caseId).then((res) => { 
+              document.location.href = '/talk/view?'+new URLSearchParams(QueryStringObj).toString()
+            }).catch((error) => { 
+              Swal.fire(error.response.data.msg)
+            }).finally(() => { 
+              mask.hide()
+            })
           }
         }
 
-        //結案
+        //結案紀錄
         if(target.getAttribute("class").indexOf("btn-CloseCase") !== -1) {
           if(target.getAttribute("data-caseId")) {
+            mask.show()
             let caseId = target.getAttribute("data-caseId");
             let QueryStringObj = {}
             QueryStringObj.CaseRecordId = caseId
             QueryStringObj.CloseId = 0
-            document.location.href = '/close/view?'+new URLSearchParams(QueryStringObj).toString()
+            axios.get('/case/state/'+caseId).then((res) => { 
+              document.location.href = '/close/view?'+new URLSearchParams(QueryStringObj).toString()
+            }).catch((error) => { 
+              Swal.fire(error.response.data.msg)
+            }).finally(() => { 
+              mask.hide()
+            })
           }
         }
+
         //delete
         if(target.getAttribute("class").indexOf("btn-DelCase") !== -1) {
           if(target.getAttribute("data-caseId")) {
             let caseId = target.getAttribute("data-caseId");
-            Swal.fire({
-              title: '是否刪除個案。',
-              showCancelButton: true,
-              confirmButtonText: '確認',
-              cancelButtonText: '取消',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                axios.delete('/case',{ params: { id: caseId } }).then( res => {
-                  Swal.fire(res.data.msg).then((result) => {
-                    axios.get('/case/all').then((res) => { table.setData(res.data) }).catch((error) => { Swal.fire(error.response.data.msg) })
+            axios.get('/case/state/'+caseId).then((res) => { 
+              Swal.fire({
+                title: '是否刪除個案。',
+                showCancelButton: true,
+                confirmButtonText: '確認',
+                cancelButtonText: '取消',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  axios.delete('/case',{ params: { id: caseId } }).then( res => {
+                    Swal.fire(res.data.msg).then((result) => {
+                      axios.get('/case').then((res) => { 
+                        table.setData(res.data) 
+                      }).catch((error) => { 
+                        Swal.fire(error.response.data.msg) 
+                      })
+                    })
+                  }).catch((error) => { 
+                    Swal.fire(error.response.data.msg)
+                  }).finally(() =>{
+                    mask.hide()
                   })
-                }).catch((error) => { 
-                  Swal.fire(error.response.data.msg)
-                }).finally(() =>{
-                  mask.hide()
-                })
-              } 
+                } 
+              })
+            }).catch((error) => { 
+              Swal.fire(error.response.data.msg)
+            }).finally(() => { 
+              mask.hide()
             })
+
           }
         }
         //update
         if(target.getAttribute("class").indexOf("btn-CreatCase") !== -1) {
           if(target.getAttribute("data-caseId")) {
             let caseId = target.getAttribute("data-caseId");
-            Swal.fire({
-              title: '是否修改個案。',
-              showCancelButton: true,
-              confirmButtonText: '確認',
-              cancelButtonText: '取消',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                axios.get('/case/view',{ params: { id: caseId } }).then(res => {
-                  let LoadHTML = document.createElement("div")
-                  LoadHTML.innerHTML = res.data
-                  Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
-                    let $script = document.createElement('script');
-                    $script.text = element.text
-                    LoadHTML.appendChild($script)
+            axios.get('/case/state/'+caseId).then((res) => { 
+              Swal.fire({
+                title: '是否修改個案。',
+                showCancelButton: true,
+                confirmButtonText: '確認',
+                cancelButtonText: '取消',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  axios.get('/case/view',{ params: { id: caseId } }).then(res => {
+                    let LoadHTML = document.createElement("div")
+                    LoadHTML.innerHTML = res.data
+                    Array.from(LoadHTML.querySelectorAll('script')).forEach(element => {
+                      let $script = document.createElement('script');
+                      $script.text = element.text
+                      LoadHTML.appendChild($script)
+                    })
+                    document.querySelector('body').prepend(LoadHTML)
+                  }).catch((error) => { 
+                    Swal.fire(error.response.data.msg)
+                  }).finally(() =>{
+                    mask.hide()
                   })
-                  document.querySelector('body').prepend(LoadHTML)
-                }).catch((error) => { 
-                  Swal.fire(error.response.data.msg)
-                }).finally(() =>{
-                  mask.hide()
-                })
-              } 
+                } 
+              })
+            }).catch((error) => { 
+              Swal.fire(error.response.data.msg)
+            }).finally(() => { 
+              mask.hide()
             })
+
           }
         }
         

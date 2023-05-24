@@ -61,14 +61,21 @@ router.get('/view', async (req, res, next) => {
       }
     }
   })
-  //console.dir(UserList)
-  console.dir(CaseData)
   res.render('caserecord/caserecord_detailed',{ RefIdentityList: RefIdentityList, RefSourceList: RefSourceList, CaseData: CaseData , UserList: UserList})
 })
 
 router.get('/listview',(req, res, next) => {
   res.render('caserecord/caserecord_list')
 })
+
+router.get('/state/:id', async (req, res, next) => {
+  const CaseRecordData = await db.CaseRecord.findOne({ where: { id: req.params.id }})
+  if(CaseRecordData.isClose)
+    res.status(400).send(JSON.stringify({msg: '個案已結案。'}))
+  else
+    res.status(200).send(JSON.stringify({msg: '個案追蹤中。'}))
+})
+
 
 //個案追蹤清單
 router.get('/', async (req, res, next) => {

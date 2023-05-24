@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      CloseRecord.belongsTo(models.UserData, { as: 'refkeyinUser' , targetKey: 'account' , foreignKey: 'keyinUser' })
     }
   }
   CloseRecord.init({
@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     processed: DataTypes.STRING,
     futureAdvice: DataTypes.STRING
   }, {
+    paranoid: true,
     sequelize,
     modelName: 'CloseRecord',
   });

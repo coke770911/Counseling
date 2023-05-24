@@ -65,8 +65,13 @@ router.get('/view', async (req, res, next) => {
     where: { 
       id: TalkRecordData.caseId,
     }
-    
   })
+
+  if(req.query.RecordId === '0' && CaseRecordData.isClose) {
+    res.status(400).send(JSON.stringify({msg: '已結案無法再填寫晤談紀錄。'}))
+    return
+  }
+
   
   //危機評估 陣列
   let RefLevel = await db.RefLevel.findAll()
