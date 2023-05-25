@@ -17,7 +17,7 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
-        layout : "fitColumns" ,
+        layout: "fitDataStretch",
         minHeight : 300 ,
         maxHeight: "100%",
         placeholder:"資料載入中",
@@ -30,9 +30,9 @@ block content
           headerSort: false ,
         },
         columns: [
-          {title: "#", formatter: "rownum",width: 40},
-          {title: "帳號", field: "account"},
-          {title: "姓名", field: "username"},
+          {title: "#", formatter: "rownum",width: '5%'},
+          {title: "帳號", field: "account",width: '15%'},
+          {title: "姓名", field: "username",width: '15%'},
           {title: "標籤顏色", field: "color",formatter:"color", width:90},
           {title: "文字顏色", field: "textColor",formatter:"color", width:90},
           {title: "系統身份", field: "UserAuth.titleName"},
@@ -41,7 +41,7 @@ block content
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue();
-              return '<button type="button" class="btn btn-success btn-Detailed" data-id="'+value+'">修改</button>';
+              return '<button type="button" class="btn btn-outline-success btn-Detailed" data-id="'+value+'">修改</button>';
             }
           },
         ],

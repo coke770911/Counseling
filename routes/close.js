@@ -13,7 +13,6 @@ router.use((req, res, next) => {
 //建立個案UI
 router.get('/view', async (req, res, next) => {
   let CloseRecordData = {
-    id: req.query.CloseId,
     caseId: req.query.CaseRecordId,
     closeReason: 0,
     keyinUser: '',
@@ -25,16 +24,17 @@ router.get('/view', async (req, res, next) => {
     keinUsername: req.session.username
   }
 
-  //舊資料的話就撈取
-  if(req.query.CloseId !== '0') {
-    const CloseRecordOneData = await db.CloseRecord.findOne({
-      include: [{ association: 'refkeyinUser' , attributes: ['username']}],
-      where: { id: req.query.CloseId }
-    })
-    CloseRecordData = CloseRecordOneData
-    CloseRecordData.keinUsername = CloseRecordData.refkeyinUser.username
+  //如果有結案資料的話就撈取
+  const CloseRecordOne = await db.CloseRecord.findOne({
+    include: [{ association: 'refkeyinUser' , attributes: ['username']}],
+    where: { caseId: CloseRecordData.caseId }
+  })
+  
+  if(CloseRecordOne !== null) {
+    CloseRecordOne.refTheme = CloseRecordOne.refTheme.split(',')
+    CloseRecordOne.keinUsername = CloseRecordOne.refkeyinUser.username
+    CloseRecordData = CloseRecordOne
   }
-
 
   //抓取筆數 如果一筆都沒有表示沒有晤談紀錄 不可以結案
   const { count, rows } = await db.TalkRecord.findAndCountAll({
@@ -87,23 +87,7 @@ router.get('/view', async (req, res, next) => {
   
 })
 
-router.get('/listview',(req, res, next) => {
-  res.render('caserecord/caserecord_list')
-})
-
-//個案追蹤清單
-router.get('/', async (req, res, next) => {
-  
-  
-  res.status(200).send(JSON.stringify())
-})
-
-//指定個案追蹤清單
-router.get('/:user', async (req, res, next) => {
-  res.status(200).send(JSON.stringify())
-})
-
-//建立個案紀錄
+//建立結案紀錄
 router.post('/', upload.none() , async (req, res, next) => {
   if(req.body.Theme === undefined ) {
     res.status(400).send(JSON.stringify({ msg: '結案主題未選擇。'}))

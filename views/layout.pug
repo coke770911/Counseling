@@ -13,7 +13,7 @@ html(lang="zh-Hans-TW")
   body
     nav.navbar.navbar-expand-lg.bg-body-tertiary.d-print-none
       .container-xl
-        a.navbar-brand(href="#") 諮商系統
+        a.navbar-brand(href="/calendar/view") 諮商系統
         button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation")
           span.navbar-toggler-icon
         .collapse.navbar-collapse(id="navbarScroll")
@@ -23,10 +23,9 @@ html(lang="zh-Hans-TW")
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" data-bs-toggle="dropdown" aria-expanded="false") 個案管理
               ul.dropdown-menu
-                li
-                  a.dropdown-item(href="/member/view/new") 基本資料建檔
-                li
-                  a.dropdown-item(href="/member/listview") 查詢個案資料
+                if [1,2].indexOf(user.auth) !== -1
+                  li
+                    a.dropdown-item(href="/member/listview") 基本資料
                 li
                   a.dropdown-item(href="/case/listview") 個案追蹤
                 li

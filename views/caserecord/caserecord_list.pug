@@ -8,7 +8,7 @@ block content
         ol.breadcrumb
           li.breadcrumb-item 
             a(href="/") 首頁
-          li.breadcrumb-item 個案資料
+          li.breadcrumb-item 個案管理
           li.breadcrumb-item.active 個案追蹤清單
     .row
       .col-12.col-md-6.col-lg-4
@@ -54,12 +54,16 @@ block content
             formatter: function(cell ,  formatterParams,aaa ) {
               let value = cell.getValue()
               if(cell.getRow().getData().isClose) {
-                return '<button class="btn btn-outline-info mx-1 btn-CloseInfo" type="button" data-caseId="'+value+'">查詢結案紀錄</button>'
+                return '<a class="btn btn-outline-info mx-1 btn-CloseInfo" type="button" data-caseId="'+value+'" href="/close/view?CaseRecordId='+value+'">查詢結案紀錄</a>'
               } else {
-                let buttonString = '<button class="btn btn-outline-primary mx-1 btn-CreatTalk" type="button" data-caseId="'+value+'">晤談</button><button class="btn btn-outline-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
-                let auth = #{user.auth}
-                if([1].indexOf(auth) !== -1)
-                  buttonString += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button><button class="btn btn-outline-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
+                let buttonString = '<button class="btn btn-outline-primary mx-1 btn-CreatTalk" type="button" data-caseId="'+value+'">晤談</button>'
+                if(cell.getRow().getData().hasTalkRecord.length !== 0) {
+                  buttonString += '<button class="btn btn-outline-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
+                }
+                if([1].indexOf(#{user.auth}) !== -1) {
+                  buttonString += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button>'
+                  buttonString += '<button class="btn btn-outline-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
+                } 
                 return buttonString
               }
             }
@@ -127,8 +131,7 @@ block content
       document.getElementsByTagName("body")[0].addEventListener('click', function (event) {
         let target = event.target
         if(!target.getAttribute("class")) { return }
-
-        //晤談紀錄
+        //填寫晤談紀錄
         if(target.getAttribute("class").indexOf("btn-CreatTalk") !== -1) {
           if(target.getAttribute("data-caseId")) {
             mask.show()
@@ -147,7 +150,7 @@ block content
           }
         }
 
-        //結案紀錄
+        //填寫結案紀錄
         if(target.getAttribute("class").indexOf("btn-CloseCase") !== -1) {
           if(target.getAttribute("data-caseId")) {
             mask.show()
@@ -156,7 +159,11 @@ block content
             QueryStringObj.CaseRecordId = caseId
             QueryStringObj.CloseId = 0
             axios.get('/case/state/'+caseId).then((res) => { 
-              document.location.href = '/close/view?'+new URLSearchParams(QueryStringObj).toString()
+              axios.get('/close/view?'+new URLSearchParams(QueryStringObj).toString()).then((res) => { 
+                document.location.href = '/close/view?'+new URLSearchParams(QueryStringObj).toString()
+              }).catch((error) => { 
+                Swal.fire(error.response.data.msg)
+              })       
             }).catch((error) => { 
               Swal.fire(error.response.data.msg)
             }).finally(() => { 

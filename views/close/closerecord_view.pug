@@ -117,6 +117,9 @@ block content
       .row.mb-2.mt-2
         .col-12.text-end
           button.btn.btn-success.mx-1.d-print-none(type="button" id="btn-create-closerecord") 送出結案紀錄
+          button.btn.btn-outline-info.mx-1.d-print-none(type="button" onclick="window.print()")
+            i.bi.bi-printer 
+            | 列印
   script.
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('[name="evaluationAnalysis"]').addEventListener('keyup',(e) => {
