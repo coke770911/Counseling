@@ -23,9 +23,8 @@ html(lang="zh-Hans-TW")
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" data-bs-toggle="dropdown" aria-expanded="false") 個案管理
               ul.dropdown-menu
-                if [1,2].indexOf(user.auth) !== -1
-                  li
-                    a.dropdown-item(href="/member/listview") 基本資料
+                li
+                  a.dropdown-item(href="/member/listview") 基本資料
                 li
                   a.dropdown-item(href="/case/listview") 個案追蹤
                 li

@@ -49,9 +49,7 @@ block content
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()
               let buttonstr = '<a class="btn btn-outline-info mx-1" href="/member/view/'+value+'">查詢資料</a>'
-              if([1,2].indexOf(#{user.auth}) !== -1) {
-                buttonstr += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">建立個案紀錄</button>'
-              }
+              buttonstr += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-memberId="'+value+'">建立個案紀錄</button>'
               return buttonstr
             }
           },
