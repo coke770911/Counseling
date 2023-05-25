@@ -44,9 +44,11 @@ router.get('/view', async (req, res, next) => {
       ],
       where: { id: req.query.RecordId }
     })
-    TalkRecordOne.keyinDate = date.format(TalkRecordOne.keyinDate,'YYYY-MM-DD HH:mm')
-    TalkRecordOne.refTheme = TalkRecordOne.refTheme.split(',')
-    TalkRecordData = TalkRecordOne
+    if(TalkRecordOne !== null) {
+      TalkRecordOne.keyinDate = date.format(TalkRecordOne.keyinDate,'YYYY-MM-DD HH:mm')
+      TalkRecordOne.refTheme = TalkRecordOne.refTheme.split(',')
+      TalkRecordData = TalkRecordOne
+    }
   }
   
   //案件基本資料
@@ -169,6 +171,11 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', upload.none(), async (req, res, next) => {
+  if(req.body.Theme === undefined ) {
+    res.status(400).send(JSON.stringify({ msg: '晤談主題未選擇。'}))
+    return 
+  }
+
   const [createdata, created] = await db.TalkRecord.findOrCreate({
     raw: true, 
     where: { 

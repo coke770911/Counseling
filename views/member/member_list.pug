@@ -22,10 +22,10 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
+        layout: "fitDataStretch",
         ajaxURL: "/member",
         ajaxConfig: "get",
         ajaxContentType: "json",
-        layout: "fitDataStretch",
         minHeight: 300,
         maxHeight : "100%",
         placeholder: "尚無資料",

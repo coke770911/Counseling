@@ -138,7 +138,7 @@ block content
         document.querySelector('#futureAdvice').innerHTML = document.querySelector('[name="futureAdvice"]').value
       })
 
-      document.querySelector('#TalkData').addEventListener('submit', e => { 
+      document.querySelector('#CloseData').addEventListener('submit', e => { 
         e.preventDefault() 
       })
 
@@ -149,7 +149,7 @@ block content
           axios.post('/close',data).then((res) => { 
             mask.hide()
             Swal.fire(res.data.msg).then(() => {
-              //location.href = '/talk/listview'
+              location.href = '/case/listview'
             })  
           }).catch((error) => { 
             Swal.fire(error.response.data.msg)
@@ -158,25 +158,6 @@ block content
           })
         })
       }
-
-      /*
-      if(document.querySelector('#btn-create-closerecord') !== null) { 
-        document.querySelector('#btn-create-closerecord').addEventListener('click',(e) => {
-          mask.show()
-          let data = new FormData(document.querySelector('#TalkData'));
-          axios.put('/close',data).then((res) => { 
-            mask.hide()
-            Swal.fire(res.data.msg).then(() => {
-              location.href = '/talk/listview'
-            })  
-          }).catch((error) => { 
-            Swal.fire(error.response.data.msg)
-          }).finally(() => { 
-            mask.hide()
-          })
-        })
-      }
-      */
     })
 
 

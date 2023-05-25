@@ -21,10 +21,10 @@ block content
     let caseTable 
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
+        layout : "fitDataFill",
         ajaxURL: "/case",
         ajaxConfig: "get",
         ajaxContentType: "json",
-        layout: "fitDataTable",
         minHeight: 300,
         maxHeight : "100%",
         layoutColumnsOnNewData : true ,
