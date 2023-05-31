@@ -39,7 +39,7 @@
             select.form-select(name="caseAssign" id="caseAssign")
               option(value="") 無
               each value in UserData
-                option(value=value.account) #{value.username}
+                option(value=value.account) #{value.username} #{value.UserAuth.titleName}
           .mb-3
             label.form-label 使用空間
             select.form-select(name="roomId" id="roomId")

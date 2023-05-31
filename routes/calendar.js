@@ -5,7 +5,11 @@ const upload = multer()
 const db = require('../models')
 
 router.use((req, res, next) => {
-  res.locals.user = req.session
+  res.locals.user = req.session  
+  if(!(req.session.login === true)) {
+    res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
+    return;
+  }
   next()
 })
 
@@ -33,9 +37,11 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
       id: {
         [db.Sequelize.Op.ne]: 1
       }
-    }
+    },
+    order: [
+      [db.UserAuth,'id','desc']
+    ]
   })
-
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
       { association: 'refcaseManage' , attributes: ['username']},
@@ -43,8 +49,9 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
       { association: 'refIdentity' },
       { association: 'refSource' },
     ],
-    wehere: { 
-      isClose: 0 },
+    where: {
+      isClose: 0 
+    },
     order: [['updatedAt', 'DESC']]
   })
 

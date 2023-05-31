@@ -22,11 +22,11 @@ block content
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const table = new Tabulator("#maintable", {
-        layout: "fitDataStretch",
+        layout: "fitDataFill",
         ajaxURL: "/member",
         ajaxConfig: "get",
         ajaxContentType: "json",
-        minHeight: 300,
+        minHeight: 768,
         maxHeight : "100%",
         placeholder: "尚無資料",
         resizableColumnFit: true,
@@ -43,8 +43,8 @@ block content
           {title: "學生姓名", field: "name"},
           {title: "性別", field: "sex"},
           {title: "系所年級", field: "deptfull", hozAlign: "left"},
-          {title: "最後更新者", field: "refEditor.username", hozAlign: "left"},
-          {title: "基本資料更新日期", field: "updatedLocal" },
+          {title: "最後更新者", field: "refEditor.username"},
+          {title: "最後更新日期", field: "updatedLocal" },
           {title: "功能",field: "id",
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue()

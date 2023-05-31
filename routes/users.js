@@ -6,7 +6,11 @@ const db = require('../models')
 const md5 = require('md5')
 
 router.use((req, res, next) => {
-  res.locals.user = req.session
+  res.locals.user = req.session  
+  if(!(req.session.login === true)) {
+    res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
+    return;
+  }
   next()
 })
 
@@ -44,7 +48,7 @@ router.put('/pwd', upload.none(), async (req, res, next) => {
     res.status(400).send(JSON.stringify({ msg: '新密碼驗證失敗，請確認密碼輸入正確。' }))
     return 
   }
-  const updated = await db.UserData.update({ password: md5(req.body.repassword) }, { where: { account:req.session.account } })
+  const updated = await db.UserData.update({ password: md5(req.body.repassword) }, { where: { account: req.session.account } })
   res.status(200).send(JSON.stringify({ msg: updated ? '修改成功' : '修改成功' }))
 })
 

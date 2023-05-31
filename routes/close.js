@@ -6,7 +6,11 @@ const db = require('../models')
 const date = require('date-and-time')
 
 router.use((req, res, next) => {
-  res.locals.user = req.session
+  res.locals.user = req.session  
+  if(!(req.session.login === true)) {
+    res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
+    return;
+  }
   next()
 })
 

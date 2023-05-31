@@ -11,7 +11,6 @@ router.use((req, res, next) => {
     res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
     return;
   }
-  //res.status(400).send(JSON.stringify({ msg: '尚未登入' }))
   next()
 })
 

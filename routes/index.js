@@ -8,7 +8,7 @@ let MessageTxt = ''
 /* GET home page. */
 
 router.use((req, res, next) => {
-  res.locals.user = req.session
+  res.locals.user = req.session  
   next()
 })
 

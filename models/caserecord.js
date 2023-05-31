@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     isAssign: {
       type: DataTypes.VIRTUAL,
       get () {
-        return this.getDataValue('caseAssign') === null ? '未指派心理師' : '已指派心理師'
+        return this.getDataValue('caseAssign') === '' ? '未指派心理師' : '已指派'
       }
     },
     isClose: DataTypes.BOOLEAN,

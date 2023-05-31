@@ -5,7 +5,11 @@ const upload = multer()
 const db = require('../models')
 
 router.use((req, res, next) => {
-  res.locals.user = req.session
+  res.locals.user = req.session  
+  if(!(req.session.login === true)) {
+    res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
+    return;
+  }
   next()
 })
 
@@ -75,7 +79,6 @@ router.get('/state/:id', async (req, res, next) => {
   else
     res.status(200).send(JSON.stringify({msg: '個案追蹤中。'}))
 })
-
 
 //個案追蹤清單
 router.get('/', async (req, res, next) => {
