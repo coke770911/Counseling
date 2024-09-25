@@ -52,6 +52,7 @@
           .mb-3
             label.form-label 心理師
             select.form-select(name="caseAssign" id="caseAssign")
+              option(value='') 不指定
               each value in UserList
                 if value.account === CaseData.caseAssign
                   option(value=value.account selected) #{value.username} #{value.UserAuth.titleName} 

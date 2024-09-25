@@ -23,8 +23,8 @@ block content
         ajaxURL: "/talk",
         ajaxConfig: "get",
         ajaxContentType: "json",
-        layout: "fitDataTable",
-        minHeight: 300,
+        layout: "fitDataFill",
+        minHeight: 768,
         maxHeight : "100%",
         placeholder: "尚無資料",
         resizableColumnFit: true,
@@ -42,7 +42,27 @@ block content
           {title: "學生姓名", field: "refCase.memberName"},
           {title: "性別", field: "refCase.memberSex"},
           {title: "系所年級", field: "refCase.memberDeptFull", hozAlign: "left"},
-          {title: "個案評估", field: "refLevel.content"},
+          {title: "個案評估", field: "refLevel.content",
+            formatter: function(cell, formatterParams) {
+              let value = cell.getValue();
+              let color = '';
+              switch (value) {
+                  case '黃':
+                      color = '#FFFF93'; // 黃色
+                      break;
+                  case '橙':
+                      color = '#FFA042'; // 橙色
+                      break;
+                  case '紅':
+                      color = '#FF5151'; // 紅色
+                      break;
+                  default:
+                      color = '#A6FFA6'; // 綠色
+              }
+              cell.getElement().style.backgroundColor = color;
+              return value;
+            }
+          },
           {title: "處理方式", field: "refProcess.content"},
           {title: "建立紀錄心理師", field: "refkeyinUser.username"},
           {title: "晤談建立日期", field: "keyinDateLocal"},
@@ -54,7 +74,7 @@ block content
             }
           },
         ],
-      })
+      });
 
       document.querySelector('#btn-search').addEventListener('click',(e) => {
         mask.show()

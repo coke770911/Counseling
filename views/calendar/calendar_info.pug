@@ -32,7 +32,7 @@
             .mb-3
               label.form-label 使用空間：#{CalendarData.Room.title}
       .modal-footer
-        if [1].indexOf(user.auth) !== -1 || CalendarData.creator === user.account
+        if [1,2,3,4].indexOf(user.auth) !== -1 || CalendarData.creator === user.account
           buttin.btn.btn-danger(type="button" id="btn_del_event") 刪除此事件
         if CalendarData.caseAssign === user.account
           button.btn.btn-danger(type="button" id="btn_add_record") 填寫晤談紀錄

@@ -34,7 +34,7 @@ block content
         .col-4
           label 個管員：#{CaseRecordData.refcaseManage.username}
         .col-4
-          label 會談心理師：#{user.username}
+          label 會談心理師：#{CaseRecordData.refcaseAssign ? CaseRecordData.refcaseAssign.username : '無'}
       .row.mb-1.text-left
         .col-4
           label 身份：#{CaseRecordData.refIdentity.content}

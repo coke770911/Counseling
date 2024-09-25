@@ -16,6 +16,10 @@ block content
           span.input-group-text(id="inputGroup-memberUid") 學號
           input.form-control(type="text" placeholder="輸入學號" aria-label="輸入學號" aria-describedby="btn-search" name="txt-search" id="txt-search")
           button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
+      .col-6.col-md-6
+        .form-check.mt-1
+          input.form-check-input(type="checkbox" id="isNotClose")
+          label.form-check-label(for="isNotClose") 篩選未結案
     table.table#maintable
   script.
     let caseTable 
@@ -25,7 +29,7 @@ block content
         ajaxURL: "/case",
         ajaxConfig: "get",
         ajaxContentType: "json",
-        minHeight: 300,
+        minHeight: 768,
         maxHeight : "100%",
         layoutColumnsOnNewData : true ,
         placeholder: "查無個管案件資料",
@@ -50,7 +54,7 @@ block content
           {title: "心理師", field: "refcaseAssign.username"},
           //{title: "建立時間", field: "createdLocal"},
           {title: "案件進度", field: "isCloseName"},
-          {title: "功能",field: "id",
+          {title: "功能",field: "id",hozAlign: "left",
             formatter: function(cell ,  formatterParams,aaa ) {
               let value = cell.getValue()
               if(cell.getRow().getData().isClose) {
@@ -60,8 +64,10 @@ block content
                 if(cell.getRow().getData().hasTalkRecord.length !== 0) {
                   buttonString += '<button class="btn btn-outline-secondary mx-1 btn-CloseCase" type="button" data-caseId="'+value+'">結案</button>'
                 }
-                if([1].indexOf(#{user.auth}) !== -1) {
+                if([1,2].indexOf(#{user.auth}) !== -1) {
                   buttonString += '<button class="btn btn-outline-success mx-1 btn-CreatCase" type="button" data-caseId="'+value+'">修改</button>'
+                } 
+                if([1].indexOf(#{user.auth}) !== -1) {
                   buttonString += '<button class="btn btn-outline-danger mx-1 btn-DelCase" type="button" data-caseId="'+value+'">刪除</button>'
                 } 
                 return buttonString
@@ -90,7 +96,7 @@ block content
           accordion_body.appendChild(tableEl);
           row.getElement().appendChild(accordion);
           let subTable = new Tabulator(tableEl, {
-            layout : "fitColumns" , 
+            layout: "fitDataFill",
             placeholder: "尚無晤談記錄",
             data: row.getData().hasTalkRecord,
             columnDefaults: {
@@ -104,7 +110,27 @@ block content
               {title: "填寫紀錄日期", field: "keyinDateLocal", sorter: "date"},
               {title: "填寫紀錄心理師", field: "refkeyinUser.username"},
               {title: "處理方式", field: "refProcess.content"},
-              {title: "評估等級", field: "refLevel.content"},
+              {title: "評估等級", field: "refLevel.content",
+                formatter: function(cell, formatterParams) {
+                  let value = cell.getValue();
+                  let color = '';
+                  switch (value) {
+                      case '黃':
+                          color = '#FFFF93'; // 黃色
+                          break;
+                      case '橙':
+                          color = '#FFA042'; // 橙色
+                          break;
+                      case '紅':
+                          color = '#FF5151'; // 紅色
+                          break;
+                      default:
+                          color = '#A6FFA6'; // 綠色
+                  }
+                  cell.getElement().style.backgroundColor = color;
+                  return value;
+                }
+              },
               {title: "功能",field: "id",formatter: function(cell ,  formatterParams ){
                   let value = cell.getValue()
                   let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button>'
@@ -116,6 +142,15 @@ block content
         },
       })
       
+
+      document.querySelector('#isNotClose').addEventListener('change',(e) => {
+        if(e.target.checked) {
+          table.setFilter("isCloseName", "like", "未結案");
+        } else {
+          table.setFilter("isCloseName", "like", "");
+        }
+      })
+
       document.querySelector('#btn-search').addEventListener('click',(e) => {
         mask.show()
         axios.get('/case/'+document.querySelector('#txt-search').value)

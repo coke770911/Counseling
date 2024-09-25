@@ -11,7 +11,6 @@ router.use((req, res, next) => {
     res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
     return;
   }
-  //res.status(400).send(JSON.stringify({ msg: '尚未登入' }))
   next()
 })
 
@@ -141,13 +140,13 @@ router.get('/', async (req, res, next) => {
   let TalkRecordObj = {
     required: true,
     include: [
-      { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
+      { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull'],paranoid: false,},
       { association: 'refkeyinUser' , attributes: ['username']},
       { association: 'refProcess' , attributes: ['content']},
       { association: 'refLevel' , attributes: ['content']},
     ],
     where: {
-      '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
+      
       keyinUser: req.session.account ,
     },
     order: [['updatedAt', 'DESC']]

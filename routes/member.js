@@ -10,8 +10,6 @@ router.use((req, res, next) => {
     res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
     return;
   }
-  //console.dir(req.session)
-  //res.status(400).send(JSON.stringify({ msg: '尚未登入' }))
   next()
 })
 
@@ -54,11 +52,11 @@ router.get('/view/:id', async (req, res, next) => {
       ],
       where: { id: req.params.id }
     })
-    console.dir(memberData)
-    memberData.creatorName = memberData.refCreator.username
-    memberData.editorName = memberData.refEditor.username
+    if(memberData !== null) {
+      memberData.creatorName = memberData.refCreator.username
+      memberData.editorName = memberData.refEditor.username
+    }
   }
-  
   res.render('member/member_view', { title: '基本資料建檔',memberData: memberData})
 })
 
@@ -146,7 +144,7 @@ router.put('/', upload.none(), async (req, res, next) => {
       contactRelation: req.body.contactRelation,
       contactTel: req.body.contactTel,
       contactPhone: req.body.contactPhone,
-      editor: req.session.username,
+      editor: req.session.account,
     },{where: { uid: req.body.uid.trim() }},
   )
   console.dir(updated)

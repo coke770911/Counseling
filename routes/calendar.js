@@ -5,19 +5,23 @@ const upload = multer()
 const db = require('../models')
 
 router.use((req, res, next) => {
-  res.locals.user = req.session
+  res.locals.user = req.session  
+  if(!(req.session.login === true)) {
+    res.render('login', { title: '諮商系統登入', Message: '尚未登入。'})
+    return;
+  }
   next()
 })
 
 //行事曆介面
 router.get('/view', async (req, res, next) => {
-  let isEdit = [1,2].indexOf(req.session.auth) === -1 ? false : true
+  let isEdit = [1,2,3,4].indexOf(req.session.auth) === -1 ? false : true
   res.render('calendar/calendar_view', { title: '行事曆',isEdit: isEdit})
 })
 
 //新增行程介面
 router.post('/detailed', upload.none(), async (req, res, next) => {
-  if([1,2].indexOf(req.session.auth) === -1) {
+  if([1,2,3,4].indexOf(req.session.auth) === -1) {
     res.status(400).send(JSON.stringify({ msg: '權限不足！'}))
     return
   }
@@ -33,9 +37,11 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
       id: {
         [db.Sequelize.Op.ne]: 1
       }
-    }
+    },
+    order: [
+      [db.UserAuth,'id','desc']
+    ]
   })
-
   const CaseRecordList = await db.CaseRecord.findAll({
     include: [
       { association: 'refcaseManage' , attributes: ['username']},
@@ -43,8 +49,9 @@ router.post('/detailed', upload.none(), async (req, res, next) => {
       { association: 'refIdentity' },
       { association: 'refSource' },
     ],
-    wehere: { 
-      isClose: 0 },
+    where: {
+      isClose: 0 
+    },
     order: [['updatedAt', 'DESC']]
   })
 
