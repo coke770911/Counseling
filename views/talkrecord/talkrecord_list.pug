@@ -13,67 +13,67 @@ block content
     .row
       .col-4
         .input-group.mb-3
-          span.input-group-text(id="inputGroup-memberUid") 學號
-          input.form-control(type="text" placeholder="輸入學號" aria-label="輸入學號" aria-describedby="btn-search" name="txt-search" id="txt-search")
+          span.input-group-text(id="inputGroup-memberUid") 關鍵字
+          input.form-control(type="text" placeholder="輸入學號或姓名" aria-label="輸入學號或姓名" aria-describedby="btn-search" name="txt-search" id="txt-search")
           button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
     table.table#maintable
   script.
     document.addEventListener('DOMContentLoaded', function() {
         const table = new Tabulator("#maintable", {
-        ajaxURL: "/talk",
-        ajaxConfig: "get",
-        ajaxContentType: "json",
-        layout: "fitDataFill",
-        minHeight: 768,
-        maxHeight : "100%",
-        placeholder: "尚無資料",
-        resizableColumnFit: true,
-        pagination: true, //啟用分頁
-        paginationSize: 10, //可選參數以請求每頁的特定行數
-        columnDefaults: {
-          headerHozAlign: "center",
-          hozAlign: "center",
-          vertAlign: "middle",
-          headerSort: false,
-        },
-        columns: [
-          {title: "#", formatter: "rownum", width: 50},
-          {title: "學號", field: "refCase.memberUid" },
-          {title: "學生姓名", field: "refCase.memberName"},
-          {title: "性別", field: "refCase.memberSex"},
-          {title: "系所年級", field: "refCase.memberDeptFull", hozAlign: "left"},
-          {title: "個案評估", field: "refLevel.content",
-            formatter: function(cell, formatterParams) {
-              let value = cell.getValue();
-              let color = '';
-              switch (value) {
-                  case '黃':
-                      color = '#FFFF93'; // 黃色
-                      break;
-                  case '橙':
-                      color = '#FFA042'; // 橙色
-                      break;
-                  case '紅':
-                      color = '#FF5151'; // 紅色
-                      break;
-                  default:
-                      color = '#A6FFA6'; // 綠色
+          ajaxURL: "/talk",
+          ajaxConfig: "get",
+          ajaxContentType: "json",
+          layout: "fitDataFill",
+          minHeight: 768,
+          maxHeight : "100%",
+          placeholder: "尚無資料",
+          resizableColumnFit: true,
+          pagination: true, //啟用分頁
+          paginationSize: 10, //可選參數以請求每頁的特定行數
+          columnDefaults: {
+            headerHozAlign: "center",
+            hozAlign: "center",
+            vertAlign: "middle",
+            headerSort: false,
+          },
+          columns: [
+            {title: "#", formatter: "rownum", width: 50},
+            {title: "學號", field: "refCase.memberUid" },
+            {title: "學生姓名", field: "refCase.memberName"},
+            {title: "性別", field: "refCase.memberSex"},
+            {title: "系所年級", field: "refCase.memberDeptFull", hozAlign: "left"},
+            {title: "個案評估", field: "refLevel.content",
+              formatter: function(cell, formatterParams) {
+                let value = cell.getValue();
+                let color = '';
+                switch (value) {
+                    case '黃':
+                        color = '#FFFF93'; // 黃色
+                        break;
+                    case '橙':
+                        color = '#FFA042'; // 橙色
+                        break;
+                    case '紅':
+                        color = '#FF5151'; // 紅色
+                        break;
+                    default:
+                        color = '#A6FFA6'; // 綠色
+                }
+                cell.getElement().style.backgroundColor = color;
+                return value;
               }
-              cell.getElement().style.backgroundColor = color;
-              return value;
-            }
-          },
-          {title: "處理方式", field: "refProcess.content"},
-          {title: "建立紀錄心理師", field: "refkeyinUser.username"},
-          {title: "晤談建立日期", field: "keyinDateLocal"},
-          {title: "功能",field: "id",
-            formatter: function(cell ,  formatterParams ){
-              let value = cell.getValue()
-              let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button>'
-              return buttonString
-            }
-          },
-        ],
+            },
+            {title: "處理方式", field: "refProcess.content"},
+            {title: "建立紀錄心理師", field: "refkeyinUser.username"},
+            {title: "晤談日期", field: "keyinDateLocal"},
+            {title: "功能",field: "id",
+              formatter: function(cell ,  formatterParams ){
+                let value = cell.getValue()
+                let buttonString = '<button class="btn btn-outline-success mx-1 btn-infoTalk" type="button" data-talkId="'+value+'">查詢</button>'
+                return buttonString
+              }
+            },
+          ],
       });
 
       document.querySelector('#btn-search').addEventListener('click',(e) => {

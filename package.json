@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon --watch . --ext js,pug ./bin/www"
   },
   "dependencies": {
     "axios": "^1.3.4",
@@ -25,8 +25,8 @@
     "soap": "^1.0.0",
     "sqlite3": "^5.1.4",
     "sweetalert2": "^11.4.8",
-    "tabulator-tables": "^5.4.4",
-    "tedious": "^15.1.3"
+    "tabulator-tables": "^5.6.1",
+    "tedious": "^18.6.1"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.0"

@@ -1,0 +1,70 @@
+extends ../layout
+
+block content
+  .container
+    h2.mt-2 依個案紀錄取得原始資料
+    form.mb-5(id="search_date" action="#")
+      .row.g-3.align-items-center
+        .col-auto
+          label.col-form-label 開始時間：      
+        .col-auto
+          input(type="date" id="startTime" class="form-control" name="sdate" required)
+        .col-auto
+          label.col-form-label 結束時間：
+        .col-auto
+          input(type="date" id="endTime" class="form-control" name="edate" required)
+        .col-auto
+          button(type="button" class="btn btn-primary" id="btn_search") 查詢
+        .col-auto
+          button(type="button" class="btn btn-primary" id="btn_download") 下載搜尋資料
+    div#report_table
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const report_table = new Tabulator("#report_table", {
+          layout: "fitDataTable",   
+          layoutColumnsOnNewData : true,
+          pagination: "local",       //客戶端資料分頁
+          paginationSize: 50,        //分頁筆數
+          paginationCounter: "rows", //display count of paginated rows in footer
+          rowHandle: "true",
+          placeholder: "表格無資料",
+          columnDefaults:{
+              headerHozAlign:"center", // 設置所有列標題置中對齊 
+          },
+          columns: [ 
+            {title:"No.", formatter: "rownum", hozAlign:"center", width: 60 },
+            {title:"個案編號", field:"caseId", headerSort: false},
+            {title:"學院", field:"coll_name", headerSort: false},
+            {title:"部別", field:"dept_type_name", headerSort: false},      
+            {title:"系所", field:"dept_name", headerSort: false},
+            {title:"年級", field:"caseDegree", headerSort: false},
+            {title:"性別", field:"caseSex", headerSort: false},
+            {title:"個案身份", field:"caseType", headerSort: false},
+            {title:"個案來源", field:"caseSource", headerSort: false},
+            {title:"開案心理師", field:"caseCreateUser", headerSort: false},
+            {title:"個管心理師", field:"caseManageUser", headerSort: false},
+            {title:"指派心理師", field:"caseProcessUser", headerSort: false},
+          ],
+      });
+
+      document.querySelector('#btn_search').addEventListener('click', e => {
+        let data = new FormData(document.querySelector('#search_date'));
+        axios.post('/report/CaseAllRecord',data).then((res) => {
+          let tableData = res.data;
+          if (!Array.isArray(tableData)) {
+            Swal.fire("伺服器回傳的資料格式有誤");
+            console.error("Expected an array, but received:", tableData);
+            return;
+          }
+          report_table.setData(tableData);
+        }).catch(error => { 
+          //Swal.fire(error.response.data.msg)
+          console.dir(error)
+        }).finally(() => { mask.hide() })
+      })
+
+      document.querySelector('#btn_download').addEventListener('click', e => {
+        report_table.download("xlsx", "個管開案原始資料.xlsx", {sheetName:"sheet"});
+      })
+
+    }); //Domload

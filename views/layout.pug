@@ -33,11 +33,14 @@ html(lang="zh-Hans-TW")
               a.nav-link.dropdown-toggle(href="#" data-bs-toggle="dropdown" aria-expanded="false") 統計資料
               ul.dropdown-menu
                 li
-                  a.dropdown-item(href="#") 報表1
-                li
-                  a.dropdown-item(href="#") 報表2
-                li
-                  a.dropdown-item(href="#") 報表3
+                  a.dropdown-item(href="/report/DeptRecord") 依學群、系所統計諮商人數人次
+                if [1].indexOf(user.auth) !== -1
+                  li
+                    a.dropdown-item(href="/report/TalkAllRecord") 依諮商晤談記錄查詢
+                  li
+                    a.dropdown-item(href="/report/CaseAllRecord") 依個案記錄查詢
+                  li
+                    a.dropdown-item(href="/report/PsyLeaveRecord") 依心理假紀錄查詢
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" data-bs-toggle="dropdown" aria-expanded="false") 系統設定
               ul.dropdown-menu
@@ -61,6 +64,7 @@ block scripts
   script(src="/javascripts/popper.min.js")
   script(src="/javascripts/bootstrap/bootstrap.min.js")
   script(src="/javascripts/tabulator-tables/tabulator.min.js")
+  script(src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js")
   script(src="/javascripts/axios/axios.min.js")
   script(src="/javascripts/sweetalert2/sweetalert2.all.min.js")
   script(src="/javascripts/vanilla.js")

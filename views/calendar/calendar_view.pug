@@ -85,6 +85,10 @@ block content
             mask.hide()
           })
         },
+        eventDidMount: function(info) {
+          // 設置 `title` 屬性為事件的詳細描述
+          info.el.setAttribute('title', info.event.extendedProps.description || info.event.title);
+        },
         eventChange: (arg) => {
           mask.show()
           let data = new FormData()

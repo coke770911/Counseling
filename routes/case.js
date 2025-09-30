@@ -178,7 +178,12 @@ router.get('/:user', async (req, res, next) => {
         required: false
       },
     ],
-    where: { memberUid: req.params.user },
+    where: { 
+      [db.Sequelize.Op.or]: [
+        { memberUid: req.params.user },
+        { memberName:  { [db.Sequelize.Op.like]: `%${req.params.user}%` }  }
+      ]
+    },
     order: [['updatedAt', 'DESC'],['isClose','DESC']]
   }
   
@@ -240,6 +245,7 @@ router.post('/', upload.none() , async (req, res, next) => {
   })
   res.status(200).send(JSON.stringify({msg: created ? '建立完成。' : '已有個案資料，尚未結案。'}))
 })
+
 //更新個案派案資料
 router.put('/', upload.none(), async (req, res, next) => {
   const updated = await db.CaseRecord.update({
@@ -252,6 +258,7 @@ router.put('/', upload.none(), async (req, res, next) => {
   })
   res.status(200).send(JSON.stringify({msg: updated ? '更新完成。' : '更新失敗。'}))
 })
+
 //刪除個案追蹤
 router.delete('/', async (req, res, next) => {
   const deleted = await db.CaseRecord.destroy({where: {id: req.query.id}})

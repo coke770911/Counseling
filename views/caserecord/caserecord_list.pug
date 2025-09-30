@@ -13,8 +13,8 @@ block content
     .row
       .col-12.col-md-6.col-lg-4
         .input-group.mb-3
-          span.input-group-text(id="inputGroup-memberUid") 學號
-          input.form-control(type="text" placeholder="輸入學號" aria-label="輸入學號" aria-describedby="btn-search" name="txt-search" id="txt-search")
+          span.input-group-text(id="inputGroup-memberUid") 關鍵字
+          input.form-control(type="text" placeholder="輸入學號或姓名" aria-label="輸入學號或姓名" aria-describedby="btn-search" name="txt-search" id="txt-search")
           button.btn.btn-outline-secondary(type="button" id="btn-search") 搜尋
       .col-6.col-md-6
         .form-check.mt-1
@@ -30,7 +30,6 @@ block content
         ajaxConfig: "get",
         ajaxContentType: "json",
         minHeight: 768,
-        maxHeight : "100%",
         layoutColumnsOnNewData : true ,
         placeholder: "查無個管案件資料",
         resizableColumnFit: true,
@@ -107,7 +106,7 @@ block content
             },
             columns:[
               {title: "#", formatter: "rownum", width: 50},
-              {title: "填寫紀錄日期", field: "keyinDateLocal", sorter: "date"},
+              {title: "晤談日期", field: "keyinDateLocal", sorter: "date"},
               {title: "填寫紀錄心理師", field: "refkeyinUser.username"},
               {title: "處理方式", field: "refProcess.content"},
               {title: "評估等級", field: "refLevel.content",
@@ -295,3 +294,4 @@ block content
       })
       caseTable = table
     })
+

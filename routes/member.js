@@ -72,7 +72,12 @@ router.get('/:uid', async (req, res, next) => {
       { association: 'refCreator' , attributes: ['username']},
       { association: 'refEditor' , attributes: ['username']},
     ],
-    where: { uid: req.params.uid }
+    where: { 
+      [db.Sequelize.Op.or]: [
+        { uid: req.params.uid },
+        { name:  { [db.Sequelize.Op.like]: `%${req.params.uid}%` } }
+      ]
+    }
   })
   res.status(200).send(JSON.stringify([MemberData]))
 })

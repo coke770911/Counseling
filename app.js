@@ -15,6 +15,7 @@ const memberRouter = require('./routes/member')
 const caseRouter = require('./routes/case')
 const talkRouter = require('./routes/talk')
 const closeRouter = require('./routes/close')
+const reportRouter = require('./routes/report')
 
 const app = express()
 
@@ -59,6 +60,7 @@ app.use('/member',memberRouter)
 app.use('/case',caseRouter)
 app.use('/talk',talkRouter)
 app.use('/close',closeRouter)
+app.use('/report',reportRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

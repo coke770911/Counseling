@@ -111,7 +111,10 @@ router.get('/:user', async (req, res, next) => {
     where: {
       '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
       keyinUser: req.session.account ,
-      '$refCase.memberUid$': req.params.user,
+      [db.Sequelize.Op.or]: [
+        { '$refCase.memberUid$': req.params.user, },
+        { '$refCase.memberName$':  { [db.Sequelize.Op.like]: `%${req.params.user}%` } }
+      ]
     },
     order: [['updatedAt', 'DESC']]
   }
@@ -119,7 +122,10 @@ router.get('/:user', async (req, res, next) => {
   if([1].indexOf(req.session.auth) !== -1) {
     TalkRecordObj.where = {
       '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
-      '$refCase.memberUid$': req.params.user,
+      [db.Sequelize.Op.or]: [
+        { '$refCase.memberUid$': req.params.user, },
+        { '$refCase.memberName$':  { [db.Sequelize.Op.like]: `%${req.params.user}%` } }
+      ]
     }
   }
 
@@ -127,7 +133,10 @@ router.get('/:user', async (req, res, next) => {
     TalkRecordObj.where = {
       '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
       '$refCase.caseManage$': req.session.account,
-      '$refCase.memberUid$': req.params.user,
+      [db.Sequelize.Op.or]: [
+        { '$refCase.memberUid$': req.params.user, },
+        { '$refCase.memberName$':  { [db.Sequelize.Op.like]: `%${req.params.user}%` } }
+      ]
     }
   }
   const TalkRecordList = await db.TalkRecord.findAll(TalkRecordObj)
