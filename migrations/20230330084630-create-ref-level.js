@@ -12,6 +12,9 @@ module.exports = {
       content: {
         type: Sequelize.STRING
       },
+      colorValue: {
+        type: Sequelize.STRING
+      },
       memo: {
         type: Sequelize.STRING
       },
@@ -31,21 +34,25 @@ module.exports = {
     await queryInterface.bulkInsert('RefLevels', [
       {
         content: '綠',
+        colorValue: '#A6FFA6',
         memo: '個案狀況穩定，可結案。',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
         content: '黃',
+        colorValue: '#FFFF93',
         memo: '個案危機狀況已解除，但仍有意願續談。',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
         content: '橙',
+        colorValue: '#FFA042',
         memo: '個案有嚴重情緒/精神困擾，需個管持續介入輔導。',
         createdAt: new Date(),
         updatedAt: new Date()
       }, {
         content: '紅',
+        colorValue: '#FF5151',
         memo: '個案有高度自殺/自傷或傷人之危機。',
         createdAt: new Date(),
         updatedAt: new Date()

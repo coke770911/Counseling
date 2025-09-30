@@ -112,7 +112,7 @@ router.get('/', async (req, res, next) => {
           { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
           { association: 'refkeyinUser' , attributes: ['username']},
           { association: 'refProcess' , attributes: ['content']},
-          { association: 'refLevel' , attributes: ['content']},
+          { association: 'refLevel' , attributes: ['content','colorValue']},
         ],
         required: false
       },
@@ -136,7 +136,6 @@ router.get('/', async (req, res, next) => {
     CaseRecordObj.include[5].where = { keyinUser: req.session.account }
   }
   
-
   const CaseRecordList = await db.CaseRecord.findAll(CaseRecordObj)
   res.status(200).send(JSON.stringify(CaseRecordList))
 })
@@ -173,7 +172,7 @@ router.get('/:user', async (req, res, next) => {
           { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
           { association: 'refkeyinUser' , attributes: ['username']},
           { association: 'refProcess' , attributes: ['content']},
-          { association: 'refLevel' , attributes: ['content']},
+          { association: 'refLevel' , attributes: ['content','colorValue']},
         ],
         required: false
       },
@@ -187,18 +186,26 @@ router.get('/:user', async (req, res, next) => {
     order: [['updatedAt', 'DESC'],['isClose','DESC']]
   }
   
+  /*
   if([2].indexOf(req.session.auth) !== -1) {
     CaseRecordObj.where = {
       caseManage: req.session.account , 
-      memberUid: req.params.user 
+      [db.Sequelize.Op.or]: [
+        { memberUid: req.params.user },
+        { memberName:  { [db.Sequelize.Op.like]: `%${req.params.user}%` }  }
+      ]
     }
   }
+  */
 
   if([3,4].indexOf(req.session.auth) !== -1) {
     CaseRecordObj.where = {
       isClose: 0 ,
       caseAssign: req.session.account ,   
-      memberUid: req.params.user
+      [db.Sequelize.Op.or]: [
+        { memberUid: req.params.user },
+        { memberName:  { [db.Sequelize.Op.like]: `%${req.params.user}%` }  }
+      ]
     }
   }
 

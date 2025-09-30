@@ -106,7 +106,7 @@ router.get('/:user', async (req, res, next) => {
       { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull']},
       { association: 'refkeyinUser' , attributes: ['username']},
       { association: 'refProcess' , attributes: ['content']},
-      { association: 'refLevel' , attributes: ['content']},
+      { association: 'refLevel' , attributes: ['content','colorValue']},
     ],
     where: {
       '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
@@ -119,7 +119,7 @@ router.get('/:user', async (req, res, next) => {
     order: [['updatedAt', 'DESC']]
   }
 
-  if([1].indexOf(req.session.auth) !== -1) {
+  if([1,2].indexOf(req.session.auth) !== -1) {
     TalkRecordObj.where = {
       '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
       [db.Sequelize.Op.or]: [
@@ -129,6 +129,7 @@ router.get('/:user', async (req, res, next) => {
     }
   }
 
+  /*
   if([2].indexOf(req.session.auth) !== -1) {
     TalkRecordObj.where = {
       '$refCase.deletedAt$': { [db.Sequelize.Op.is]: null },
@@ -139,6 +140,8 @@ router.get('/:user', async (req, res, next) => {
       ]
     }
   }
+  */
+
   const TalkRecordList = await db.TalkRecord.findAll(TalkRecordObj)
   res.status(200).send(JSON.stringify(TalkRecordList))
 
@@ -152,7 +155,7 @@ router.get('/', async (req, res, next) => {
       { association: 'refCase', attributes: ['memberUid','memberName','memberSex','memberDept','memberGrade','memberClass','memberDeptFull'],paranoid: false,},
       { association: 'refkeyinUser' , attributes: ['username']},
       { association: 'refProcess' , attributes: ['content']},
-      { association: 'refLevel' , attributes: ['content']},
+      { association: 'refLevel' , attributes: ['content','colorValue']},
     ],
     where: {
       

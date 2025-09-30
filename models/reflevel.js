@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   RefLevel.init({
     content: DataTypes.STRING,
+    colorValue: DataTypes.STRING,
     memo: DataTypes.STRING
   }, {
     sequelize,

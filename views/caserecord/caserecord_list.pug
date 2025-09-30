@@ -111,23 +111,22 @@ block content
               {title: "處理方式", field: "refProcess.content"},
               {title: "評估等級", field: "refLevel.content",
                 formatter: function(cell, formatterParams) {
-                  let value = cell.getValue();
-                  let color = '';
-                  switch (value) {
-                      case '黃':
-                          color = '#FFFF93'; // 黃色
-                          break;
-                      case '橙':
-                          color = '#FFA042'; // 橙色
-                          break;
-                      case '紅':
-                          color = '#FF5151'; // 紅色
-                          break;
-                      default:
-                          color = '#A6FFA6'; // 綠色
-                  }
-                  cell.getElement().style.backgroundColor = color;
-                  return value;
+                  let value = cell.getValue();   // 原本顯示的文字
+                  let rowData = cell.getRow().getData(); // 拿到整個 row 的資料
+                  let color = rowData.refLevel.colorValue || '#A6FFA6'; // 預設綠色，如果沒有給顏色
+                  return `
+                        <div style="
+                          width:40px;
+                          height:40px;
+                          border-radius:50%;
+                          background-color:${color};
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                        ">
+                          <span style="text-align:center;">${value}</span>
+                        </div>
+                      `;
                 }
               },
               {title: "功能",field: "id",formatter: function(cell ,  formatterParams ){
