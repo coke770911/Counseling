@@ -11,6 +11,7 @@ block content
     .row 
       .col.text-end.mb-2
         button.btn.btn-primary.btn-Detailed(type="button" data-id="0") 新增使用者
+        button(type="button" class="btn btn-primary" id="btn_download" style="display:none;") 下載權限清單
     .row 
       .col
         table.table#maintable
@@ -30,15 +31,15 @@ block content
           headerSort: false ,
         },
         columns: [
-          {title: "#", formatter: "rownum",width: '5%'},
+          {title: "#", formatter: "rownum",width: '5%',download: false},
           {title: "帳號", field: "account",width: '15%'},
           {title: "姓名", field: "username",width: '15%'},
-          {title: "標籤顏色", field: "color",formatter:"color", width:90},
-          {title: "文字顏色", field: "textColor",formatter:"color", width:90},
+          {title: "標籤顏色", field: "color",formatter:"color", width:90,download: false},
+          {title: "文字顏色", field: "textColor",formatter:"color", width:90,download: false},
           {title: "系統身份", field: "UserAuth.titleName"},
           {title: "狀態", field: "isDisabledName"},
-          {title: "最後變更日期", field: "updatedLocal"},
-          {title: "功能",field: "id",
+          {title: "最後變更日期", field: "updatedLocal",download: false},
+          {title: "功能",field: "id",download: false,
             formatter: function(cell ,  formatterParams ){
               let value = cell.getValue();
               return '<button type="button" class="btn btn-outline-success btn-Detailed" data-id="'+value+'">修改</button>';
@@ -65,5 +66,9 @@ block content
             Swal.fire('樣板發生錯誤。')
           }).finally(() =>{ mask.hide() })
         }
+      })
+
+      document.querySelector('#btn_download').addEventListener('click', e => {
+        table.download("xlsx", "權限清單.xlsx", {sheetName:"sheet"});
       })
     });
